@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run start:no-live",
+    "start:live": "ng serve",
+    "start:no-live": "ng serve --no-live-reload --host=0.0.0.0 --disable-host-check",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -16,12 +18,20 @@
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
     "@angular/core": "^5.2.0",
+    "@angular/flex-layout": "^2.0.0-beta.12",
     "@angular/forms": "^5.2.0",
     "@angular/http": "^5.2.0",
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@swimlane/ngx-charts": "^7.0.1",
+    "@swimlane/ngx-graph": "^4.0.2",
+    "bootstrap": "^4.0.0",
     "core-js": "^2.4.1",
+    "ipfs-api": "^17.5.0",
+    "ipld-dag-pb": "^0.11.4",
+    "ng2-tree": "^2.0.0-rc.4",
+    "ngx-bootstrap": "^2.0.2",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
   },
@@ -43,6 +53,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3"
+    "typescript": "~2.5.3",
+    "uglifyjs-webpack-plugin": "^1.1.6"
   }
 }

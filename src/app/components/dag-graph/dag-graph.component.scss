@@ -1,0 +1,111 @@
+.dag-graph-container {
+  position: relative;
+  display: block;
+  width: 1200px;
+  height: 500px;
+  // height: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 1);
+
+  .chart-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #fff;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.arrow-right {
+  margin-right: 5px;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid #fff;
+}
+
+.dark {
+  /**
+   * Backgrounds
+   */
+  $color-bg-darkest: #13141b;
+  $color-bg-darker: #1b1e27;
+  $color-bg-dark: #232837;
+  $color-bg-med: #2f3646;
+  $color-bg-light: #455066;
+  $color-bg-lighter: #5b6882;
+
+  /**
+   * Text
+   */
+  $color-text-dark: #72809b;
+  $color-text-med-dark: #919db5;
+  $color-text-med: #a8b2c7;
+  $color-text-med-light: #d9dce1;
+  $color-text-light: #f0f1f6;
+  $color-text-lighter: #fff;
+
+  background: $color-bg-darker;
+
+  .ngx-graph {
+    .tooltip-anchor {
+      fill: rgb(255,255,255);
+    }
+  }
+
+  .chart-legend {
+    .legend-labels {
+      background: rgba(255,255,255,0.05) !important;
+    }
+
+    .legend-item {
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    .legend-label {
+      &:hover {
+        color: #fff !important;
+      }
+
+      .active {
+        .legend-label-text {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+}
+
+.graph {
+  .node {
+    text {
+      fill: #fff;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+
+  .edge {
+    path  {
+      stroke: #666 !important;
+    }
+  }
+
+  .arrow-head {
+    fill: #666;
+  }
+}

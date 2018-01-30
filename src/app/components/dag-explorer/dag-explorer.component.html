@@ -1,0 +1,22 @@
+<p>DAG Explorer</p>
+
+<div fxLayout="row">
+  <div fxFlexFill>
+    <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Hash</span>
+      </div>
+      <input #dagInput type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+        (keyup.enter)="dagInputSearch(dagInput.value)">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button"
+          (click)="dagInputSearch(dagInput.value)">Show DAG</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="hash">
+  <app-dag-explorer-files-list [hash]="hash" (rowClick)="dagInputSearch($event.multihash)">
+  </app-dag-explorer-files-list>
+</ng-container>

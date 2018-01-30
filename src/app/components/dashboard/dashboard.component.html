@@ -1,0 +1,10 @@
+<div class="container-fluid" style="height: 100%; padding-left: 0; padding-right: 0;">
+  <div fxLayout="row" fxFlexFill>
+    <div fxFlex="200px">
+      <app-side-nav *ngIf="sidebarVisible"></app-side-nav>
+    </div>
+    <div fxFlex="grow" fxFlexFill>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

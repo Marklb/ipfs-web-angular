@@ -1,0 +1,8 @@
+<div *ngFor="let peer of peersList">
+  <div>
+    <span>{{ peer.id }}</span>
+    <ng-container *ngIf="knownPeers">
+      <span *ngIf="knownPeers[peer.id]" style="color: blue;"> => {{ knownPeers[peer.id].name }}</span>
+    </ng-container>
+  </div>
+</div>

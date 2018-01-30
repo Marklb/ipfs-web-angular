@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-header">
+    {{ hash }}<span *ngIf="objJson && objJson.size"> | Size: {{ objJson.size }}</span>
+  </div>
+  <!-- <div class="card-body"> -->
+    <table class="table table-hover table-sm" style="margin-bottom: 0;">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Hash</th>
+          <th scope="col">Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let link of objJson?.links" (click)="onClickTableRow($event, link)"
+          (mousedown)="onMouseDownTableRow($event)"
+          (mousemove)="onMouseMoveTableRow($event)"
+          (mouseup)="onMouseUpTableRow($event)">
+          <td>{{ link.name }}</td>
+          <td>{{ link.multihash }}</td>
+          <td>{{ link.size }}</td>
+        </tr>
+      </tbody>
+    </table>
+  <!-- </div> -->
+  <div class="card-footer">
+    <small class="text-muted">Data:</small>
+    <div>{{ objJson?.data.toString() }}</div>
+  </div>
+</div>

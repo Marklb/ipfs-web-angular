@@ -1,0 +1,10 @@
+<div *ngIf="idData">
+  <div>ID: {{ idData.id }}</div>
+  <div>Agent Version: {{ idData.agentVersion }}</div>
+  <div>Protocol Version: {{ idData.protocolVersion }}</div>
+  <div>Public Key: {{ idData.publicKey }}</div>
+  <div>Addresses:</div>
+  <div>
+    <div *ngFor="let addr of idData.addresses; let i = index">{{ addr }}</div>
+  </div>
+</div>

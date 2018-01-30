@@ -1,0 +1,12 @@
+<h3>Files</h3>
+<!-- <app-files-list></app-files-list> -->
+
+<p>Pinned Files</p>
+<ng-container *ngIf="pinnedFiles">
+  <div *ngFor="let pin of pinnedFiles">hash: {{ pin.hash }}, type: {{ pin.type }}</div>
+</ng-container>
+
+<p>Local Refs</p>
+<ng-container *ngIf="localRefs">
+  <div *ngFor="let r of localRefs">hash: {{ r.Ref }}</div>
+</ng-container>
