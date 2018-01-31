@@ -1,3 +1,24 @@
-<pre>
-  {{ configFile | json }}
-</pre>
+<div class="card border-bottom-0">
+  <div class="card-body">
+
+    <div class="card bg-light">
+      <nav class="navbar navbar-light bg-light justify-content-between p-1">
+        <a class="navbar-brand pl-1">Config</a>
+        <form class="form-inline">
+          <button class="btn btn-outline-secondary my-2 my-sm-0 mr-1" type="submit">Load</button>
+          <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Save</button>
+        </form>
+      </nav>
+      <span class="border-bottom"></span>
+      <!-- <div class="card-body">
+        <pre>{{ configFile | json }}</pre>
+      </div> -->
+      <div class="input-group">
+        <textarea class="form-control border-0"
+          aria-label="With textarea"
+          style="height: 500px;">{{ configFile | json }}</textarea>
+      </div>
+    </div>
+
+  </div>
+</div>

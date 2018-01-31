@@ -1,9 +1,10 @@
-// a {
-//   display: block;
-//   width: 100%;
-//   box-sizing: border-box;
+a {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 
-//   &:hover {
-//     background-color:
-//   }
-// }
+  &:hover,
+  &.active {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}

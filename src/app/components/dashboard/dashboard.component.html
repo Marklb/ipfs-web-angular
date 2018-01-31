@@ -1,10 +1,10 @@
-<div class="container-fluid" style="height: 100%; padding-left: 0; padding-right: 0;">
-  <div fxLayout="row" fxFlexFill>
-    <div fxFlex="200px">
-      <app-side-nav *ngIf="sidebarVisible"></app-side-nav>
-    </div>
-    <div fxFlex="grow" fxFlexFill>
+<div fxLayout="row" fxFlexFill>
+  <div fxFlex="200px" class="card text-white bg-dark">
+    <app-side-nav *ngIf="sidebarVisible"></app-side-nav>
+  </div>
+  <div fxFlex="1 1 calc(100% - 200px)" fxFlexFill>
+    <perfect-scrollbar fxLayout="column" fxFlexFill>
       <router-outlet></router-outlet>
-    </div>
+    </perfect-scrollbar>
   </div>
 </div>
