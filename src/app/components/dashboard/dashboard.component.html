@@ -1,10 +1,15 @@
-<div fxLayout="row" fxFlexFill>
-  <div fxFlex="200px" class="card text-white bg-dark">
-    <app-side-nav *ngIf="sidebarVisible"></app-side-nav>
+<div fxLayout="column" fxFlexFill>
+  <div fxFlex>
+    <app-top-nav></app-top-nav>
   </div>
-  <div fxFlex="1 1 calc(100% - 200px)" fxFlexFill>
-    <perfect-scrollbar fxLayout="column" fxFlexFill>
-      <router-outlet></router-outlet>
-    </perfect-scrollbar>
+  <div fxLayout="row" fxFlex="grow" fxFlexFill>
+    <div fxFlex="200px" class="card text-white bg-dark">
+      <app-side-nav *ngIf="sidebarVisible"></app-side-nav>
+    </div>
+    <div fxFlex="1 1 calc(100% - 200px)" fxFlexFill>
+      <perfect-scrollbar fxLayout="column" fxFlexFill>
+        <router-outlet></router-outlet>
+      </perfect-scrollbar>
+    </div>
   </div>
 </div>

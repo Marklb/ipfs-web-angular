@@ -1,0 +1,14 @@
+<nav class="navbar navbar-dark bg-dark p-0">
+  <a class="navbar-brand pl-1" href="#">IPFS</a>
+  <form class="form-inline">
+    <button class="btn btn-sm btn-primary mr-1" type="button"
+      [disabled]="ipfsService.ipfsEnvironment === 'browser'"
+      (click)="ipfsService.useIPFSEnvironment('browser')">Browser</button>
+    <button class="btn btn-sm btn-primary" type="button"
+      [disabled]="ipfsService.ipfsEnvironment === 'local'"
+      (click)="ipfsService.useIPFSEnvironment('local')">Local</button>
+  </form>
+</nav>
+
+<!-- [class.btn-primary]="ipfsService.ipfsEnvironment !== 'browser'"
+[class.btn-outline-primary]="ipfsService.ipfsEnvironment !== 'browser'" -->

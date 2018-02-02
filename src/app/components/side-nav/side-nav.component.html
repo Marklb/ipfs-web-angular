@@ -19,16 +19,16 @@
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#" (click)="oneVisible2 = !oneVisible2; $event.preventDefault()">Demos</a>
-    <div *ngIf="oneVisible2" class="border-top border-bottom border-secondary">
-      <ul *ngIf="oneVisible2" class="nav flex-column">
+    <div *ngIf="oneVisible2 || router.url.indexOf('/demos') !== -1" class="border-top border-bottom border-secondary">
+      <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/demos/create-pdf-demo" routerLinkActive="active">Create PDF Demo</a>
+          <a class="nav-link" routerLink="/demos/webmerge" routerLinkActive="active">Webmerge Demo</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/demo-2" routerLinkActive="active">Demo 2</a>
+          <a class="nav-link" routerLink="/demos/jspdf" routerLinkActive="active">jsPDF Demo</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/demo-3" routerLinkActive="active">Demo 3</a>
+          <a class="nav-link" routerLink="/demos/files-upload" routerLinkActive="active">Files Upload</a>
         </li>
       </ul>
     </div>

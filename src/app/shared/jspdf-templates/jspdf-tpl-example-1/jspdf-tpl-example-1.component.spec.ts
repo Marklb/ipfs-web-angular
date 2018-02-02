@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { PdfCreatorComponent } from './pdf-creator.component';
+import { JspdfTplExample-1Component } from './jspdf-tpl-example-1.component';
 
-describe('PdfCreatorComponent', () => {
-  let component: PdfCreatorComponent;
-  let fixture: ComponentFixture<PdfCreatorComponent>;
+describe('JspdfTplExample-1Component', () => {
+  let component: JspdfTplExample-1Component;
+  let fixture: ComponentFixture<JspdfTplExample-1Component>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PdfCreatorComponent ]
+      declarations: [ JspdfTplExample-1Component ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PdfCreatorComponent);
+    fixture = TestBed.createComponent(JspdfTplExample-1Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

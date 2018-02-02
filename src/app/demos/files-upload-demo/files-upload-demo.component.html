@@ -1,0 +1,42 @@
+<h3>Files Upload Demo</h3>
+
+<div class="center">
+  <div class="card p-2">
+    <file-drop customstyle="border border-secondary"
+      (onFileDrop)="dropped($event)"
+      (onFileOver)="fileOver($event)"
+      (onFileLeave)="fileLeave($event)">
+      <span>Add Files To IPFS</span>
+    </file-drop>
+  </div>
+  <div class="card">
+    <table class="table table-bordered table-hover table-sm mb-0">
+      <thead>
+        <tr>
+          <th scope="col">Path</th>
+          <th scope="col">Hash</th>
+          <th scope="col">Size</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let file of addedFiles; let i=index">
+          <td>{{ file.path }}</td>
+          <td>{{ file.hash }}</td>
+          <td>{{ file.size }}</td>
+          <td>
+              <!-- <button type="button" class="btn btn-sm btn-dark">View</button> -->
+              <div class="btn-group" role="group">
+                <!-- <button type="button" class="btn btn-secondary btn-sm mr-1">Preview</button> -->
+                <button type="button" class="btn btn-secondary btn-sm"
+                  (click)="viewFile(file)">View</button>
+              </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- <input id="the-file-input" type="file" (change)="fileInputChange($event)">
+<input id="the-file-input" type="file" multiple (change)="fileInputChangeMulti($event)"> -->

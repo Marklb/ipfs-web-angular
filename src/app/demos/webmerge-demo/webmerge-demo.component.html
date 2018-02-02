@@ -1,0 +1,145 @@
+<!-- <p>
+  webmerge-demo works!
+</p>
+
+<app-jspdf-tpl-example-1 [inpModel]="pdfData"></app-jspdf-tpl-example-1> -->
+
+<div class="card p-2 border-bottom-0">
+  <ng-container *ngIf="ipfsService.ipfsEnvironment === 'local'">
+    <div class="card p-1">
+      <div class="card p-1">
+        <div>Assumes default local daemon api(5001) and gateway(8080) ports</div>
+      </div>
+      <a href="https://github.com/ipfs/js-ipfs-api#cors">From Documentation</a>
+      <div>In a web browser IPFS API (either browserified or CDN-based) might encounter an error saying that the origin is not allowed. This would be a CORS ("Cross Origin Resource Sharing") failure: IPFS servers are designed to reject requests from unknown domains by default. You can whitelist the domain that you are calling from by changing your ipfs config like this:</div>
+      <div class="card p-1">
+        <code>
+          <div>$ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"{{ hostLocation }}\"]"</div>
+          <div>$ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials "[\"true\"]"</div>
+          <div>$ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"POST\", \"GET\"]"</div>
+        </code>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="formData">
+    <form #docForm (submit)="onSubmit()">
+      <div class="card">
+        <div class="card-header">
+          IPFS Test Form
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="name"
+              placeholder="Name" [(ngModel)]="formData.name" required>
+          </div>
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" name="address"
+              placeholder="Address" [(ngModel)]="formData.address" required>
+          </div>
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" class="form-control" name="city"
+              placeholder="City" [(ngModel)]="formData.city" required>
+          </div>
+          <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" class="form-control" name="state"
+              placeholder="State" [(ngModel)]="formData.state" required>
+          </div>
+          <div class="form-group">
+            <label for="zip">Zip</label>
+            <input type="text" class="form-control" name="zip"
+              placeholder="Zip" [(ngModel)]="formData.zip" required>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="float-right">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-container *ngIf="postedDocInfo">
+    <div class="card">
+      <div class="card-header">
+        <div class="card p-2">
+          <!-- <div class="float-left" style="display: inline-block;">Hash: {{ postedDocInfo.doc.hash }} | Size: {{ postedDocInfo.doc.size }}</div>
+          <div class="float-right" style="display: inline-block;">
+              <a class="btn btn-primary" target="_new" [href]="'https://ipfs.io/ipfs/' + postedDocInfo.doc.hash">View</a>
+          </div> -->
+          <div class="card-header p-1">Document:</div>
+          <div>
+            <div class="input-group" fxFlex="1 1 calc(100% - 100px)" fxFlexFill>
+              <div class="input-group-prepend">
+                <div class="input-group-text">Hash</div>
+              </div>
+              <input type="text" class="form-control" [value]="postedDocInfo.doc.hash" disabled>
+              <!-- <input type="text" class="form-control" value="testhash" disabled> -->
+              <div class="input-group-append">
+                <div class="input-group-text">Size: {{ postedDocInfo.doc.size }}</div>
+                <!-- <div class="input-group-text">Size: 3464</div> -->
+              </div>
+            </div>
+            <div fxFlex="1 1 5px"></div>
+            <div class="btn-group" role="group" fxFlex="1 1 95px">
+              <!-- <button type="button" class="btn btn-primary" style="width: 100%">View</button> -->
+              <a class="btn btn-primary" style="width: 100%" target="_new" [href]="gatewayUrl + postedDocInfo.doc.hash">View</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-2"></div>
+
+        <div class="card p-2">
+          <!-- <div class="float-left" style="display: inline-block;">Hash: {{ postedDocInfo.data.hash }} | Size: {{ postedDocInfo.data.size }}</div>
+          <div class="float-right" style="display: inline-block;">
+              <a class="btn btn-primary" target="_new" [href]="'https://ipfs.io/ipfs/' + postedDocInfo.data.hash">View</a>
+          </div> -->
+          <div class="card-header p-1">Document JSON:</div>
+          <div>
+            <div class="input-group" fxFlex="1 1 calc(100% - 100px)" fxFlexFill>
+              <div class="input-group-prepend">
+                <div class="input-group-text">Hash</div>
+              </div>
+              <input type="text" class="form-control" [value]="postedDocInfo.data.hash" readonly>
+              <!-- <input type="text" class="form-control" value="testhash" disabled> -->
+              <div class="input-group-append">
+                <div class="input-group-text">Size: {{ postedDocInfo.data.size }}</div>
+                <!-- <div class="input-group-text">Size: 3464</div> -->
+              </div>
+            </div>
+            <div fxFlex="1 1 5px"></div>
+            <div class="btn-group" role="group" fxFlex="1 1 95px">
+              <!-- <button type="button" class="btn btn-primary" style="width: 100%">View</button> -->
+              <a class="btn btn-primary" style="width: 100%" target="_new" [href]="gatewayUrl + postedDocInfo.data.hash">View</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-2"></div>
+
+    <div class="card">
+      <div class="card-header">
+        <button type="button" class="btn btn-primary btn-lg btn-block"
+          (click)="resetComponent()">New Document</button>
+      </div>
+    </div>
+
+    <div class="card mt-1 pl-4 pr-4">
+      <!-- <div class="card mx-auto" style="max-width: 800px;"> -->
+      <div class="card">
+        <div class="card-header p-1">jsPDF Template Example 1</div>
+        <div class="card-body">
+          <app-jspdf-tpl-example-1 [inpModel]="pdfData"></app-jspdf-tpl-example-1>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
