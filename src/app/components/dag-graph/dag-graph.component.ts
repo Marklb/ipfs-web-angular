@@ -159,6 +159,8 @@ export class DagGraphComponent implements OnInit {
   }
 
   private _buildDAG(hash: any): void {
+    if (hash === undefined) { return }
+
     const dagTmp = {
       count: 0,
       nodes: [],

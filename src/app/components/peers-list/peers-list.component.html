@@ -1,8 +1,19 @@
-<div *ngFor="let peer of peersList">
-  <div>
-    <span>{{ peer.id }}</span>
-    <ng-container *ngIf="knownPeers">
-      <span *ngIf="knownPeers[peer.id]" style="color: blue;"> => {{ knownPeers[peer.id].name }}</span>
-    </ng-container>
+<div class="card">
+  <div class="card-body">
+    <div class="card">
+      <div class="card-header p-2">
+        Peers: {{ peersList?.length }}
+      </div>
+      <div class="card-body p-2">
+        <div *ngFor="let peer of peersList">
+          <div>
+            <span>{{ peer.id }}</span>
+            <ng-container *ngIf="knownPeers">
+              <span *ngIf="knownPeers[peer.id]" style="color: blue;"> => {{ knownPeers[peer.id].name }}</span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

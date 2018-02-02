@@ -1,12 +1,33 @@
-<h3>Files</h3>
-<!-- <app-files-list></app-files-list> -->
+<div class="card">
+  <div class="card-body">
+    <h3>Files</h3>
+    <!-- <app-files-list></app-files-list> -->
 
-<p>Pinned Files</p>
-<ng-container *ngIf="pinnedFiles">
-  <div *ngFor="let pin of pinnedFiles">hash: {{ pin.hash }}, type: {{ pin.type }}</div>
-</ng-container>
+    <div class="card">
+      <div class="card-header p-2">Pinned Files</div>
+      <div class="card-body p-2" *ngIf="pinnedFiles">
+        <perfect-scrollbar style="height: 500px;">
+          <div *ngFor="let pin of pinnedFiles">hash: {{ pin.hash }}, type: {{ pin.type }}</div>
+        </perfect-scrollbar>
+      </div>
+      <div class="card-footer p-1">
+        Count: {{ pinnedFiles?.length }}
+      </div>
+    </div>
 
-<p>Local Refs</p>
-<ng-container *ngIf="localRefs">
-  <div *ngFor="let r of localRefs">hash: {{ r.Ref }}</div>
-</ng-container>
+    <div class="pt-2"></div>
+
+    <div class="card">
+      <div class="card-header p-2">Local Refs</div>
+      <div class="card-body p-2" *ngIf="localRefs">
+        <perfect-scrollbar style="height: 500px;">
+          <div *ngFor="let r of localRefs">hash: {{ r.Ref }}</div>
+        </perfect-scrollbar>
+      </div>
+      <div class="card-footer p-1">
+        Count: {{ localRefs?.length }}
+      </div>
+    </div>
+
+  </div>
+</div>
