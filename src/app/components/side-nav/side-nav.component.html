@@ -17,4 +17,53 @@
   <li class="nav-item">
     <a class="nav-link" routerLink="/dag-explorer" routerLinkActive="active">DAG Explorer</a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#" (click)="oneVisible2 = !oneVisible2; $event.preventDefault()">Demos</a>
+    <div *ngIf="oneVisible2" class="border-top border-bottom border-secondary">
+      <ul *ngIf="oneVisible2" class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/demos/create-pdf-demo" routerLinkActive="active">Create PDF Demo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/demo-2" routerLinkActive="active">Demo 2</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/demo-3" routerLinkActive="active">Demo 3</a>
+        </li>
+      </ul>
+    </div>
+  </li>
 </ul>
+
+<!-- <div class="card border-0 bg-secondary">
+  <div class="card-header border-0 p-0 top-level">
+    <a class="nav-link p-2" routerLink="/home" routerLinkActive="active">Home</a>
+  </div>
+</div>
+<div class="card border-0 bg-secondary">
+  <div class="card-header border-0 p-2 top-level" (click)="oneVisible = !oneVisible">One</div>
+  <div *ngIf="oneVisible" class="card border-0 bg-dark">
+    <div class="card border-0 bg-dark p-2 inner-level">One</div>
+    <div class="card border-0 bg-dark p-2 inner-level">Two</div>
+    <div class="card border-0 bg-dark p-2 inner-level">Three</div>
+    <div class="card border-0 bg-dark p-2 inner-level">Four</div>
+  </div>
+</div>
+<div class="card border-0 bg-secondary">
+  <div class="card-header border-0 p-2 top-level" (click)="twoVisible = !twoVisible">Two</div>
+  <div *ngIf="twoVisible" class="card border-0 bg-dark">
+    <div class="card border-0 bg-dark p-2 inner-level">One</div>
+    <div class="card border-0 bg-dark p-2 inner-level">Two</div>
+    <div class="card border-0 bg-dark p-2 inner-level">Three</div>
+    <div class="card border-0 bg-dark p-2 inner-level">Four</div>
+  </div>
+</div>
+<div class="card border-0 bg-secondary">
+  <div class="card-header border-0 p-2 top-level" (click)="threeVisible = !threeVisible">Three</div>
+  <div *ngIf="threeVisible" class="card border-0 bg-dark">
+    <div class="card border-0 bg-dark p-2 inner-level">One</div>
+    <div class="card border-0 bg-dark p-2 inner-level">Two</div>
+    <div class="card border-0 bg-dark p-2 inner-level">Three</div>
+    <div class="card border-0 bg-dark p-2 inner-level">Four</div>
+  </div>
+</div> -->

@@ -16,7 +16,7 @@ export class IpfsService {
   public knownPeers = this._knownPeersSubject.asObservable()
 
   constructor() {
-    this.ipfs = ipfsAPI('localhost', '5002', {protocol: 'http'})
+    this.ipfs = ipfsAPI('localhost', '5001', {protocol: 'http'})
   }
 
 }

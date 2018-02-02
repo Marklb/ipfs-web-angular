@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
+import { AccordionModule } from 'ngx-bootstrap'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { NgxGraphModule } from '@swimlane/ngx-graph'
 import { TreeModule } from 'ng2-tree'
@@ -22,6 +23,8 @@ import { FilesListComponent } from './components/files-list/files-list.component
 import { DagGraphComponent } from './components/dag-graph/dag-graph.component'
 import { DagExplorerComponent } from './components/dag-explorer/dag-explorer.component'
 import { DagExplorerFilesListComponent } from './components/dag-explorer-files-list/dag-explorer-files-list.component'
+import { PdfCreatorComponent } from './components/pdf-creator/pdf-creator.component'
+import { CreatePdfDemoComponent } from './demos/create-pdf-demo/create-pdf-demo.component'
 
 import { IpfsService } from './services/ipfs.service'
 
@@ -45,7 +48,13 @@ const appRoutes: Routes = [
       { path: 'dag-graph/:hash', component: DagGraphComponent },
       { path: 'dag-graph', component: DagGraphComponent },
       { path: 'dag-explorer/:hash', component: DagExplorerComponent },
-      { path: 'dag-explorer', component: DagExplorerComponent }
+      { path: 'dag-explorer', component: DagExplorerComponent },
+      {
+        path: 'demos',
+        children: [
+          { path: 'create-pdf-demo', component: CreatePdfDemoComponent }
+        ]
+      }
     ]
   },
   // { path: '**', component: PageNotFoundComponent }
@@ -64,7 +73,9 @@ const appRoutes: Routes = [
     FilesListComponent,
     DagGraphComponent,
     DagExplorerComponent,
-    DagExplorerFilesListComponent
+    DagExplorerFilesListComponent,
+    PdfCreatorComponent,
+    CreatePdfDemoComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +87,8 @@ const appRoutes: Routes = [
     FlexLayoutModule,
     NgxGraphModule,
     TreeModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    AccordionModule.forRoot()
   ],
   providers: [
     {
