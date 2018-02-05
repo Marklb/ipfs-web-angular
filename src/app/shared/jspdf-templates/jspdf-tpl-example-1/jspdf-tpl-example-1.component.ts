@@ -47,6 +47,8 @@ export class JspdfTplExample1Component implements OnInit, OnDestroy {
   public async createPDF() {
     if (!this._inpModel) { return }
 
+    console.log('createPDF: ', this._inpModel)
+
     const doc = new jsPDF()
 
     doc.setFontSize(20)

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { IJspdfTplExample1Model } from 'app/shared/jspdf-templates/jspdf-tpl-example-1/jspdf-tpl-example-1.component'
 import { IpfsService, IPFSEnvironments } from 'app/services/ipfs.service'
 import * as jsPDF from 'jspdf'
@@ -38,11 +38,14 @@ export class WebmergeDemoComponent implements OnInit {
       return 'http://localhost:8080/ipfs/'
     }
     return 'https://ipfs.io/ipfs/'
+    // return 'http://localhost:8080/ipfs/'
   }
 
   get hostLocation(): string {
     return location.origin
   }
+
+  public uploading: boolean = false
 
   @ViewChild('docForm') form
 
@@ -59,6 +62,7 @@ export class WebmergeDemoComponent implements OnInit {
 
   ngOnInit() {
   }
+
   resetComponent() {
     this.formData = Object.assign({}, this._defaultFormData)
     this.postedDocInfo = undefined
@@ -84,18 +88,33 @@ export class WebmergeDemoComponent implements OnInit {
     //   State: 'TN',
     //   Zip: '38002',
     // }
+
+    this.uploading = true
     this.postToIpfs(data).then(res => {
       console.log('Done')
+      this.uploading = false
+      this.pdfData = Object.assign({}, {
+        name: data.Name,
+        address: data.Address,
+        city: data.City,
+        state: data.State,
+        zip: data.Zip
+      })
     })
 
   }
 
   private async postToIpfs(data: any): Promise<any> {
-    const docResult = await this.postDocToIpfs(data)
-    // const docResult = await this.postDocToIpfs2(data)
+    // const docResult = await this.postDocToIpfs(data)
+    const docResult = await this.postDocToIpfs2(data)
     console.log('docResult: ', docResult)
+
+    await this.isAvailable(`https://ipfs.io/ipfs/${docResult[0].hash}`)
+
     const docDataResult = await this.postDocDataToIpfs(data, docResult[0])
     console.log('docDataResult: ', docDataResult)
+
+    await this.isAvailable(`https://ipfs.io/ipfs/${docDataResult[0].hash}`)
 
     this.postedDocInfo = {
       doc: docResult[0],
@@ -181,6 +200,8 @@ export class WebmergeDemoComponent implements OnInit {
         }
       }
 
+      // this.sendToWebApi(fileData)
+
       this.ipfsService.ipfs.files.add(fileData)
       .then(addResult => {
         console.log(addResult)
@@ -212,6 +233,50 @@ export class WebmergeDemoComponent implements OnInit {
     }
 
     return this.ipfsService.ipfs.files.add(fileData)
+  }
+
+  private async sendToWebApi(fileData: any): Promise<any> {
+    // NOTE: Not working yet
+    const formData: FormData = new FormData()
+    // formData.append('uploadFile', file, file.name)
+    formData.append('uploadFile', fileData.content, fileData.path)
+    const headers = new HttpHeaders()
+    headers.append('Content-Type', 'json')
+    headers.append('Accept', 'application/json')
+    // const options = new Request({ headers: headers })
+    // let apiUrl1 = "/api/UploadFileApi"
+    // this.http.post(apiUrl1, formData, options)
+
+    this.http
+      .post('http://localhost:42252/api/upload', formData, {
+        headers: headers
+      })
+      .toPromise()
+      .then(res => {
+        console.log('sendToWebApi: ', res)
+      })
+
+
+    // const data = new FormData()
+    // const fileData = document.querySelector('input[type="file"]').files[0]
+    // data.append('data', fileData)
+    // const that = this
+    // fetch('api/upload', {
+    //     method: 'POST',
+    //     'Content-Type': 'multipart/form-data',
+    //     'Accept': 'application/json',
+    //     body: data
+    // }).then(function (res) {
+    //   console.log('res: ', res)
+    // })
+  }
+
+  public async isAvailable(url: string): Promise<any> {
+    console.log('isAvailable: ', url)
+    return this.http.get(url, { responseType: 'blob' })
+      .toPromise().then((res) => {
+        console.log('isAvailable res: ', res)
+      })
   }
 
 }

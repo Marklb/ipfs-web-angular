@@ -57,7 +57,8 @@
         </div>
         <div class="card-footer">
           <div class="float-right">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button *ngIf="!uploading" type="submit" class="btn btn-primary">Submit</button>
+            <button *ngIf="uploading" type="submit" class="btn btn-primary" disabled>Uploading...</button>
           </div>
         </div>
       </div>

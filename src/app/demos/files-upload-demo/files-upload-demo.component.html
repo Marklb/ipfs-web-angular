@@ -2,13 +2,32 @@
 
 <div class="center">
   <div class="card p-2">
-    <file-drop customstyle="border border-secondary"
+    <div class="upload-files-btn" (click)="uploadFileBtnClick($event)">
+      <file-drop customstyle="border border-secondary"
+        (onFileDrop)="dropped($event)"
+        (onFileOver)="fileOver($event)"
+        (onFileLeave)="fileLeave($event)">
+        <span>Add Files To IPFS</span>
+      </file-drop>
+    </div>
+    <!-- <file-drop customstyle="border border-secondary"
       (onFileDrop)="dropped($event)"
       (onFileOver)="fileOver($event)"
       (onFileLeave)="fileLeave($event)">
-      <span>Add Files To IPFS</span>
-    </file-drop>
+      <span class="upload-files-btn" (click)="uploadFileBtnClick($event)">Add Files To IPFS</span>
+    </file-drop> -->
   </div>
+
+  <!-- <div class="card">
+    <input type="file" (change)="fileInputChange($event)">
+  </div> -->
+
+  <!-- webkitdirectory mozdirectory msdirectory odirectory directory -->
+  <div class="card invisible">
+    <input type="file" #filesInput
+      multiple (change)="fileInputChange($event)">
+  </div>
+
   <div class="card">
     <table class="table table-bordered table-hover table-sm mb-0">
       <thead>
@@ -37,6 +56,3 @@
     </table>
   </div>
 </div>
-
-<!-- <input id="the-file-input" type="file" (change)="fileInputChange($event)">
-<input id="the-file-input" type="file" multiple (change)="fileInputChangeMulti($event)"> -->
