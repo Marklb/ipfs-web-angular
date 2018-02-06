@@ -6,7 +6,8 @@ import { APP_BASE_HREF, Location } from '@angular/common'
 
 import { routing } from './app.routing'
 
-import { AccordionModule } from 'ngx-bootstrap'
+import { AccordionModule } from 'ngx-bootstrap/accordion'
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { NgxGraphModule } from '@swimlane/ngx-graph'
 import { TreeModule } from 'ng2-tree'
@@ -67,6 +68,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     TreeModule,
     PerfectScrollbarModule,
     AccordionModule.forRoot(),
+    BsDropdownModule.forRoot(),
     // SharedModule,
     DemosModule
   ],

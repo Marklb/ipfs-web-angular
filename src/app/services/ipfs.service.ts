@@ -18,6 +18,7 @@ export class IpfsService {
   private _ipfsEnvironment: IPFSEnvironments = IPFSEnvironments.Browser
 
   private _knownPeersSubject = new BehaviorSubject<any>({
+    'Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb': { name: 'office_desktop' },
     'QmRymhAzvKAsL5B1MegZUhTeC9ZL37XxCct3VtnZUZakb5': { name: 'ipfs_host_01' },
     'QmfNCXBCj6CMrRnbdTcoWHBG2Gck68Cg1FrfpKunW73bsL': { name: 'ipfs_host_02' },
     'QmX7whGzuhmzZKNQB4y4XtjKBCRXFgLTH6rL7SbFtR195u': { name: 'ipfs_host_03' },
@@ -49,28 +50,31 @@ export class IpfsService {
       init: true,
       start: true,
       repo: repoPath,
-      // config: {
-      //   Addresses: {
-      //     Swarm: [
-      //       '/ip4/127.0.0.1/tcp/9999/ws/ipfs/Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb',
-      //       '/ip4/127.0.0.1/tcp/9999/ws',
-      //       '/ip4/127.0.0.1/tcp/4001',
-      //       '/p2p-circuit/ipfs/Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb'
-      //     ]
-      //   },
-      //   Bootstrap: [
-      //     // '/ip4/127.0.0.1/tcp/9999/ws',
-      //     '/ip4/127.0.0.1/tcp/9999/ws/ipfs/Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb',
-      //     '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
-      //     '/dns4/lon-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLMeWqB7YGVLJN3pNLQpmmEk35v6wYtsMGLzSr5QBU3',
-      //     '/dns4/sfo-3.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLPppuBtQSGwKDZT2M73ULpjvfd3aZ6ha4oFGL1KrGM',
-      //     '/dns4/sgp-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLSafTMBsPKadTEgaXctDQVcqN88CNLHXMkTNwMKPnu',
-      //     '/dns4/nyc-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm',
-      //     '/dns4/nyc-2.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLV4Bbm51jM9C4gDYZQ9Cy3U6aXMJDAbzgu2fzaDs64',
-      //     '/dns4/wss0.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmZMxNdpMkewiVZLMRxaNxUeZpDUb34pWjZ1kZvsd16Zic',
-      //     '/dns4/wss1.bootstrap.libp2p.io/tcp/443/wss/ipfs/Qmbut9Ywz9YEDrz8ySBSgWyJk41Uvm2QJPhwDJzJyGFsD6'
-      //   ]
-      // }
+      config: {
+        Addresses: {
+          Swarm: [
+            '/ip4/127.0.0.1/tcp/9999/ws/ipfs/Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb',
+            // '/ip4/127.0.0.1/tcp/9999/ws/ipfs/Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb',
+            '/ip4/127.0.0.1/tcp/9999/ws',
+            '/ip4/127.0.0.1/tcp/4001',
+            // '/p2p-circuit/ipfs/Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb'
+          ]
+        },
+        Bootstrap: [
+          // '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star/ipfs/<your-peer-id>',
+          // '/ip4/127.0.0.1/tcp/9999/ws',
+
+          '/ip4/127.0.0.1/tcp/9999/ws/ipfs/Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb',
+          '/dns4/ams-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd',
+          '/dns4/lon-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLMeWqB7YGVLJN3pNLQpmmEk35v6wYtsMGLzSr5QBU3',
+          '/dns4/sfo-3.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLPppuBtQSGwKDZT2M73ULpjvfd3aZ6ha4oFGL1KrGM',
+          '/dns4/sgp-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLSafTMBsPKadTEgaXctDQVcqN88CNLHXMkTNwMKPnu',
+          '/dns4/nyc-1.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLueR4xBeUbY9WZ9xGUUxunbKWcrNFTDAadQJmocnWm',
+          '/dns4/nyc-2.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLV4Bbm51jM9C4gDYZQ9Cy3U6aXMJDAbzgu2fzaDs64',
+          '/dns4/wss0.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmZMxNdpMkewiVZLMRxaNxUeZpDUb34pWjZ1kZvsd16Zic',
+          '/dns4/wss1.bootstrap.libp2p.io/tcp/443/wss/ipfs/Qmbut9Ywz9YEDrz8ySBSgWyJk41Uvm2QJPhwDJzJyGFsD6'
+        ]
+      }
     })
 
     return new Promise<any>((resolve, reject) => {
@@ -79,6 +83,15 @@ export class IpfsService {
         window.g_ipfs = this.ipfs
         this.ipfs.id().then(id => { console.log(id) })
         this.ipfs.config.get().then((res) => { console.log(res) })
+        // this.ipfs.config.get().then((res) => {
+        //   console.log(res)
+        //   const signalServer = ('/dns4/libp2p-webrtc-star/ip4/127.0.0.1/tcp/9090/ws/ipfs/' + res.Identity.PeerID)
+        //   // const signalServer = ('/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star/ipfs/' + res.Identity.PeerID)
+        //   // this.ipfs.config.set('Adresses.Swarm')
+        //   this.ipfs.swarm.connect(signalServer).then(swarmConnectRes => {
+        //     console.log('swarmConnectRes: ', swarmConnectRes)
+        //   })
+        // })
         resolve()
       })
     })

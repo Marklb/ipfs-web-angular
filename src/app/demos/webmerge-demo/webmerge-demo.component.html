@@ -57,6 +57,25 @@
         </div>
         <div class="card-footer">
           <div class="float-right">
+            <!-- PDF Creation Service -->
+            <div class="btn-group" dropdown>
+              <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                {{ pdfCreationService }} <span class="caret"></span>
+              </button>
+              <ul *dropdownMenu class="dropdown-menu" role="menu">
+                <li role="menuitem">
+                  <button class="dropdown-item" type="button"
+                    [disabled]="pdfCreationService === 'Webmerge'"
+                    (click)="pdfCreationService = 'Webmerge'">Webmerge</button>
+                </li>
+                <li role="menuitem">
+                  <button class="dropdown-item" type="button"
+                    [disabled]="pdfCreationService === 'jsPDF'"
+                    (click)="pdfCreationService = 'jsPDF'">jsPDF</button>
+                </li>
+              </ul>
+            </div>
+            <!-- Submit Button -->
             <button *ngIf="!uploading" type="submit" class="btn btn-primary">Submit</button>
             <button *ngIf="uploading" type="submit" class="btn btn-primary" disabled>Uploading...</button>
           </div>
@@ -133,14 +152,13 @@
       </div>
     </div>
 
-    <div class="card mt-1 pl-4 pr-4">
-      <!-- <div class="card mx-auto" style="max-width: 800px;"> -->
+    <!-- <div class="card mt-1 pl-4 pr-4 border-0">
       <div class="card">
         <div class="card-header p-1">jsPDF Template Example 1</div>
         <div class="card-body">
           <app-jspdf-tpl-example-1 [inpModel]="pdfData"></app-jspdf-tpl-example-1>
         </div>
       </div>
-    </div>
+    </div> -->
   </ng-container>
 </div>

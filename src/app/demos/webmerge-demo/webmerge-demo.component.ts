@@ -57,11 +57,12 @@ export class WebmergeDemoComponent implements OnInit {
     zip: '38002'
   }
 
+  public pdfCreationService: string = 'Webmerge'
+
   constructor(private http: HttpClient,
               private ipfsService: IpfsService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   resetComponent() {
     this.formData = Object.assign({}, this._defaultFormData)
@@ -105,16 +106,22 @@ export class WebmergeDemoComponent implements OnInit {
   }
 
   private async postToIpfs(data: any): Promise<any> {
-    // const docResult = await this.postDocToIpfs(data)
-    const docResult = await this.postDocToIpfs2(data)
+    let docResult
+    if (this.pdfCreationService === 'Webmerge') {
+      docResult = await this.postDocToIpfs(data)
+    } else if (this.pdfCreationService === 'jsPDF') {
+      docResult = await this.postDocToIpfs2(data)
+    }
     console.log('docResult: ', docResult)
 
-    await this.isAvailable(`https://ipfs.io/ipfs/${docResult[0].hash}`)
+    // await this.isAvailable(`https://ipfs.io/ipfs/${docResult[0].hash}`)
+    await this.isAvailable(`${this.gatewayUrl}${docResult[0].hash}`)
 
     const docDataResult = await this.postDocDataToIpfs(data, docResult[0])
     console.log('docDataResult: ', docDataResult)
 
-    await this.isAvailable(`https://ipfs.io/ipfs/${docDataResult[0].hash}`)
+    // await this.isAvailable(`https://ipfs.io/ipfs/${docDataResult[0].hash}`)
+    await this.isAvailable(`${this.gatewayUrl}${docDataResult[0].hash}`)
 
     this.postedDocInfo = {
       doc: docResult[0],
@@ -235,41 +242,41 @@ export class WebmergeDemoComponent implements OnInit {
     return this.ipfsService.ipfs.files.add(fileData)
   }
 
-  private async sendToWebApi(fileData: any): Promise<any> {
-    // NOTE: Not working yet
-    const formData: FormData = new FormData()
-    // formData.append('uploadFile', file, file.name)
-    formData.append('uploadFile', fileData.content, fileData.path)
-    const headers = new HttpHeaders()
-    headers.append('Content-Type', 'json')
-    headers.append('Accept', 'application/json')
-    // const options = new Request({ headers: headers })
-    // let apiUrl1 = "/api/UploadFileApi"
-    // this.http.post(apiUrl1, formData, options)
+  // private async sendToWebApi(fileData: any): Promise<any> {
+  //   // NOTE: Not working yet
+  //   const formData: FormData = new FormData()
+  //   // formData.append('uploadFile', file, file.name)
+  //   formData.append('uploadFile', fileData.content, fileData.path)
+  //   const headers = new HttpHeaders()
+  //   headers.append('Content-Type', 'json')
+  //   headers.append('Accept', 'application/json')
+  //   // const options = new Request({ headers: headers })
+  //   // let apiUrl1 = "/api/UploadFileApi"
+  //   // this.http.post(apiUrl1, formData, options)
 
-    this.http
-      .post('http://localhost:42252/api/upload', formData, {
-        headers: headers
-      })
-      .toPromise()
-      .then(res => {
-        console.log('sendToWebApi: ', res)
-      })
+  //   this.http
+  //     .post('http://localhost:42252/api/upload', formData, {
+  //       headers: headers
+  //     })
+  //     .toPromise()
+  //     .then(res => {
+  //       console.log('sendToWebApi: ', res)
+  //     })
 
 
-    // const data = new FormData()
-    // const fileData = document.querySelector('input[type="file"]').files[0]
-    // data.append('data', fileData)
-    // const that = this
-    // fetch('api/upload', {
-    //     method: 'POST',
-    //     'Content-Type': 'multipart/form-data',
-    //     'Accept': 'application/json',
-    //     body: data
-    // }).then(function (res) {
-    //   console.log('res: ', res)
-    // })
-  }
+  //   // const data = new FormData()
+  //   // const fileData = document.querySelector('input[type="file"]').files[0]
+  //   // data.append('data', fileData)
+  //   // const that = this
+  //   // fetch('api/upload', {
+  //   //     method: 'POST',
+  //   //     'Content-Type': 'multipart/form-data',
+  //   //     'Accept': 'application/json',
+  //   //     body: data
+  //   // }).then(function (res) {
+  //   //   console.log('res: ', res)
+  //   // })
+  // }
 
   public async isAvailable(url: string): Promise<any> {
     console.log('isAvailable: ', url)

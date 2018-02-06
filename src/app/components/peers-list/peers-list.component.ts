@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { IpfsService } from '../../services/ipfs.service'
+import { IpfsService, IPFSEnvironments } from '../../services/ipfs.service'
 
 interface IPeer {
   id: string
@@ -34,20 +34,23 @@ export class PeersListComponent implements OnInit, OnDestroy {
   public refreshPeers(): void {
     this.ipfsService.ipfs.swarm.peers()
     .then((peers) => {
-      // console.log(peers)
+      // console.log('peers: ', peers)
       peers = peers.sort((a, b) => {
-        return a.peer.toB58String() > b.peer.toB58String() ? 1 : -1
+        if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+          return a.peer.toB58String() > b.peer.toB58String() ? 1 : -1
+        } else {
+          return a.peer.id.toB58String() > b.peer.id.toB58String() ? 1 : -1
+        }
       })
 
       const peersListTmp: IPeer[] = []
       peers.forEach((peer, i) => {
-        peer.ipfs = this.ipfsService.ipfs
-        peer.location = {
-          formatted: ''
+        let id
+        if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+          id = peer.peer.toB58String()
+        } else {
+          id = peer.peer.id.toB58String()
         }
-
-        const id = peer.peer.toB58String()
-        // console.log(id)
         peersListTmp.push({
           id: id
         })
