@@ -1,24 +1,66 @@
 <ul class="nav flex-column">
   <li class="nav-item">
-    <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+    <span class="navbar-brand p-1">IPFS</span>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/peers" routerLinkActive="active">Peers</a>
+    <a class="nav-link" routerLink="/home" routerLinkActive="active">
+      <span style="opacity: 0;">
+        <i class="fas fa-angle-right"></i>
+      </span>
+      <span>Home</span>
+    </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/config" routerLinkActive="active">Config</a>
+    <a class="nav-link" routerLink="/peers" routerLinkActive="active">
+      <span style="opacity: 0;">
+        <i class="fas fa-angle-right"></i>
+      </span>
+      <span>Peers</span>
+    </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/files" routerLinkActive="active">Files</a>
+    <a class="nav-link" routerLink="/config" routerLinkActive="active">
+      <span style="opacity: 0;">
+        <i class="fas fa-angle-right"></i>
+      </span>
+      <span>Config</span>
+    </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/dag-graph" routerLinkActive="active">DAG Graph</a>
+    <a class="nav-link" routerLink="/files" routerLinkActive="active">
+      <span style="opacity: 0;">
+        <i class="fas fa-angle-right"></i>
+      </span>
+      <span>Files</span>
+    </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/dag-explorer" routerLinkActive="active">DAG Explorer</a>
+    <a class="nav-link" routerLink="/dag-graph" routerLinkActive="active">
+      <span style="opacity: 0;">
+        <i class="fas fa-angle-right"></i>
+      </span>
+      <span>DAG Graph</span>
+    </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#" (click)="oneVisible2 = !oneVisible2; $event.preventDefault()">Demos</a>
+    <a class="nav-link" routerLink="/dag-explorer" routerLinkActive="active">
+      <span style="opacity: 0;">
+        <i class="fas fa-angle-right"></i>
+      </span>
+      <span>DAG Explorer</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#" (click)="oneVisible2 = !oneVisible2; $event.preventDefault()">
+      <span *ngIf="oneVisible2 || router.url.indexOf('/demos') !== -1; else demosAlt">
+        <i class="fas fa-angle-down"></i>
+      </span>
+      <ng-template #demosAlt>
+        <span><i class="fas fa-angle-right"></i></span>
+      </ng-template>
+
+      <span>Demos</span>
+    </a>
     <div *ngIf="oneVisible2 || router.url.indexOf('/demos') !== -1" class="border-top border-bottom border-secondary">
       <ul class="nav flex-column">
         <li class="nav-item">

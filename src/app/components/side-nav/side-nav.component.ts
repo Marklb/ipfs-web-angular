@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { Router } from '@angular/router'
+import { LayoutService } from 'app/services/layout.service'
 
 @Component({
   selector: 'app-side-nav',
@@ -31,7 +32,8 @@ export class SideNavComponent implements OnInit {
     return b
   }
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private layoutService: LayoutService) { }
 
   ngOnInit() {
   }

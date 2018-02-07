@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { IpfsService } from 'app/services/ipfs.service'
+import { LayoutService } from 'app/services/layout.service'
 
 @Component({
   selector: 'app-top-nav',
@@ -8,9 +9,15 @@ import { IpfsService } from 'app/services/ipfs.service'
 })
 export class TopNavComponent implements OnInit {
 
-  constructor(private ipfsService: IpfsService) { }
+  public sideNavExpanded: boolean = true
+
+  constructor(private ipfsService: IpfsService,
+              private layoutService: LayoutService) { }
 
   ngOnInit() {
+    this.layoutService.sideNavExpanded.subscribe(res => {
+      this.sideNavExpanded = res
+    })
   }
 
 }

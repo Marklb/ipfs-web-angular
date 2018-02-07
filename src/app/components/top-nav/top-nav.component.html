@@ -1,5 +1,14 @@
 <nav class="navbar navbar-dark bg-dark p-0">
-  <a class="navbar-brand pl-1" href="#">IPFS</a>
+  <!-- <a class="navbar-brand pl-1" href="#">IPFS</a> -->
+  <span *ngIf="sideNavExpanded; else toggleAlt"
+    (click)="layoutService.setSideNavExpandedState(false)">
+    <i class="far fa-caret-square-left fa-lg ml-1 toggle-btn"></i>
+  </span>
+  <ng-template #toggleAlt>
+    <span (click)="layoutService.setSideNavExpandedState(true)">
+      <i class="far fa-caret-square-right fa-lg ml-1 toggle-btn"></i>
+    </span>
+  </ng-template>
   <form class="form-inline">
     <button class="btn btn-sm btn-primary mr-1" type="button"
       [disabled]="ipfsService.ipfsEnvironment === 'browser'"

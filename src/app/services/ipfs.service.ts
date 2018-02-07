@@ -26,6 +26,8 @@ export class IpfsService {
   })
   public knownPeers = this._knownPeersSubject.asObservable()
 
+  public isReady: boolean = false
+
   constructor() {
     this._initIPFS().then(() => console.log('IPFS Initialized'))
   }
@@ -81,6 +83,7 @@ export class IpfsService {
       this.ipfs.on('ready', () => {
         console.log('IPFS Browser Ready')
         window.g_ipfs = this.ipfs
+        this.isReady = true
         this.ipfs.id().then(id => { console.log(id) })
         this.ipfs.config.get().then((res) => { console.log(res) })
         // this.ipfs.config.get().then((res) => {
@@ -100,6 +103,7 @@ export class IpfsService {
   private async _initLocalIPFS(): Promise<any> {
     this.ipfs = ipfsAPI('localhost', '5001', {protocol: 'http'})
     console.log('IPFS Local Ready')
+    this.isReady = true
   }
 
   public useIPFSEnvironment(env: IPFSEnvironments) {
@@ -108,10 +112,12 @@ export class IpfsService {
     this._ipfsEnvironment = env
 
     if (this._ipfsEnvironment === IPFSEnvironments.Local) {
+      this.isReady = false
       this.ipfs.stop().then(this._initIPFS()).then(() => {
         console.log('Environment switched')
       })
     } else {
+      this.isReady = false
       this._initIPFS().then(() => {
         console.log('Environment switched')
       })

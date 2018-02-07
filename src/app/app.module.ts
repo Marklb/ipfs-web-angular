@@ -35,6 +35,7 @@ import { DagExplorerFilesListComponent } from './components/dag-explorer-files-l
 // import { JspdfTplExample1Component } from 'app/shared/jspdf-templates/jspdf-tpl-example-1/jspdf-tpl-example-1.component'
 
 import { IpfsService } from './services/ipfs.service'
+import { LayoutService } from './services/layout.service'
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
@@ -78,7 +79,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
-    IpfsService
+    IpfsService,
+    LayoutService
   ],
   bootstrap: [AppComponent]
 })
