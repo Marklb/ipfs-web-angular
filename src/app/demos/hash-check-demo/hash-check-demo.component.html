@@ -1,0 +1,74 @@
+<div class="card border-bottom-0 p-2">
+  <div class="card">
+    <div class="card-header p-2">
+      Hash Check
+    </div>
+    <div class="card-body p-2">
+      <label>Document Data Hash</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Hash</span>
+        </div>
+        <input type="text" class="form-control" #docDataHashInput placeholder="Document Data Hash"
+          [disabled]="isGettingHash">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button"
+            (click)="getDocData(docDataHashInput.value)"
+            [disabled]="isGettingHash">Get</button>
+        </div>
+      </div>
+
+      <ng-container *ngIf="isGettingHash">
+        <div class="card mb-4">
+          Getting Hash...
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="docData">
+        <div class="card p-1 mb-4" style="max-height: 400px;">
+          <div class="card-footer p-1">
+            <div *ngIf="docDataStr"><pre class="mb-0">{{ docDataStr }}</pre></div>
+            <pre *ngIf="!docDataStr" class="mb-0">{{ docData | json }}</pre>
+          </div>
+        </div>
+        <!-- <pre class="mb-0">{{ docData | json }}</pre> -->
+        <!-- <div class="card-footer">
+          <small class="text-muted">Data:</small>
+          <div><pre>{{ objJson?.data.toString() }}</pre></div>
+        </div> -->
+      </ng-container>
+
+      <!-- <div class="card"
+        (drop)="onDropFile($event)"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)">
+        <div class="card-body">Upload Document</div>
+      </div> -->
+
+      <div class="upload-files-btn" (click)="uploadFileBtnClick($event)">
+        <file-drop customstyle="border border-secondary"
+          (onFileDrop)="dropped($event)"
+          (onFileOver)="fileOver($event)"
+          (onFileLeave)="fileLeave($event)">
+          <span>Add Files To Check</span>
+        </file-drop>
+        <!--  -->
+        <div class="card invisible d-none">
+          <input type="file" #filesInput
+            multiple (change)="fileInputChange($event)">
+        </div>
+      </div>
+
+      <ng-container>
+        <div *ngFor="let file of filesForCheck">
+          <span>{{ file.hash }}</span>
+          <ng-container *ngIf="docData">
+            <span *ngIf="file.hash === docData.hash" class="ml-1" style="color: green;">Match</span>
+            <span *ngIf="file.hash !== docData.hash" class="ml-1" style="color: red;">Not Match</span>
+          </ng-container>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+</div>

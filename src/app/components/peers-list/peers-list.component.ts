@@ -12,11 +12,11 @@ interface IPeer {
 })
 export class PeersListComponent implements OnInit, OnDestroy {
 
-  private peersList: IPeer[] = []
-  private knownPeers: any
-  private peersInterval: any
+  public peersList: IPeer[] = []
+  public knownPeers: any
+  public peersInterval: any
 
-  constructor(private ipfsService: IpfsService) { }
+  constructor(public ipfsService: IpfsService) { }
 
   ngOnInit() {
     this.ipfsService.knownPeers.subscribe(known => this.knownPeers = known)

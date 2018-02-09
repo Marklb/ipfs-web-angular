@@ -5,8 +5,10 @@
       <nav class="navbar navbar-light bg-light justify-content-between p-1">
         <a class="navbar-brand pl-1">Config</a>
         <form class="form-inline">
-          <button class="btn btn-outline-secondary my-2 my-sm-0 mr-1" disabled>Load</button>
-          <button class="btn btn-outline-secondary my-2 my-sm-0" disabled>Save</button>
+          <button class="btn btn-outline-secondary my-2 my-sm-0 mr-1"
+            (click)="loadConfig()">Load</button>
+          <button class="btn btn-outline-secondary my-2 my-sm-0" disabled
+            (click)="saveConfig()">Save</button>
         </form>
       </nav>
       <span class="border-bottom"></span>

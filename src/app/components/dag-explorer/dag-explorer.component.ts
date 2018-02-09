@@ -11,9 +11,9 @@ export class DagExplorerComponent implements OnInit {
 
   @Input('hash') hash: any
 
-  constructor(private ipfsService: IpfsService,
-              private route: ActivatedRoute,
-              private router: Router) {
+  constructor(public ipfsService: IpfsService,
+              public route: ActivatedRoute,
+              public router: Router) {
     this.route.params.subscribe(params => {
       this.hash = params.hash
     })

@@ -9,15 +9,17 @@ import { LayoutService } from 'app/services/layout.service'
 })
 export class SideNavComponent implements OnInit {
 
+  public oneVisible2: boolean
+
   @ViewChild('#demo1LinkActive') _demo1LinkActive
   @ViewChild('#demo2LinkActive') _demo2LinkActive
   @ViewChild('#demo3LinkActive') _demo3LinkActive
 
   get demoLinksActive() {
-    console.log('this._demo1LinkActive: ', this._demo1LinkActive)
-    console.log('this._demo2LinkActive: ', this._demo2LinkActive)
-    console.log('this._demo3LinkActive: ', this._demo3LinkActive)
-    console.log('router.url: ', this.router.url)
+    // console.log('this._demo1LinkActive: ', this._demo1LinkActive)
+    // console.log('this._demo2LinkActive: ', this._demo2LinkActive)
+    // console.log('this._demo3LinkActive: ', this._demo3LinkActive)
+    // console.log('router.url: ', this.router.url)
     let b = false
     if (this._demo1LinkActive) {
       b = true
@@ -32,8 +34,8 @@ export class SideNavComponent implements OnInit {
     return b
   }
 
-  constructor(private router: Router,
-              private layoutService: LayoutService) { }
+  constructor(public router: Router,
+              public layoutService: LayoutService) { }
 
   ngOnInit() {
   }

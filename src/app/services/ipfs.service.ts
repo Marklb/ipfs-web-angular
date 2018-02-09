@@ -6,27 +6,58 @@ import * as ipfsAPI from 'ipfs-api'
 
 declare var window: any
 
+export interface IpfsConnection {
+  address: string,
+  port: string
+}
+
 export enum IPFSEnvironments {
   Browser = 'browser',
   Local = 'local'
+}
+
+export interface IpfsEnvironmentExtended {
+  environment: IPFSEnvironments,
+  connection: IpfsConnection
 }
 
 @Injectable()
 export class IpfsService {
 
   public ipfs: any
-  private _ipfsEnvironment: IPFSEnvironments = IPFSEnvironments.Browser
+  // private _ipfsEnvironment: IPFSEnvironments = IPFSEnvironments.Browser
+  private _ipfsEnvironment: IPFSEnvironments = IPFSEnvironments.Local
 
   private _knownPeersSubject = new BehaviorSubject<any>({
-    'Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb': { name: 'office_desktop' },
-    'QmRymhAzvKAsL5B1MegZUhTeC9ZL37XxCct3VtnZUZakb5': { name: 'ipfs_host_01' },
-    'QmfNCXBCj6CMrRnbdTcoWHBG2Gck68Cg1FrfpKunW73bsL': { name: 'ipfs_host_02' },
-    'QmX7whGzuhmzZKNQB4y4XtjKBCRXFgLTH6rL7SbFtR195u': { name: 'ipfs_host_03' },
-    'QmXZ5KYKmiWwU3W9pdvxyB5fdYfA818WABdg9KFHHy8PRH': { name: 'ipfs_host_04' }
+    'Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb': { name: 'markb_office_desktop' },
+    'QmRymhAzvKAsL5B1MegZUhTeC9ZL37XxCct3VtnZUZakb5': { name: 'markb_docker_ipfs_host_01' },
+    'QmfNCXBCj6CMrRnbdTcoWHBG2Gck68Cg1FrfpKunW73bsL': { name: 'markb_docker_ipfs_host_02' },
+    'QmX7whGzuhmzZKNQB4y4XtjKBCRXFgLTH6rL7SbFtR195u': { name: 'markb_docker_ipfs_host_03' },
+    'QmXZ5KYKmiWwU3W9pdvxyB5fdYfA818WABdg9KFHHy8PRH': { name: 'markb_docker_ipfs_host_04' }
   })
   public knownPeers = this._knownPeersSubject.asObservable()
 
   public isReady: boolean = false
+
+  public ipfsConnections = {
+    localhost: {
+      address: 'localhost',
+      port: '5001'
+    },
+    jsuttontest1: {
+      address: 'jsuttontest1.theseam.com',
+      port: '5001'
+    }
+  }
+
+  // public ipfsConnection = this.ipfsConnections.localhost
+  public ipfsConnection = this.ipfsConnections.jsuttontest1
+
+  private _ipfsEnvironmentSubject = new BehaviorSubject<IpfsEnvironmentExtended>({
+    environment: this._ipfsEnvironment,
+    connection: this.ipfsConnection
+  })
+  public ipfsEnvironmentExtended = this._ipfsEnvironmentSubject.asObservable()
 
   constructor() {
     this._initIPFS().then(() => console.log('IPFS Initialized'))
@@ -84,6 +115,7 @@ export class IpfsService {
         console.log('IPFS Browser Ready')
         window.g_ipfs = this.ipfs
         this.isReady = true
+
         this.ipfs.id().then(id => { console.log(id) })
         this.ipfs.config.get().then((res) => { console.log(res) })
         // this.ipfs.config.get().then((res) => {
@@ -95,29 +127,44 @@ export class IpfsService {
         //     console.log('swarmConnectRes: ', swarmConnectRes)
         //   })
         // })
+
+        this._ipfsEnvironmentSubject.next({
+          environment: this.ipfsEnvironment,
+          connection: this.ipfsConnection
+        })
         resolve()
       })
     })
   }
 
   private async _initLocalIPFS(): Promise<any> {
-    this.ipfs = ipfsAPI('localhost', '5001', {protocol: 'http'})
+    // this.ipfs = ipfsAPI('localhost', '5001', { protocol: 'http' })
+    // this.ipfs = ipfsAPI('jsuttontest1.theseam.com', '5001', { protocol: 'http' })
+    this.ipfs = ipfsAPI(this.ipfsConnection.address, this.ipfsConnection.port,
+      { protocol: 'http' })
     console.log('IPFS Local Ready')
     this.isReady = true
+
+    this._ipfsEnvironmentSubject.next({
+      environment: this.ipfsEnvironment,
+      connection: this.ipfsConnection
+    })
   }
 
   public useIPFSEnvironment(env: IPFSEnvironments) {
-    if (this._ipfsEnvironment === env) { return }
+    // if (this._ipfsEnvironment === env) { return }
 
-    this._ipfsEnvironment = env
+    // this._ipfsEnvironment = env
 
-    if (this._ipfsEnvironment === IPFSEnvironments.Local) {
+    if (this._ipfsEnvironment === IPFSEnvironments.Browser) {
       this.isReady = false
+      this._ipfsEnvironment = env
       this.ipfs.stop().then(this._initIPFS()).then(() => {
         console.log('Environment switched')
       })
     } else {
       this.isReady = false
+      this._ipfsEnvironment = env
       this._initIPFS().then(() => {
         console.log('Environment switched')
       })
@@ -126,6 +173,10 @@ export class IpfsService {
 
   public get ipfsEnvironment() {
     return this._ipfsEnvironment
+  }
+
+  public setIpfsConnection(connectionName: string): void {
+    this.ipfsConnection = this.ipfsConnections[connectionName]
   }
 
 }

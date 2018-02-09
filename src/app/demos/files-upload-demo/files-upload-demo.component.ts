@@ -71,7 +71,8 @@ export class FilesUploadDemoComponent implements OnInit {
     if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Browser) {
       url = `https://ipfs.io/ipfs/${file.hash}`
     } else {
-      url = `http://localhost:8080/ipfs/${file.hash}`
+      // url = `http://localhost:8080/ipfs/${file.hash}`
+      url = `http://${this.ipfsService.ipfsConnection.address}:8080/ipfs/${file.hash}`
     }
     window.open(url, '_blank')
   }

@@ -7,9 +7,18 @@ import { IpfsService } from '../../services/ipfs.service'
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  private idData: any
+  public idData: any
 
-  constructor(private ipfsService: IpfsService) { }
+  constructor(public ipfsService: IpfsService) {
+    this.ipfsService.ipfsEnvironmentExtended.subscribe((env) => {
+      this.ipfsService.ipfs.id()
+      .then((id) => {
+        // console.log(id)
+        this.idData = id
+      })
+      .catch((err) => { console.log(err) })
+    })
+  }
 
   ngOnInit() {
     this.ipfsService.ipfs.id()

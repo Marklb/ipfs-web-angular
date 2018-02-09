@@ -6,7 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout'
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 
 import { WebmergeDemoComponent } from './webmerge-demo.component'
-import { JspdfTplExample1Component } from 'app/shared/jspdf-templates/jspdf-tpl-example-1/jspdf-tpl-example-1.component'
+// import { JspdfTplExample1Component } from 'app/shared/jspdf-templates/jspdf-tpl-example-1/jspdf-tpl-example-1.component'
 // import { JspdfTemplatesModule } from 'app/shared/jspdf-templates/jspdf-templates.module'
 
 
@@ -23,7 +23,7 @@ import { JspdfTplExample1Component } from 'app/shared/jspdf-templates/jspdf-tpl-
   ],
   declarations: [
     WebmergeDemoComponent,
-    JspdfTplExample1Component
+    // JspdfTplExample1Component
   ]
 })
 export class WebmergeDemoModule { }

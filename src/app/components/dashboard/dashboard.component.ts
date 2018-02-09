@@ -26,10 +26,10 @@ export class DashboardComponent implements OnInit {
   }
 
   @Input('sidebarVisible')
-  private sidebarVisible: boolean = true
+  public sidebarVisible: boolean = true
 
-  constructor(private ipfsService: IpfsService,
-              private layoutService: LayoutService) { }
+  constructor(public ipfsService: IpfsService,
+              public layoutService: LayoutService) { }
 
   ngOnInit() {
     this.layoutService.sideNavExpanded.subscribe(res => {

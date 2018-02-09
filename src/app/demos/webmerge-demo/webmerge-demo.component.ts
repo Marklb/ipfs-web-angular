@@ -35,7 +35,8 @@ export class WebmergeDemoComponent implements OnInit {
 
   get gatewayUrl(): string {
     if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
-      return 'http://localhost:8080/ipfs/'
+      // return 'http://localhost:8080/ipfs/'
+      return `http://${this.ipfsService.ipfsConnection.address}:8080/ipfs/`
     }
     return 'https://ipfs.io/ipfs/'
     // return 'http://localhost:8080/ipfs/'
@@ -59,8 +60,8 @@ export class WebmergeDemoComponent implements OnInit {
 
   public pdfCreationService: string = 'Webmerge'
 
-  constructor(private http: HttpClient,
-              private ipfsService: IpfsService) { }
+  constructor(public http: HttpClient,
+              public ipfsService: IpfsService) { }
 
   ngOnInit() { }
 

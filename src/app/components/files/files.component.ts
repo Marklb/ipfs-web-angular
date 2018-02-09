@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { IpfsService } from '../../services/ipfs.service'
+import { IpfsService, IPFSEnvironments } from '../../services/ipfs.service'
 import * as dagPB from 'ipld-dag-pb'
 // const dagPB = require('ipld-dag-pb')
 const DAGNode = dagPB.DAGNode
@@ -12,12 +12,28 @@ const DAGLink = dagPB.DAGLink
 })
 export class FilesComponent implements OnInit {
 
-  private localRefs: any[]
-  private pinnedFiles: any[]
+  public pinnedFiles: any[]
+  public localRefs: any[]
 
-  constructor(private ipfsService: IpfsService) { }
+  public pinnedFilesExpanded: boolean = true
+  public localRefsExpanded: boolean = true
+
+  public implementationMissing: boolean = false
+
+  constructor(public ipfsService: IpfsService) { }
 
   ngOnInit() {
+    // this.loadFiles()
+    this.ipfsService.ipfsEnvironmentExtended.subscribe((env) => {
+      if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Browser) {
+        this.implementationMissing = true
+      } else {
+        this.loadFiles()
+      }
+    })
+  }
+
+  public loadFiles() {
     this.ipfsService.ipfs.refs.local().then((res) => {
       // console.log('refs.local: ', res)
       this.localRefs = res
@@ -29,13 +45,13 @@ export class FilesComponent implements OnInit {
     })
 
     this.ipfsService.ipfs.object.get('QmWBqSjwXJaz8T7oFBsq2Tw8QGc81Ld3XpMDtTT3z5tUvd').then((res: typeof DAGNode) => {
-      console.log('object.get node: ', res)
-      console.log('object.get nodeJSON: ', res.toJSON())
+      // console.log('object.get node: ', res)
+      // console.log('object.get nodeJSON: ', res.toJSON())
       const nodeJson = res.toJSON()
       // console.dir(res.constructor.name)
-      console.log('--------------------------------')
+      // console.log('--------------------------------')
       // this.printDAGLinks(res, 0)
-      console.log('', `${nodeJson.multihash} /`)
+      // console.log('', `${nodeJson.multihash} /`)
       this.printDAG(nodeJson, 0)
     })
   }
@@ -51,7 +67,7 @@ export class FilesComponent implements OnInit {
       // console.log(tab, 'node: ', node)
       // console.log(tab, node.links)
       // console.log(tab, 'nodeJSON: ', node.toJSON())
-      console.log(tab, `${link.multihash} /${link.name}`)
+      // console.log(tab, `${link.multihash} /${link.name}`)
       if (node.links.length > 0) {
         await this.printDAG(node.toJSON(), n + 1)
       }
@@ -64,10 +80,10 @@ export class FilesComponent implements OnInit {
       // console.log(link)
       // console.log(link.multihash)
       const node = await this.ipfsService.ipfs.object.get(link.multihash)
-      console.log(link)
-      console.log('node: ', node)
-      console.log('nodeJSON: ', node.toJSON())
-      console.log(`${node.multihash} /${link.name}`)
+      // console.log(link)
+      // console.log('node: ', node)
+      // console.log('nodeJSON: ', node.toJSON())
+      // console.log(`${node.multihash} /${link.name}`)
       if (node.links > 0) {
         // this.printDAGLinks(node, 0)
       }

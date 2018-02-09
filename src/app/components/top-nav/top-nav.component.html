@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark bg-dark p-0">
+<nav class="navbar navbar-dark bg-dark p-1">
   <!-- <a class="navbar-brand pl-1" href="#">IPFS</a> -->
   <span *ngIf="sideNavExpanded; else toggleAlt"
     (click)="layoutService.setSideNavExpandedState(false)">
@@ -11,11 +11,14 @@
   </ng-template>
   <form class="form-inline">
     <button class="btn btn-sm btn-primary mr-1" type="button"
-      [disabled]="ipfsService.ipfsEnvironment === 'browser'"
-      (click)="ipfsService.useIPFSEnvironment('browser')">Browser</button>
+      [disabled]="buttonStates.browser"
+      (click)="onClickBrowser()">Browser</button>
+    <button class="btn btn-sm btn-primary mr-1" type="button"
+      [disabled]="buttonStates.localhost"
+      (click)="onClickLocal()">Local</button>
     <button class="btn btn-sm btn-primary" type="button"
-      [disabled]="ipfsService.ipfsEnvironment === 'local'"
-      (click)="ipfsService.useIPFSEnvironment('local')">Local</button>
+      [disabled]="buttonStates.jsuttontest1"
+      (click)="onClickJSuttonTest1()">JSuttonTest1</button>
   </form>
 </nav>
 

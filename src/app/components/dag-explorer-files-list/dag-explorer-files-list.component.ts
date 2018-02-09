@@ -8,12 +8,12 @@ import { IpfsService } from '../../services/ipfs.service'
 })
 export class DagExplorerFilesListComponent implements OnInit {
 
-  private objJson: any
-  private dragging: boolean = false
-  private _mx: number
-  private _my: number
+  public objJson: any
+  public dragging: boolean = false
+  public _mx: number
+  public _my: number
 
-  private _hash: any
+  public _hash: any
 
   @Input('hash')
   set hash(val: any) {
@@ -26,7 +26,7 @@ export class DagExplorerFilesListComponent implements OnInit {
 
   @Output('rowClick') rowClick = new EventEmitter<any>()
 
-  constructor(private ipfsService: IpfsService) { }
+  constructor(public ipfsService: IpfsService) { }
 
   ngOnInit() {
   }

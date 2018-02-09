@@ -8,11 +8,19 @@ import { IpfsService, IPFSEnvironments } from '../../services/ipfs.service'
 })
 export class ConfigFileComponent implements OnInit {
 
-  private configFile: any
+  public configFile: any
 
-  constructor(private ipfsService: IpfsService) { }
+  constructor(public ipfsService: IpfsService) {
+    this.ipfsService.ipfsEnvironmentExtended.subscribe((env) => {
+      this.loadConfig()
+    })
+  }
 
   ngOnInit() {
+    this.loadConfig()
+  }
+
+  public loadConfig() {
     this.ipfsService.ipfs.config.get().then((res) => {
       console.log(res)
       // console.log(res.toString())
@@ -24,6 +32,10 @@ export class ConfigFileComponent implements OnInit {
       }
     })
     .catch((err) => { console.log(err) })
+  }
+
+  public saveConfig() {
+
   }
 
 }
