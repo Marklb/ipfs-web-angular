@@ -138,12 +138,13 @@ export class WebmergeDemoComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.http
       .post('https://www.webmerge.me/merge/152179/z4h8m7', data, { responseType: 'blob' })
+      // .post('https://www.webmerge.me/merge/152179/z4h8m7', data, { responseType: 'text' })
       .toPromise()
       .then(res => {
-        console.log(res)
+        // console.log('res: ', res)
         const reader = new FileReader()
         reader.onload = () => {
-          console.log('reader.result', reader.result)
+          // console.log('reader.result', reader.result)
           const arrayBuffer = reader.result
           const array = new Uint8Array(arrayBuffer)
           const binaryString = String.fromCharCode.apply(null, array)

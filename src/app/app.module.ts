@@ -37,6 +37,7 @@ import { DagExplorerFilesListComponent } from './components/dag-explorer-files-l
 import { IpfsService } from './services/ipfs.service'
 import { LayoutService } from './services/layout.service'
 import { StoredKeysService } from './services/stored-keys.service'
+import { CryptoService } from './services/crypto.service'
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
@@ -82,7 +83,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     },
     IpfsService,
     LayoutService,
-    StoredKeysService
+    StoredKeysService,
+    CryptoService
   ],
   bootstrap: [AppComponent]
 })
