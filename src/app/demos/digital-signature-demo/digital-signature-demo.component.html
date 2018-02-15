@@ -1,0 +1,102 @@
+<div class="card border-bottom-0 p-2">
+  <div class="card">
+    <div class="card-header p-2">
+      Digital Signature Demo
+    </div>
+
+    <div class="pl-4 pr-4 pt-1 pb-1">
+      <app-stored-keys-manager-ui></app-stored-keys-manager-ui>
+    </div>
+    <!-- <app-jspdf-tpl-example-1 [inpModel]="pdfData"></app-jspdf-tpl-example-1> -->
+
+    <div class="card-body p-1">
+
+      <!-- Options -->
+      <div class="card mb-1">
+        <div class="card-header p-1">Options</div>
+        <div class="card-body p-1">
+          <label>Signer:</label>
+          <div class="btn-group btn-group-sm" dropdown>
+            <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
+              {{ selectedSigner?.userIds[0].name || 'None' }} <span class="caret"></span>
+            </button>
+            <ul *dropdownMenu class="dropdown-menu" role="menu">
+              <li *ngFor="let key of keys">
+                <div class="dropdown-item" style="cursor: pointer;"
+                  (click)="selectedSigner = key">
+                  {{ key.userIds[0].name }}
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-2">
+        <div class="upload-files-btn" (click)="uploadFileBtnClick($event)">
+          <file-drop customstyle="border border-secondary"
+            (onFileDrop)="dropped($event)"
+            (onFileOver)="fileOver($event)"
+            (onFileLeave)="fileLeave($event)">
+            <span>Upload Files</span>
+          </file-drop>
+        </div>
+      </div>
+
+      <div class="card invisible d-none">
+        <input type="file" #filesInput
+          multiple (change)="fileInputChange($event)">
+      </div>
+
+      <div class="card">
+        <table class="table table-bordered table-hover table-sm mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Path</th>
+              <th scope="col">Hash</th>
+              <th scope="col">Size</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let file of addedFiles; let i=index">
+              <tr>
+                <td>{{ file.path }}</td>
+                <td>{{ file.hash }}</td>
+                <td>{{ file.size }}</td>
+                <td>
+                  <!-- <button type="button" class="btn btn-sm btn-dark">View</button> -->
+                  <div class="btn-group" role="group">
+                    <!-- <button type="button" class="btn btn-secondary btn-sm mr-1">Preview</button> -->
+                    <button type="button" class="btn btn-secondary btn-sm"
+                      (click)="viewFile(file)">View</button>
+                    <button type="button" class="btn btn-secondary btn-sm"
+                      (click)="verifyFile(file)">Verify</button>
+                  </div>
+                </td>
+              </tr>
+              <ng-container *ngIf="file.signResults">
+                <tr>
+                  <!-- <td>Signer tests</td> -->
+                  <td></td>
+                  <td colspan="3">
+                    <div class="font-weight-bold">Signer tests:</div>
+                    <div *ngFor="let signResult of file.signResults" class="pl-2">
+                      <span>{{ signResult.name }}: </span>
+                      <span
+                        [class.text-success]="signResult.valid"
+                        [class.text-danger]="!signResult.valid">
+                        {{ signResult.valid }}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

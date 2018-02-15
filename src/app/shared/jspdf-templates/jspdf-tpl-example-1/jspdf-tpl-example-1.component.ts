@@ -27,6 +27,8 @@ export class JspdfTplExample1Component implements OnInit, OnDestroy {
     return this._inpModel
   }
 
+  // @Output() onPdfCreated = new EventEmitter<any>()
+
   @ViewChild('pdfPreviewContainer') _pdfPreviewContainer
 
   constructor() { }

@@ -15,7 +15,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar'
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar'
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'
 
-// import { SharedModule } from './shared/shared.module'
+import { SharedModule } from './shared/shared.module'
 import { DemosModule } from './demos/demos.module'
 
 import { AppComponent } from './app.component'
@@ -36,6 +36,7 @@ import { DagExplorerFilesListComponent } from './components/dag-explorer-files-l
 
 import { IpfsService } from './services/ipfs.service'
 import { LayoutService } from './services/layout.service'
+import { StoredKeysService } from './services/stored-keys.service'
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
@@ -70,7 +71,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
-    // SharedModule,
+    SharedModule,
     DemosModule
   ],
   providers: [
@@ -80,7 +81,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
     IpfsService,
-    LayoutService
+    LayoutService,
+    StoredKeysService
   ],
   bootstrap: [AppComponent]
 })
