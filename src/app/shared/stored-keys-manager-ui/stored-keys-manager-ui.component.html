@@ -1,16 +1,101 @@
-<div class="card">
-  <div class="card-header p-1">
-    Stored Keys
-  </div>
-  <div class="card-body p-1">
-    <div *ngFor="let key of keys" class="mb-1">
-      <span>{{ key.userIds[0].name }}</span>
-      <div class="btn-group btn-group-sm" role="group">
-        <button type="button" class="btn btn-secondary"
-          (click)="onClickPrivateKey($event, key)">Private</button>
-        <button type="button" class="btn btn-secondary"
-          (click)="onClickPublicKey($event, key)">Public</button>
+<!-- Regular Component -->
+<ng-container *ngIf="!isModalShown && !isModalOnly">
+  <ng-template [ngTemplateOutlet]="mainTemplate"></ng-template>
+</ng-container>
+
+
+<!-- Modal Component -->
+<div *ngIf="isModalShown" bsModal #modalDirectiveRef="bs-modal"
+  [config]="modalConfig"
+  (onHidden)="onHidden()"
+  class="modal fade p-2" tabindex="-1" role="dialog" aria-hidden="true">
+  <ng-template [ngTemplateOutlet]="mainTemplate"></ng-template>
+</div>
+
+
+<!-- Main Content -->
+<ng-template #mainTemplate>
+  <div class="card" [class.border-bottom-0]="!_expanded">
+    <div class="card-header p-1 noselect" (click)="onClickTitleBar($event)">
+      <span *ngIf="_expanded; else tplToggleElse" class="noselect">
+        <i class="fas fa-fw fa-angle-down"></i>
+      </span>
+      <ng-template #tplToggleElse>
+        <span class="noselect"><i class="fas fa-fw fa-angle-right"></i></span>
+      </ng-template>
+      <span class="noselect">Keys Manager</span>
+      <!-- Modal Toggle Button -->
+      <span class="float-right" (click)="onClickToggleModal($event)">
+        <span *ngIf="!isModalShown; else modalCloseButtonTpl">
+          <i class="fas fa-fw fa-arrow-up" data-fa-transform="rotate-45"></i>
+        </span>
+        <ng-template #modalCloseButtonTpl>
+          <span>
+            <i class="fas fa-fw fa-arrow-up" data-fa-transform="rotate-225"></i>
+          </span>
+        </ng-template>
+      </span>
+    </div>
+    <div class="card-body p-1" *ngIf="_expanded">
+      <!-- New Key -->
+      <div class="card mb-1" [class.border-bottom-0]="!_newKeyExpanded">
+        <div class="card-header p-1 noselect" (click)="_newKeyExpanded=!_newKeyExpanded">
+          <span *ngIf="_newKeyExpanded; else newKeyTplToggleElse" class="noselect">
+            <i class="fas fa-fw fa-angle-down"></i>
+          </span>
+          <ng-template #newKeyTplToggleElse>
+            <span class="noselect"><i class="fas fa-fw fa-angle-right"></i></span>
+          </ng-template>
+          <span class="noselect">New Key</span>
+        </div>
+        <div class="card-body p-1" *ngIf="_newKeyExpanded">
+          <app-generate-key-form
+            (submitted)="onSubmittedGenerateForm($event)">
+          </app-generate-key-form>
+        </div>
+      </div>
+
+      <!-- Add Key -->
+      <!-- <div class="card mb-1" [class.border-bottom-0]="!_newKeyExpanded">
+        <div class="card-header p-1 noselect" (click)="_newKeyExpanded=!_newKeyExpanded">
+          <span *ngIf="_newKeyExpanded; else newKeyTplToggleElse" class="noselect">
+            <i class="fas fa-fw fa-angle-down"></i>
+          </span>
+          <ng-template #newKeyTplToggleElse>
+            <span class="noselect"><i class="fas fa-fw fa-angle-right"></i></span>
+          </ng-template>
+          <span class="noselect">New Key</span>
+        </div>
+        <div class="card-body p-1" *ngIf="_newKeyExpanded">
+          <app-generate-key-form
+            (submitted)="onSubmittedGenerateForm($event)">
+          </app-generate-key-form>
+        </div>
+      </div> -->
+
+      <!-- Stored Keys -->
+      <div class="card" [class.border-bottom-0]="!_storedKeysExpanded">
+        <div class="card-header p-1 noselect" (click)="_storedKeysExpanded=!_storedKeysExpanded">
+          <span *ngIf="_storedKeysExpanded; else storedKeysTplToggleElse" class="noselect">
+            <i class="fas fa-fw fa-angle-down"></i>
+          </span>
+          <ng-template #storedKeysTplToggleElse>
+            <span class="noselect"><i class="fas fa-fw fa-angle-right"></i></span>
+          </ng-template>
+          <span class="noselect">Stored Keys</span>
+        </div>
+        <div class="card-body p-1" *ngIf="_storedKeysExpanded">
+          <div *ngFor="let key of keys" class="mb-1">
+            <span>{{ key.userIds[0].name }}</span>
+            <div class="btn-group btn-group-sm" role="group">
+              <button type="button" class="btn btn-secondary"
+                (click)="onClickPrivateKey($event, key)">Private</button>
+              <button type="button" class="btn btn-secondary"
+                (click)="onClickPublicKey($event, key)">Public</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</ng-template>

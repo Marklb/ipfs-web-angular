@@ -3,83 +3,95 @@
     <span class="navbar-brand p-1">IPFS</span>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/home" routerLinkActive="active">
+    <a class="nav-link text-light" routerLink="/home" routerLinkActive="active">
       <span style="opacity: 0;">
-        <i class="fas fa-angle-right"></i>
+        <i class="fas fa-fw fa-angle-right"></i>
       </span>
-      <span>Home</span>
+      <span class="noselect">Home</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/peers" routerLinkActive="active">
+    <a class="nav-link text-light" routerLink="/peers" routerLinkActive="active">
       <span style="opacity: 0;">
-        <i class="fas fa-angle-right"></i>
+        <i class="fas fa-fw fa-angle-right"></i>
       </span>
-      <span>Peers</span>
+      <span class="noselect">Peers</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/config" routerLinkActive="active">
+    <a class="nav-link text-light" routerLink="/config" routerLinkActive="active">
       <span style="opacity: 0;">
-        <i class="fas fa-angle-right"></i>
+        <i class="fas fa-fw fa-angle-right"></i>
       </span>
-      <span>Config</span>
+      <span class="noselect">Config</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/files" routerLinkActive="active">
+    <a class="nav-link text-light" routerLink="/files" routerLinkActive="active">
       <span style="opacity: 0;">
-        <i class="fas fa-angle-right"></i>
+        <i class="fas fa-fw fa-angle-right"></i>
       </span>
-      <span>Files</span>
+      <span class="noselect">Files</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/dag-graph" routerLinkActive="active">
+    <a class="nav-link text-light" routerLink="/dag-graph" routerLinkActive="active">
       <span style="opacity: 0;">
-        <i class="fas fa-angle-right"></i>
+        <i class="fas fa-fw fa-angle-right"></i>
       </span>
-      <span>DAG Graph</span>
+      <span class="noselect">DAG Graph</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" routerLink="/dag-explorer" routerLinkActive="active">
+    <a class="nav-link text-light" routerLink="/dag-explorer" routerLinkActive="active">
       <span style="opacity: 0;">
-        <i class="fas fa-angle-right"></i>
+        <i class="fas fa-fw fa-angle-right"></i>
       </span>
-      <span>DAG Explorer</span>
+      <span class="noselect">DAG Explorer</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#" (click)="oneVisible2 = !oneVisible2; $event.preventDefault()">
-      <span *ngIf="oneVisible2 || router.url.indexOf('/demos') !== -1; else demosAlt">
-        <i class="fas fa-angle-down"></i>
+    <a class="nav-link text-light" href="#" (click)="oneVisible2 = !oneVisible2; $event.preventDefault()">
+      <span *ngIf="oneVisible2 || router.url.indexOf('/demos') !== -1; else demosAlt" class="noselect">
+        <i class="fas fa-fw fa-angle-down"></i>
       </span>
       <ng-template #demosAlt>
-        <span><i class="fas fa-angle-right"></i></span>
+        <span class="noselect"><i class="fas fa-fw fa-angle-right"></i></span>
       </ng-template>
 
-      <span>Demos</span>
+      <span class="noselect">Demos</span>
     </a>
     <div *ngIf="oneVisible2 || router.url.indexOf('/demos') !== -1" class="border-top border-bottom border-secondary">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/demos/webmerge" routerLinkActive="active">Webmerge Demo</a>
+          <a class="nav-link text-light" routerLink="/demos/webmerge" routerLinkActive="active">
+            <span class="noselect">Webmerge Demo</span>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/demos/jspdf" routerLinkActive="active">jsPDF Demo</a>
+          <a class="nav-link text-light" routerLink="/demos/jspdf" routerLinkActive="active">
+            <span class="noselect">jsPDF Demo</span>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/demos/files-upload" routerLinkActive="active">Files Upload</a>
+          <a class="nav-link text-light" routerLink="/demos/files-upload" routerLinkActive="active">
+            <span class="noselect">Files Upload</span>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/demos/hash-check" routerLinkActive="active">Check Hash Demo</a>
+          <a class="nav-link text-light" routerLink="/demos/hash-check" routerLinkActive="active">
+            <span class="noselect">Check Hash Demo</span>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/demos/digital-signature" routerLinkActive="active">Digital Signature Demo</a>
+          <a class="nav-link text-light" routerLink="/demos/digital-signature" routerLinkActive="active">
+            <span class="noselect">Digital Signature Demo</span>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/demos/encryption" routerLinkActive="active">Encryption Demo</a>
+          <a class="nav-link text-light" routerLink="/demos/encryption" routerLinkActive="active">
+            <span class="noselect">Encryption Demo</span>
+          </a>
         </li>
       </ul>
     </div>
@@ -88,7 +100,7 @@
 
 <!-- <div class="card border-0 bg-secondary">
   <div class="card-header border-0 p-0 top-level">
-    <a class="nav-link p-2" routerLink="/home" routerLinkActive="active">Home</a>
+    <a class="nav-link  p-2" routerLink="/home" routerLinkActive="active">Home</a>
   </div>
 </div>
 <div class="card border-0 bg-secondary">

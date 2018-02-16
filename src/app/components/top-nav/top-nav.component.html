@@ -10,17 +10,35 @@
     </span>
   </ng-template>
   <form class="form-inline">
+    <!-- <button class="btn btn-sm btn-outline-light mr-1" type="button"
+      [disabled]="storedKeysManagerUiRef.isModalShown"
+      (click)="onClickShowKeyManager()">
+      <span class="noselect"><i class="fas fa-key"></i></span>
+    </button> -->
+
+    <button class="btn btn-sm btn-outline-light mr-1" type="button"
+      [disabled]="storedKeysManagerUiRef.isModalShown"
+      (click)="storedKeysManagerUiRef.toggleModal()">
+      <span class="noselect"><i class="fas fa-key"></i></span>
+    </button>
+
     <button class="btn btn-sm btn-primary mr-1" type="button"
       [disabled]="buttonStates.browser"
       (click)="onClickBrowser()">Browser</button>
+
     <button class="btn btn-sm btn-primary mr-1" type="button"
       [disabled]="buttonStates.localhost"
       (click)="onClickLocal()">Local</button>
+
     <button class="btn btn-sm btn-primary" type="button"
       [disabled]="buttonStates.jsuttontest1"
       (click)="onClickJSuttonTest1()">JSuttonTest1</button>
   </form>
 </nav>
+
+<app-stored-keys-manager-ui #storedKeysManagerUiRef
+  [isModalOnly]="true"></app-stored-keys-manager-ui>
+
 
 <!-- [class.btn-primary]="ipfsService.ipfsEnvironment !== 'browser'"
 [class.btn-outline-primary]="ipfsService.ipfsEnvironment !== 'browser'" -->

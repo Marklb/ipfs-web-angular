@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { IpfsService, IPFSEnvironments } from 'app/services/ipfs.service'
 import { LayoutService } from 'app/services/layout.service'
 

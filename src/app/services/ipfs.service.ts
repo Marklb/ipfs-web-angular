@@ -179,4 +179,16 @@ export class IpfsService {
     this.ipfsConnection = this.ipfsConnections[connectionName]
   }
 
+  public addFiles(files: any) {
+
+  }
+
+  public _addFilesBrowser(files: any) {
+
+  }
+
+  public _addFilesLocal(files: any) {
+
+  }
+
 }

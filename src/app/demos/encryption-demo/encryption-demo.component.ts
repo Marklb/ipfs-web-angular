@@ -103,7 +103,7 @@ export class EncryptionDemoComponent implements OnInit {
       // console.log('file: ', file)
       const reader = new FileReader()
       reader.onload = () => {
-        // console.log('reader.result', reader.result, file)
+        console.log('reader.result', reader.result, file)
 
         let filename = file.name
         // if (file.hasOwnProperty('fullPath')) {
@@ -176,7 +176,7 @@ export class EncryptionDemoComponent implements OnInit {
     const privKeyObj = openpgp.key.readArmored(signer.keys.private).keys[0]
     privKeyObj.decrypt(passphrase)
 
-    // console.log('data: ', data)
+    console.log('data: ', data)
     // console.log('data2: ', data.toString('binary'))
     // console.log('data2: ', data.toString('utf8'))
     // console.log('data2: ', data.toString())

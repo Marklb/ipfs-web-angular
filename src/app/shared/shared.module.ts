@@ -1,22 +1,23 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 
-import { JspdfTemplatesModule } from 'app/shared/jspdf-templates/jspdf-templates.module'
+import { StoredKeysManagerUiModule } from './stored-keys-manager-ui/stored-keys-manager-ui.module'
 
-import { StoredKeysManagerUiComponent } from './stored-keys-manager-ui/stored-keys-manager-ui.component'
+import { JspdfTemplatesModule } from 'app/shared/jspdf-templates/jspdf-templates.module'
 
 
 @NgModule({
   imports: [
     CommonModule,
-    JspdfTemplatesModule
+    JspdfTemplatesModule,
+    StoredKeysManagerUiModule
   ],
   exports: [
     JspdfTemplatesModule,
-    StoredKeysManagerUiComponent
+    StoredKeysManagerUiModule
   ],
   declarations: [
-    StoredKeysManagerUiComponent
+
   ]
 })
 export class SharedModule { }
