@@ -130,7 +130,8 @@ export class DigitalSignatureDemoComponent implements OnInit {
         if (this.selectedSigner) {
           this.cryptoService.sign(fileData[0].content, this.selectedSigner)
           .then((signed) => {
-            // console.log(signed)
+            // console.log('signed: ', signed)
+            console.log('signed: ', signed.data)
             const signedDataBuffer = _Buffer.from(signed.data)
             // console.log('signedDataBuffer: ', signedDataBuffer)
             fileData[0].content = signedDataBuffer
