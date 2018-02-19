@@ -92,8 +92,12 @@
                 (click)="onClickPrivateKey($event, key)">Private</button>
               <button type="button" class="btn btn-secondary"
                 (click)="onClickPublicKey($event, key)">Public</button>
+              <button type="button" class="btn btn-danger"
+                (click)="onClickRemoveKey($event, key)">Remove</button>
             </div>
           </div>
+          <button type="button" class="btn btn-sm btn-secondary"
+            (click)="onClickResetStoredKeys($event)">Reset To Default Keys</button>
         </div>
       </div>
     </div>

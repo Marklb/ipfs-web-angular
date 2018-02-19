@@ -89,27 +89,92 @@ export class KBPGPCryptoServiceProvider implements ICryptoServiceProvider {
     }
 
     return new Promise((resolve, reject) => {
-      kbpgp.box (params, function(err, result_string, result_buffer) {
+      kbpgp.box (params, (err, result_string, result_buffer) => {
         console.log('Signed')
         console.log(err, result_string, result_buffer)
-        resolve({
-          signatureString: result_string,
-          signatureBuffer: result_buffer,
-          data: result_buffer // Only here for compatability with previous OpenPGP response
+
+        this.verify({sig: result_string, msg: params.msg}, signer).then(() => {
+          resolve({
+            signatureString: result_string,
+            signatureBuffer: result_buffer,
+            data: result_buffer // Only here for compatability with previous OpenPGP response
+          })
         })
+
+
+        // resolve({
+        //   signatureString: result_string,
+        //   signatureBuffer: result_buffer,
+        //   data: result_buffer // Only here for compatability with previous OpenPGP response
+        // })
       })
     })
   }
 
   public async verify(data: any, signer: any): Promise<any> {
+    const msgSig = data.sig
+    const msgData = data.msg + '0'
+
+    return new Promise((resolve, reject) => {
+      let alice
+
+      const alice_pgp_key = signer.keys.private
+      const alice_passphrase = 'theseam'
+
+      kbpgp.KeyManager.import_from_armored_pgp({
+        armored: alice_pgp_key
+      }, function(err, aliceRes) {
+        if (!err) {
+          if (aliceRes.is_pgp_locked()) {
+            aliceRes.unlock_pgp({
+              passphrase: alice_passphrase
+            }, function(err2) {
+              if (!err2) {
+                console.log('Loaded private key with passphrase')
+                alice = aliceRes
+              }
+            })
+          } else {
+            console.log('Loaded private key w/o passphrase')
+            alice = aliceRes
+          }
+        }
+      })
+
+
+      const ring = new kbpgp.keyring.KeyRing
+      const pgp_msg = msgSig
+      ring.add_key_manager(alice)
+      console.log({ keyfetch: ring, armored: pgp_msg, data: msgData })
+      kbpgp.unbox({ keyfetch: ring, armored: pgp_msg, data: msgData }, function(err, literals) {
+        if (err != null) {
+          // return console.log('Problem: ' + err)
+          console.log('Problem: ' + err)
+          reject()
+        } else {
+          console.log('decrypted message')
+          console.log(literals[0].toString())
+          let km = null
+          let ds = null
+          ds = literals[0].get_data_signer()
+          if (ds) { km = ds.get_key_manager() }
+          if (km) {
+            console.log('Signed by PGP fingerprint')
+            console.log(km.get_pgp_fingerprint().toString('hex'))
+            resolve()
+          } else {
+            reject()
+          }
+        }
+      })
+    })
+  }
+
+  public async encrypt(data: any, signer: any): Promise<any> {
 
   }
 
-  public async encrypt(data: any, privateKey: any): Promise<any> {
-
-  }
-
-  public async decrypt(data: any, publicKey: any): Promise<any> {
+  public async decrypt(data: any, signer: any): Promise<any> {
 
   }
 

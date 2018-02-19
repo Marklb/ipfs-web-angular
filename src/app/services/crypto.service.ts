@@ -11,8 +11,8 @@ export interface ICryptoServiceProvider {
   generateKey: (options: any) => any
   sign: (data: any, signer: any) => any
   verify: (data: any, signer: any) => any
-  encrypt: (data: any, privateKey: any) => any
-  decrypt: (data: any, publicKey: any) => any
+  encrypt: (data: any, signer: any) => any
+  decrypt: (data: any, signer: any) => any
 }
 
 @Injectable()
@@ -32,6 +32,14 @@ export class CryptoService {
   }
 
   public async verify(data: any, signer: any): Promise<any> {
+    return this._cryptoProvider.verify(data, signer)
+  }
+
+  public async encrypt(data: any, signer: any): Promise<any> {
+    return this._cryptoProvider.verify(data, signer)
+  }
+
+  public async decrypt(data: any, signer: any): Promise<any> {
     return this._cryptoProvider.verify(data, signer)
   }
 

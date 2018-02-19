@@ -75,6 +75,14 @@ export class StoredKeysManagerUiComponent implements OnInit {
     console.log(key.keys.public)
   }
 
+  public onClickRemoveKey(event: any, key: any) {
+    this.storedKeysService.removeKeyFromLocalStorage(key)
+  }
+
+  public onClickResetStoredKeys(event: any) {
+    this.storedKeysService.resetLocalStorageToDefault()
+  }
+
   public onClickTitleBar(event: any) {
     this._expanded = !this._expanded
   }

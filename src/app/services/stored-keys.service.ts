@@ -19,19 +19,11 @@ export class StoredKeysService {
   }
 
   public loadStoredKeys(): void {
-    // const tmp = this.getLocalStorageJson()
-    // console.log('tmp: ', tmp)
-    // const tmp2 = tmp.keys.filter(x => x.userIds[0].name !== 'Mark3')
-    // console.log('tmp2: ', tmp2)
-    // tmp.keys = tmp2
-    // localStorage.setItem(LOCAL_STORAGE_ITEM_KEY, JSON.stringify(tmp))
-
-
-    const envKeys = environment.encryptionDemoKeys
+    // const envKeys = environment.encryptionDemoKeys
     const localStorageKeys = this.getLocalStorageJson().keys
 
     const keys = [
-      ...envKeys,
+      // ...envKeys,
       ...localStorageKeys
     ]
 
@@ -45,10 +37,7 @@ export class StoredKeysService {
       json = JSON.parse(item)
       // TODO: Ensure `json` has all required attributes
     } else {
-      json = {
-        keys: []
-      }
-      localStorage.setItem(LOCAL_STORAGE_ITEM_KEY, JSON.stringify(json))
+      json = this.resetLocalStorageToDefault(false)
     }
     return json
   }
@@ -66,6 +55,25 @@ export class StoredKeysService {
     const keys = this._storedKeysSubject.getValue()
     keys.push(key)
     this._storedKeysSubject.next(keys)
+  }
+
+  public removeKeyFromLocalStorage(key: any): void {
+    const tmp = this.getLocalStorageJson()
+    const tmp2 = tmp.keys.filter(x =>
+      x.keys.private !== key.keys.private && x.keys.public !== key.keys.public)
+    tmp.keys = tmp2
+    localStorage.setItem(LOCAL_STORAGE_ITEM_KEY, JSON.stringify(tmp))
+    this.loadStoredKeys()
+  }
+
+  public resetLocalStorageToDefault(reload: boolean = true): any {
+    const envKeys = environment.encryptionDemoKeys
+    const json = {
+      keys: [...envKeys]
+    }
+    localStorage.setItem(LOCAL_STORAGE_ITEM_KEY, JSON.stringify(json))
+    this.loadStoredKeys()
+    return json
   }
 
 }

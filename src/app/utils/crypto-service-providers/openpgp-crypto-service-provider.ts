@@ -45,6 +45,12 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
       // console.log(signed)
       // console.log(cleartext)
       // console.log(detachedSig)
+
+      // const parsedArmor = openpgp.cleartext.readArmored(cleartext)
+      // console.log(parsedArmor)
+      // console.log(parsedArmor.text)
+
+
       return signed
     })
   }
@@ -62,11 +68,11 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
     })
   }
 
-  public async encrypt(data: any, privateKey: any): Promise<any> {
+  public async encrypt(data: any, signer: any): Promise<any> {
 
   }
 
-  public async decrypt(data: any, publicKey: any): Promise<any> {
+  public async decrypt(data: any, signer: any): Promise<any> {
 
   }
 
