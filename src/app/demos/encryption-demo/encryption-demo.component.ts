@@ -6,12 +6,16 @@ import { StoredKeysService } from 'app/services/stored-keys.service'
 import { Buffer as _Buffer } from 'buffer/'
 import * as openpgp from 'openpgp'
 import { CryptoService } from 'app/services/crypto.service'
+import { HttpClient } from '@angular/common/http'
 
 interface IpfsAddedFile {
   path: string,
   hash: string,
   size: number,
 }
+
+declare var document: any
+declare var window: any
 
 @Component({
   selector: 'app-encryption-demo',
@@ -27,11 +31,14 @@ export class EncryptionDemoComponent implements OnInit {
 
   public selectedKey: any
 
+  public rawTextData: any = []
+
   @ViewChild('filesInput') filesInput: ElementRef
 
   constructor(private ipfsService: IpfsService,
               private cryptoService: CryptoService,
-              private storedKeysService: StoredKeysService) { }
+              private storedKeysService: StoredKeysService,
+              private http: HttpClient) { }
 
   ngOnInit() {
     this.storedKeysService.storedKeys.subscribe((keys) => {
@@ -128,13 +135,25 @@ export class EncryptionDemoComponent implements OnInit {
         }
 
         if (this.selectedKey) {
-          // this.encryptData(fileData[0].content, this.selectedKey)
+          const tmp = fileData[0].content.toString('binary')
+          const resultTest = _Buffer.from(tmp, 'binary')
+          this.rawTextData.push({
+            filename: filename,
+            original: reader.result,
+            buffer: fileData[0].content,
+            binary: fileData[0].content.toString('binary'),
+            utf8: fileData[0].content.toString('utf8'),
+            tester: resultTest,
+            teste2: _Buffer.from(tmp)
+          })
+          console.log('this.rawTextData: ', this.rawTextData)
           this.cryptoService.encrypt(fileData[0].content, this.selectedKey)
           .then((encrypted) => {
             // console.log(encrypted)
             // const encryptedDataBuffer = _Buffer.from(encrypted.data)
             const encryptedDataBuffer = _Buffer.from(encrypted)
             // console.log('encryptedDataBuffer: ', encryptedDataBuffer)
+            console.log('encryptedDataBuffer: ', { data: encryptedDataBuffer })
             fileData[0].content = encryptedDataBuffer
             this.ipfsService.ipfs.files.add(fileData)
             .then(addResult => {
@@ -176,22 +195,313 @@ export class EncryptionDemoComponent implements OnInit {
 
   public async viewFileDecrypted(file: any): Promise<any> {
     const res = await this.ipfsService.ipfs.files.get(file.hash)
-    const fileContentBuffer = res[0].content
+    const contentBuffer = res[0].content
+    const fileContentBuffer = contentBuffer
+    console.log('fileContentBuffer: ', { data: fileContentBuffer })
+    const fileContentStr = contentBuffer.toString('binary')
+    console.log('fileContentStr: ', { data: fileContentStr })
 
     const plaintext = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
+    // const plaintext = await this.cryptoService.decrypt(fileContentStr, this.selectedKey)
     const dataBuffer = _Buffer.from(plaintext.data)
-    console.log('dataBuffer: ', dataBuffer)
+    // console.log('dataBuffer: ', dataBuffer)
+    console.log('dataBuffer: ', { data: dataBuffer })
 
-    const file1 = new Blob([dataBuffer], { type: 'application/pdf' })
+    const resultTest = _Buffer.from(plaintext.data, 'binary')
+    console.log('resultTest: ', { data: resultTest })
+    window.g_encrDebug = resultTest
+    // const file1 = new Blob([resultTest], { type: 'application/pdf' })
+    // const file1 = new Blob([resultTest], { type: 'application/octet-stream' })
+    const file1 = new Blob([resultTest], { type: 'application/octet-stream' })
+    const fileURL = URL.createObjectURL(file1)
+    console.log('fileURL: ', fileURL)
+    // window.open(fileURL)
+
+
+    // const file1 = new Blob([dataBuffer], { type: 'application/pdf' })
     // const file1 = new Blob([dataBuffer], { type: 'application/text' })
     // const file1 = new Blob([dataBuffer], { type: 'application/octet-stream' })
     // const file1 = new Blob([dataBuffer])
-    const fileURL = URL.createObjectURL(file1)
-    console.log('fileURL: ', fileURL)
-    window.open(fileURL)
+    // const fileURL = URL.createObjectURL(file1)
+    // console.log('fileURL: ', fileURL)
+    // window.open(fileURL)
     // window.open(fileURL, 'testfile')
     // window.open(fileURL, '_blank', 'resizable,scrollbars,status')
     // window.open(fileURL, 'something.pdf', 'resizable,scrollbars,status')
+  }
+
+  public async testDecrypt() {
+    // this.http
+    //   // .post('https://www.webmerge.me/merge/152179/z4h8m7', data, { responseType: 'blob' })
+    //   // .post('https://www.webmerge.me/merge/152179/z4h8m7', data, { responseType: 'text' })
+    //   // .get('https://ipfs.io/ipfs/QmaiAsH8ASTbwN5Mupn5Fez9KfS1rckS3vNqVTpGbNqrUB', {})
+    //   .post('https://ipfs.io/ipfs/QmaiAsH8ASTbwN5Mupn5Fez9KfS1rckS3vNqVTpGbNqrUB', {}, { responseType: 'blob' })
+    //   .toPromise()
+    //   .then((res: any) => {
+    //     console.log('res: ', res)
+    //     // const reader = new FileReader()
+    //     // reader.onload = () => {
+    //     //   console.log('reader.result', reader.result)
+    //     //   const arrayBuffer = reader.result
+    //     //   const array = new Uint8Array(arrayBuffer)
+    //     //   const binaryString = String.fromCharCode.apply(null, array)
+
+    //     //   // let fileData
+    //     //   // let content
+    //     //   // if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+    //     //   //   content = _Buffer.from(reader.result)
+    //     //   //   fileData = [{
+    //     //   //     path: 'TestDoc',
+    //     //   //     content: content
+    //     //   //   }]
+    //     //   // } else {
+    //     //   //   content = new this.ipfsService.ipfs.types.Buffer(reader.result)
+    //     //   //   fileData = {
+    //     //   //     path: 'TestDoc',
+    //     //   //     content: content
+    //     //   //   }
+    //     //   // }
+
+    //     //   // this.ipfsService.ipfs.files.add(fileData)
+    //     //   // .then(addResult => {
+    //     //   //   console.log(addResult)
+    //     //   //   resolve(addResult)
+    //     //   // })
+
+    //     // }
+    //     // reader.readAsArrayBuffer(res)
+    //   })
+    //   .catch(err => console.log(err))
+
+
+
+    // const xhr = new XMLHttpRequest()
+
+    // xhr.open('POST', 'https://ipfs.io/ipfs/QmaiAsH8ASTbwN5Mupn5Fez9KfS1rckS3vNqVTpGbNqrUB', true)
+    // xhr.responseType = 'blob'
+    // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+
+    // xhr.onreadystatechange = function() {// Call a function when the state changes.
+    //     if(xhr.readyState === 4 && xhr.status === 200) {
+    //         const blob = new Blob([this.response], {type: 'application/pdf'})
+    //         // saveAs(blob, 'Report.pdf')
+    //         console.log('blob', blob)
+    //     }
+    // }
+
+    // xhr.send()
+
+    console.log('request')
+    // const hash = 'QmaiAsH8ASTbwN5Mupn5Fez9KfS1rckS3vNqVTpGbNqrUB'
+
+    // const hash = 'QmV9tSDx9UiPeWExXEeH6aoDvmihvx6jD5eLb4jbTaKGps'
+    const hash = 'QmWW6SoKVCYovdBMSqrssgocyZnt3FEpu3FYVhvAsAciJg'
+
+    // const requestUrl = `http://localhost:8080/ipfs/${hash}`
+    // const xhr = new XMLHttpRequest()
+    // xhr.open('GET', requestUrl)
+    // // xhr.responseType = 'arraybuffer'
+    // xhr.responseType = 'blob'
+
+    // xhr.onload = () => {
+    //   console.log(xhr.status)
+    //   if (xhr.status === 200) {
+    //     console.log('xhr.response: ', xhr.response)
+    //     const blob = new Blob([xhr.response], {type: 'application/pdf'})
+    //     const objectUrl = URL.createObjectURL(blob)
+    //     console.log('blob: ', blob)
+    //     console.log('objectUrl: ', objectUrl)
+    //     // window.open(objectUrl)
+
+    //     const reader = new FileReader()
+    //     reader.onload = () => {
+    //       console.log('reader.result', reader.result)
+    //       const arrayBuffer = reader.result
+    //       // const array = new Uint8Array(arrayBuffer)
+    //       // const binaryString = String.fromCharCode.apply(null, array)
+    //       // console.log('array: ', array)
+    //       // console.log('binaryString: ', binaryString)
+
+    //       const content = _Buffer.from(reader.result)
+    //       console.log('content: ', content)
+
+    //       this.testEncryptDecrypt(content)
+
+    //       // const file1 = new Blob([content], { type: 'application/pdf' })
+    //       // // const file1 = new Blob([content], { type: 'application/octet-stream' })
+    //       // const fileURL = URL.createObjectURL(file1)
+    //       // console.log('fileURL: ', fileURL)
+    //       // window.open(fileURL)
+
+    //       // this.cryptoService.decrypt(content, this.selectedKey).then((decryptResult) => {
+    //       //   console.log('decryptResult: ', decryptResult)
+    //       // })
+    //     }
+    //     reader.readAsArrayBuffer(xhr.response)
+    //   }
+    // }
+    // xhr.send()
+
+
+
+    const res = await this.ipfsService.ipfs.files.get(hash)
+    const contentBuffer = res[0].content
+
+    const content = _Buffer.from(contentBuffer, 'binary')
+    console.log('content: ', content)
+
+    this.testEncryptDecrypt(content)
+
+  }
+
+  public async testEncryptDecrypt(data: any) {
+    console.log('testEncryptDecrypt data: ', data)
+
+    const encryptResult = await this.cryptoService.encrypt(data, this.selectedKey)
+    console.log('encryptResult: ', encryptResult)
+
+    const decryptResult = await this.cryptoService.decrypt(encryptResult, this.selectedKey)
+    console.log('decryptResult: ', decryptResult)
+
+    const contentBuffer = _Buffer.from(decryptResult.data, 'binary')
+    console.log('contentBuffer: ', contentBuffer)
+
+    const missMatchData = await this.countBufferDifferences(data, contentBuffer)
+    console.log('missMatchData: ', missMatchData)
+
+    const missMatchOccurances = await this.countMissMatchOccurances(missMatchData.missMatchArr)
+    // console.log('missMatchOccurances: ', missMatchOccurances)
+
+    const missMatchOccurancesArr = this.missMatchOccurancesToArray(missMatchOccurances)
+    console.log('missMatchOccurancesArr: ', missMatchOccurancesArr)
+
+    const missMatchOccurancesArrSorted = missMatchOccurancesArr.sort((a, b) => {
+      if (a.count === b.count) {
+        return 0
+      } else if (a.count > b.count) {
+        return 1
+      } else {
+        return -1
+      }
+    })
+    console.log('missMatchOccurancesArrSorted: ', missMatchOccurancesArrSorted)
+
+    const missMatchOccurancesGrouped = this.missMatchedOccurancesGrouped(missMatchOccurances)
+    console.log('missMatchOccurancesGrouped: ', missMatchOccurancesGrouped)
+
+
+
+    // const fileContent = decryptResult.data
+    const fileContent = contentBuffer
+
+    // const file1 = new Blob([fileContent], { type: 'application/pdf' })
+    // const file1 = new Blob([fileContent], { type: 'application/octet-stream' })
+    // const fileURL = URL.createObjectURL(file1)
+    // console.log('fileURL: ', fileURL)
+    // window.open(fileURL)
+  }
+
+  public async countBufferDifferences(buff1, buff2) {
+    const minLen = Math.min(buff1.length, buff2.length)
+
+    const shiftTest1 = (bb1, bb2, ii) => {
+      if (bb1[ii] === bb2[ii - 1] || bb1[ii] === bb2[ii + 1]) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    const shiftTest2 = (bb1, bb2, ii) => {
+      if (bb1[ii] === bb2[ii - 1]) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    const shiftTest3 = (bb1, bb2, ii) => {
+      if (bb1[ii] === bb2[ii + 1]) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    const missMatchArr = []
+    let count = 0
+    for (let i = 0; i < minLen; i++) {
+      const b1 = buff1[i]
+      const b2 = buff2[i]
+      if (b1 !== b2) {
+        count++
+        missMatchArr.push({
+          index: i,
+          buffer1: b1,
+          buffer2: b2,
+          shiftTests: {
+            test1: shiftTest1(buff1, buff2, i),
+            test2: shiftTest2(buff1, buff2, i),
+            test3: shiftTest3(buff1, buff2, i)
+          },
+          buffer1Surround: [ buff1[i - 1], buff1[i], buff1[i + 1] ],
+          buffer2Surround: [ buff2[i - 1], buff2[i], buff2[i + 1] ]
+        })
+      }
+    }
+
+    return {
+      count: count,
+      missMatchArr: missMatchArr
+    }
+  }
+
+  public async countMissMatchOccurances(missMatchArr: any[]) {
+    const o: any = {}
+
+    for (const missMatch of missMatchArr) {
+      const key = `${missMatch.buffer1}:${missMatch.buffer2}`
+      if (o.hasOwnProperty(key)) {
+        o[key]++
+      } else {
+        o[key] = 1
+      }
+    }
+
+    return o
+  }
+
+  public missMatchOccurancesToArray(missMatchOccurances: any) {
+    const missMatchOccurancesArr = []
+
+    for (const key in missMatchOccurances) {
+      if (missMatchOccurances.hasOwnProperty(key)) {
+        const val = missMatchOccurances[key]
+        missMatchOccurancesArr.push({
+          match: key,
+          count: val
+        })
+      }
+    }
+
+    return missMatchOccurancesArr
+  }
+
+  public missMatchedOccurancesGrouped(missMatchOccurances: any) {
+    const grps: any = {}
+
+    for (const key in missMatchOccurances) {
+      if (missMatchOccurances.hasOwnProperty(key)) {
+        const val = missMatchOccurances[key]
+        if (grps.hasOwnProperty(val)) {
+          grps[val].push(key)
+        } else {
+          grps[val] = [ key ]
+        }
+      }
+    }
+
+    return grps
   }
 
 }

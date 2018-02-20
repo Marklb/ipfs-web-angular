@@ -1,7 +1,8 @@
 import * as openpgp from 'openpgp'
 import { Buffer as _Buffer } from 'buffer/'
-import { ICryptoServiceProvider } from 'app/services/crypto.service'
+import { ICryptoServiceProvider, ICryptoSignature } from 'app/services/crypto.service'
 
+declare var window: any
 
 export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
 
@@ -22,7 +23,7 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
 
   }
 
-  public async sign(data: any, signer: any): Promise<any> {
+  public async sign(data: any, signer: any): Promise<ICryptoSignature> {
     const passphrase = 'theseam'
     const privKeyObj = openpgp.key.readArmored(signer.keys.private).keys[0]
     privKeyObj.decrypt(passphrase)
@@ -73,6 +74,7 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
 
     console.log('data: ', data)
     // console.log('data2: ', data.toString('binary'))
+    window.g_encrDebug = data.toString('binary')
     // console.log('data2: ', data.toString('utf8'))
     // console.log('data2: ', data.toString())
     const options = {
@@ -84,23 +86,32 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
       armor: false
     }
 
-    return openpgp.encrypt(options).then(function(ciphertext) {
-      console.log('Done encrypting')
-      // const cleartext = ciphertext.data
-      const cleartext = ciphertext.message.packets.write()
-      // const detachedSig = ciphertext.signature
-      console.log(ciphertext)
-      console.log(cleartext)
-      // console.log(detachedSig)
-      // return ciphertext
-      return cleartext
-    })
+    // https://github.com/openpgpjs/openpgpjs/issues/204
+    const bin = data
+    let msg
+    msg = openpgp.message.fromBinary(bin)
+    msg = msg.encrypt(options.publicKeys)
+    // armored = openpgp.armor.encode(openpgp.enums.armor.message, msg.packets.write())
+
+    return msg.packets.write()
+
+    // return openpgp.encrypt(options).then(function(ciphertext) {
+    //   console.log('Done encrypting')
+    //   // const cleartext = ciphertext.data
+    //   const cleartext = ciphertext.message.packets.write()
+    //   // const detachedSig = ciphertext.signature
+    //   console.log(ciphertext)
+    //   console.log(cleartext)
+    //   // console.log(detachedSig)
+    //   // return ciphertext
+    //   return cleartext
+    // })
   }
 
   public async decrypt(data: any, signer: any): Promise<any> {
     // console.log('data: ', data)
-    const fileContentStr = data.toString('binary')
-    console.log('fileContentStr: ', fileContentStr)
+    // const fileContentStr = data.toString('binary')
+    // console.log('fileContentStr: ', fileContentStr)
 
     const passphrase = 'theseam'
     const privKeyObj = openpgp.key.readArmored(signer.keys.private).keys[0]
@@ -117,8 +128,8 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
 
     return openpgp.decrypt(options).then(function(plaintext) {
       console.log('Done decrypting')
-      console.log(plaintext)
-      console.log(plaintext.data)
+      // console.log(plaintext)
+      // console.log(plaintext.data)
 
       console.log('Done opening')
 

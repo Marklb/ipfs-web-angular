@@ -80,7 +80,22 @@
           </tbody>
         </table>
       </div>
+
+      <!-- <ng-container *ngFor="let data of rawTextData">
+        <div class="card">
+          <div class="card-header p-2">
+            {{ data.filename }}
+          </div>
+          <div class="card-body p-0">
+            <perfect-scrollbar style="height: 500px;">
+              <pre>{{ data.buffer }}</pre>
+            </perfect-scrollbar>
+            <textarea class="file-content-textarea">{{ data.buffer }}</textarea>
+          </div>
+        </div>
+      </ng-container> -->
     </div>
+    <button (click)="testDecrypt()">Test</button>
 
   </div>
 </div>
