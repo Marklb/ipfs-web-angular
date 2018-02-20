@@ -47,11 +47,11 @@ export class CryptoService {
   }
 
   public async encrypt(data: any, signer: any): Promise<any> {
-    return this._cryptoProvider.verify(data, signer)
+    return this._cryptoProvider.encrypt(data, signer)
   }
 
   public async decrypt(data: any, signer: any): Promise<any> {
-    return this._cryptoProvider.verify(data, signer)
+    return this._cryptoProvider.decrypt(data, signer)
   }
 
 }

@@ -5,6 +5,7 @@ import { IpfsService, IPFSEnvironments } from 'app/services/ipfs.service'
 import { StoredKeysService } from 'app/services/stored-keys.service'
 import { Buffer as _Buffer } from 'buffer/'
 import * as openpgp from 'openpgp'
+import { CryptoService } from 'app/services/crypto.service'
 
 interface IpfsAddedFile {
   path: string,
@@ -29,6 +30,7 @@ export class EncryptionDemoComponent implements OnInit {
   @ViewChild('filesInput') filesInput: ElementRef
 
   constructor(private ipfsService: IpfsService,
+              private cryptoService: CryptoService,
               private storedKeysService: StoredKeysService) { }
 
   ngOnInit() {
@@ -126,7 +128,8 @@ export class EncryptionDemoComponent implements OnInit {
         }
 
         if (this.selectedKey) {
-          this.encryptData(fileData[0].content, this.selectedKey)
+          // this.encryptData(fileData[0].content, this.selectedKey)
+          this.cryptoService.encrypt(fileData[0].content, this.selectedKey)
           .then((encrypted) => {
             // console.log(encrypted)
             // const encryptedDataBuffer = _Buffer.from(encrypted.data)
@@ -171,97 +174,24 @@ export class EncryptionDemoComponent implements OnInit {
     })
   }
 
-  private async encryptData(data: any, signer: any): Promise<any> {
-    const passphrase = 'theseam'
-    const privKeyObj = openpgp.key.readArmored(signer.keys.private).keys[0]
-    privKeyObj.decrypt(passphrase)
-
-    console.log('data: ', data)
-    // console.log('data2: ', data.toString('binary'))
-    // console.log('data2: ', data.toString('utf8'))
-    // console.log('data2: ', data.toString())
-    const options = {
-      // data: data, // input as String (or Uint8Array)
-      data: data.toString('binary'),
-      // data: 'Hello World', // input as String (or Uint8Array)
-      publicKeys: openpgp.key.readArmored(signer.keys.public).keys,
-      // privateKeys: privKeyObj, // for signing
-      armor: false
-    }
-
-    return openpgp.encrypt(options).then(function(ciphertext) {
-      console.log('Done encrypting')
-      // const cleartext = ciphertext.data
-      const cleartext = ciphertext.message.packets.write()
-      // const detachedSig = ciphertext.signature
-      console.log(ciphertext)
-      console.log(cleartext)
-      // console.log(detachedSig)
-      // return ciphertext
-      return cleartext
-    })
-  }
-
   public async viewFileDecrypted(file: any): Promise<any> {
-    // console.log('verifyFile: ', file)
     const res = await this.ipfsService.ipfs.files.get(file.hash)
-    // console.log('res: ', res)
     const fileContentBuffer = res[0].content
-    // console.log('fileContentBuffer: ', fileContentBuffer)
-    const fileContentStr = fileContentBuffer.toString('binary')
-    console.log('fileContentStr: ', fileContentStr)
 
-    const passphrase = 'theseam'
-    const privKeyObj = openpgp.key.readArmored(this.selectedKey.keys.private).keys[0]
-    privKeyObj.decrypt(passphrase)
+    const plaintext = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
+    const dataBuffer = _Buffer.from(plaintext.data)
+    console.log('dataBuffer: ', dataBuffer)
 
-    const options = {
-      // message: openpgp.message.readArmored(fileContentStr),     // parse armored message
-      // message: openpgp.message.read(fileContentStr),
-      message: openpgp.message.read(fileContentBuffer),
-
-      // publicKeys: openpgp.key.readArmored(pubkey).keys,    // for verification (optional)
-      privateKey: privKeyObj // for decryption
-    }
-
-    return openpgp.decrypt(options).then(function(plaintext) {
-      console.log('Done decrypting')
-      console.log(plaintext)
-      console.log(plaintext.data)
-      const dataBuffer = _Buffer.from(plaintext.data)
-      console.log('dataBuffer: ', dataBuffer)
-
-      // application/octet-stream
-
-      // window.open('data:application/pdf;base64,' + Base64.encode(buffer));
-      // window.open('data:application/pdf;base64,' + btoa(plaintext.data))
-      // const bufferAsDataUri = 'data:application/pdf;base64,' + btoa(dataBuffer)
-      // console.log('open: ', bufferAsDataUri)
-      // window.open(bufferAsDataUri, '_blank', 'resizable,scrollbars,status')
-
-      const file1 = new Blob([dataBuffer], { type: 'application/pdf' })
-      // const file1 = new Blob([dataBuffer], { type: 'application/text' })
-      // const file1 = new Blob([dataBuffer], { type: 'application/octet-stream' })
-      // const file1 = new Blob([dataBuffer])
-      const fileURL = URL.createObjectURL(file1)
-      console.log('fileURL: ', fileURL)
-      window.open(fileURL)
-      // window.open(fileURL, 'testfile')
-      // window.open(fileURL, '_blank', 'resizable,scrollbars,status')
-      // window.open(fileURL, 'something.pdf', 'resizable,scrollbars,status')
-
-      // const file2 = new File([dataBuffer], 'something.pdf', {type: 'application/pdf', lastModified: Date.now()})
-      // // const file2 = new File([dataBuffer], 'something.pdf', {type: 'application/octet-stream', lastModified: Date.now()})
-      // // const file2 = new File([dataBuffer], 'something.pdf', {lastModified: Date.now()})
-      // const fileURL2 = URL.createObjectURL(file2)
-      // window.open(fileURL2)
-      // // window.open(fileURL2, '_blank', 'resizable,scrollbars,status')
-
-      console.log('Done opening')
-
-      return plaintext.data // 'Hello, World!'
-    })
-
+    const file1 = new Blob([dataBuffer], { type: 'application/pdf' })
+    // const file1 = new Blob([dataBuffer], { type: 'application/text' })
+    // const file1 = new Blob([dataBuffer], { type: 'application/octet-stream' })
+    // const file1 = new Blob([dataBuffer])
+    const fileURL = URL.createObjectURL(file1)
+    console.log('fileURL: ', fileURL)
+    window.open(fileURL)
+    // window.open(fileURL, 'testfile')
+    // window.open(fileURL, '_blank', 'resizable,scrollbars,status')
+    // window.open(fileURL, 'something.pdf', 'resizable,scrollbars,status')
   }
 
 }
