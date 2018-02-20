@@ -16,6 +16,7 @@ export class FilesComponent implements OnInit {
   public localRefs: any[]
 
   public pinnedFilesExpanded: boolean = true
+  public pinnedFilesExpanded2: boolean = true
   public localRefsExpanded: boolean = true
 
   public implementationMissing: boolean = false
@@ -40,7 +41,7 @@ export class FilesComponent implements OnInit {
     })
 
     this.ipfsService.ipfs.pin.ls().then((res) => {
-      // console.log('pin.ls: ', res)
+      console.log('pin.ls: ', res)
       this.pinnedFiles = res
     })
 

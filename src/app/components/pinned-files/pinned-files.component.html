@@ -1,0 +1,52 @@
+<div class="card" fxLayout="column" fxFlexFill>
+  <div class="input-group input-group-sm" fxFlex="0 1 auto">
+    <input type="text" class="form-control"
+      placeholder="Search for..." aria-label="Search for..."
+      (keypress)="onSearchKeypress($event)"
+      (keydown)="onSearchKeydown($event)"
+      (keyup)="onSearchKeyup($event)">
+  </div>
+
+  <!-- <ngx-datatable
+    fxFlex fxFlexFill
+    class="bootstrap"
+    [rows]="rows"
+    [columnMode]="'flex'"
+    [headerHeight]="30"
+    [footerHeight]="0"
+    [rowHeight]="50"
+    [scrollbarV]="true"
+    [scrollbarH]="true"
+    (activate)="onTableRowActivate($event)">
+    <ngx-datatable-column name="Name" [flexGrow]="1"></ngx-datatable-column>
+    <ngx-datatable-column name="Gender" [flexGrow]="3"></ngx-datatable-column>
+    <ngx-datatable-column name="Company" [flexGrow]="3"></ngx-datatable-column>
+  </ngx-datatable> -->
+
+  <ng-container *ngIf="rows">
+    <ngx-datatable
+      fxFlex fxFlexFill
+      class="bootstrap"
+      [rows]="rows"
+      [columnMode]="'flex'"
+      [headerHeight]="30"
+      [footerHeight]="0"
+      [rowHeight]="50"
+      [scrollbarV]="true"
+      [scrollbarH]="true"
+      (activate)="onTableRowActivate($event)">
+      <ngx-datatable-column name="hash" [flexGrow]="3"></ngx-datatable-column>
+      <ngx-datatable-column name="type" [flexGrow]="1"></ngx-datatable-column>
+      <!-- <ngx-datatable-column [flexGrow]="1">
+        <ng-template ngx-datatable-header-template>
+
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-value="value">
+          <button type="button" class="btn btn-sm btn-secondary">View</button>
+          <button type="button" class="btn btn-sm btn-secondary">Unpin</button>
+        </ng-template>
+      </ngx-datatable-column> -->
+    </ngx-datatable>
+  </ng-container>
+</div>
+

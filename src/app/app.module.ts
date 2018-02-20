@@ -11,6 +11,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { ModalModule } from 'ngx-bootstrap/modal'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { NgxGraphModule } from '@swimlane/ngx-graph'
+import { NgxDatatableModule } from '@swimlane/ngx-datatable'
 import { TreeModule } from 'ng2-tree'
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar'
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar'
@@ -32,8 +33,7 @@ import { FilesListComponent } from './components/files-list/files-list.component
 import { DagGraphComponent } from './components/dag-graph/dag-graph.component'
 import { DagExplorerComponent } from './components/dag-explorer/dag-explorer.component'
 import { DagExplorerFilesListComponent } from './components/dag-explorer-files-list/dag-explorer-files-list.component'
-
-// import { JspdfTplExample1Component } from 'app/shared/jspdf-templates/jspdf-tpl-example-1/jspdf-tpl-example-1.component'
+import { PinnedFilesComponent } from './components/pinned-files/pinned-files.component'
 
 import { IpfsService } from './services/ipfs.service'
 import { LayoutService } from './services/layout.service'
@@ -60,7 +60,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DagGraphComponent,
     DagExplorerComponent,
     DagExplorerFilesListComponent,
-    // JspdfTplExample1Component
+    PinnedFilesComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +75,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     SharedModule,
-    DemosModule
+    DemosModule,
+    NgxDatatableModule
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: window['_app_base'] || '/' },
