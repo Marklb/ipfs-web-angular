@@ -1,0 +1,14 @@
+<div class="card" [class.border-bottom-0]="!expanded">
+  <div class="card-header p-1 title-bar noselect" (click)="expanded=!expanded">
+    <span *ngIf="expanded; else tplToggleElse" class="noselect">
+      <i class="fas fa-fw fa-angle-down"></i>
+    </span>
+    <ng-template #tplToggleElse>
+      <span class="noselect"><i class="fas fa-fw fa-angle-right"></i></span>
+    </ng-template>
+    <span class="noselect">{{ title }}</span>
+  </div>
+  <ng-container *ngIf="expanded">
+    <ng-content></ng-content>
+  </ng-container>
+</div>

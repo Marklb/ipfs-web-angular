@@ -96,11 +96,35 @@ export class DigitalSignatureDemoComponent implements OnInit {
       // console.log(file)
       const addedFile = await this.addFileToIpfs(file)
       // console.log('addedFile: ', addedFile)
-      this.addedFiles.push(addedFile)
+      // this.addedFiles.push(addedFile)
     }
   }
 
   private async addFileToIpfs(file: any, filePath?: string): Promise<any> {
+    const fileData = await this.readFileAsync(file)
+    console.log('fileData: ', fileData)
+    const fileContent = this.ipfsService.toIpfsBuffer(fileData)
+
+    const signed = await this.cryptoService.sign(fileContent, this.selectedSigner)
+
+    console.log('fileContent: ', fileContent)
+    console.log('signed.signature: ', signed.signature)
+
+    const added1 = await this.ipfsService.ipfs.files.add([{
+      path: file.name,
+      content: fileContent
+    }])
+
+    const added2 = await this.ipfsService.ipfs.files.add([{
+      path: 'sig_' + file.name,
+      content: this.ipfsService.toIpfsBuffer(signed.signature)
+    }])
+
+    this.addedFiles.push(added1[0])
+    this.addedFiles.push(added2[0])
+  }
+
+  private async addFileToIpfs3(file: any, filePath?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       // console.log('file: ', file)
       const reader = new FileReader()
@@ -130,15 +154,25 @@ export class DigitalSignatureDemoComponent implements OnInit {
         if (this.selectedSigner) {
           this.cryptoService.sign(fileData[0].content, this.selectedSigner)
           .then((signed) => {
-            // console.log('signed: ', signed)
-            console.log('signed: ', signed.data)
-            const signedDataBuffer = _Buffer.from(signed.data)
-            // console.log('signedDataBuffer: ', signedDataBuffer)
-            fileData[0].content = signedDataBuffer
+            console.log('signed: ', signed)
+            console.log('signed sig: ', signed.signature)
+            // // console.log('signed.data: ', signed.data)
+            // const signedDataBuffer = _Buffer.from(signed.data)
+            // // console.log('signedDataBuffer: ', signedDataBuffer)
+            // fileData[0].content = signedDataBuffer
             this.ipfsService.ipfs.files.add(fileData)
             .then(addResult => {
-              // console.log('addResult: ', addResult)
-              resolve(addResult[0])
+              console.log('addResult: ', addResult)
+              // resolve(addResult[0])
+              this.ipfsService.ipfs.files.add([{
+                path: filename + '_sig',
+                content: _Buffer.from(signed.signature)
+              }])
+              .then(res2 => {
+                console.log('res2: ', res2)
+                console.log('res2 hash: ', res2[0].hash)
+                resolve(addResult[0])
+              })
             })
           })
         } else {
@@ -215,8 +249,69 @@ export class DigitalSignatureDemoComponent implements OnInit {
     ]
   }
 
-  public testSign() {
-    this.cryptoService.sign('', this.selectedSigner)
+  public async testSign() {
+    // this.cryptoService.sign('', this.selectedSigner)
+
+    const hash = 'QmcergNjZRnuVsfcF7xoPfSmSTuB1vvdDnLQmRU74aqNfg'
+    const sigHash = 'QmbKasseQnXpvEtVgcWa1eEX1yuJ5Kdu6E7KvrjptjtYW4'
+
+    const dataFile = await this.ipfsService.ipfs.files.get(hash)
+    const sigFile = await this.ipfsService.ipfs.files.get(sigHash)
+
+    console.log('dataFile: ', dataFile)
+    console.log('sigFile: ', sigFile)
+
+    console.log('dataFile[0].content: ', dataFile[0].content)
+    console.log('sigFile[0].content: ', sigFile[0].content)
+
+    const dataFileStr = dataFile[0].content.toString()
+    const sigFileStr = sigFile[0].content.toString()
+
+    console.log('dataFileStr: ', dataFileStr)
+    console.log('sigFileStr: ', sigFileStr)
+
+    const options = {
+      message: openpgp.message.fromText(dataFileStr), // input as Message object
+      signature: openpgp.signature.readArmored(sigFileStr), // parse detached signature
+      publicKeys: openpgp.key.readArmored(this.selectedSigner.keys.public).keys   // for verification
+    }
+
+    const verified = await openpgp.verify(options)
+    const validity = verified.signatures[0].valid // true
+    if (validity) {
+      console.log('signed by key id ' + verified.signatures[0].keyid.toHex())
+    } else {
+      console.log('not signed by key id ' + verified.signatures[0].keyid.toHex())
+    }
+
+    options.publicKeys = openpgp.key.readArmored(this.keys[0].keys.public).keys
+    const verified2 = await openpgp.verify(options)
+    const validity2 = verified2.signatures[0].valid // true
+    if (validity2) {
+      console.log('signed by key id ' + verified2.signatures[0].keyid.toHex())
+    } else {
+      console.log('not signed by key id ' + verified2.signatures[0].keyid.toHex())
+    }
+
+    options.publicKeys = openpgp.key.readArmored(this.keys[1].keys.public).keys
+    const verified3 = await openpgp.verify(options)
+    const validity3 = verified3.signatures[0].valid // true
+    if (validity3) {
+      console.log('signed by key id ' + verified3.signatures[0].keyid.toHex())
+    } else {
+      console.log('not signed by key id ' + verified3.signatures[0].keyid.toHex())
+    }
+  }
+
+  public async readFileAsync(file: any) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        // console.log('reader.result', reader.result, file)
+        resolve(reader.result)
+      }
+      reader.readAsArrayBuffer(file)
+    })
   }
 
 

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import * as IPFS from 'ipfs'
 import * as ipfsAPI from 'ipfs-api'
+import { Buffer as _Buffer } from 'buffer/'
 
 declare var window: any
 
@@ -44,13 +45,17 @@ export class IpfsService {
       address: 'localhost',
       port: '5001'
     },
+    localhost2: {
+      address: '10.0.0.181',
+      port: '5001'
+    },
     jsuttontest1: {
       address: 'jsuttontest1.theseam.com',
       port: '5001'
     }
   }
 
-  public ipfsConnection = this.ipfsConnections.localhost
+  public ipfsConnection = this.ipfsConnections.localhost2
   // public ipfsConnection = this.ipfsConnections.jsuttontest1
 
   private _ipfsEnvironmentSubject = new BehaviorSubject<IpfsEnvironmentExtended>({
@@ -189,6 +194,16 @@ export class IpfsService {
 
   public _addFilesLocal(files: any) {
 
+  }
+
+  public toIpfsBuffer(data: any) {
+    let buf
+    if (this.ipfsEnvironment === IPFSEnvironments.Local) {
+      buf = _Buffer.from(data)
+    } else {
+      buf = new this.ipfs.types.Buffer(data)
+    }
+    return buf
   }
 
 }

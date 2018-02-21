@@ -197,40 +197,352 @@ export class EncryptionDemoComponent implements OnInit {
     const res = await this.ipfsService.ipfs.files.get(file.hash)
     const contentBuffer = res[0].content
     const fileContentBuffer = contentBuffer
-    console.log('fileContentBuffer: ', { data: fileContentBuffer })
-    const fileContentStr = contentBuffer.toString('binary')
-    console.log('fileContentStr: ', { data: fileContentStr })
+    // console.log('fileContentBuffer: ', { data: fileContentBuffer })
 
-    const plaintext = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
-    // const plaintext = await this.cryptoService.decrypt(fileContentStr, this.selectedKey)
-    const dataBuffer = _Buffer.from(plaintext.data)
-    // console.log('dataBuffer: ', dataBuffer)
-    console.log('dataBuffer: ', { data: dataBuffer })
-
-    const resultTest = _Buffer.from(plaintext.data, 'binary')
-    console.log('resultTest: ', { data: resultTest })
-    window.g_encrDebug = resultTest
-    // const file1 = new Blob([resultTest], { type: 'application/pdf' })
+    const resultTest = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
+    const file1 = new Blob([resultTest], { type: 'application/pdf' })
     // const file1 = new Blob([resultTest], { type: 'application/octet-stream' })
-    const file1 = new Blob([resultTest], { type: 'application/octet-stream' })
     const fileURL = URL.createObjectURL(file1)
-    console.log('fileURL: ', fileURL)
-    // window.open(fileURL)
-
-
-    // const file1 = new Blob([dataBuffer], { type: 'application/pdf' })
-    // const file1 = new Blob([dataBuffer], { type: 'application/text' })
-    // const file1 = new Blob([dataBuffer], { type: 'application/octet-stream' })
-    // const file1 = new Blob([dataBuffer])
-    // const fileURL = URL.createObjectURL(file1)
     // console.log('fileURL: ', fileURL)
-    // window.open(fileURL)
+    window.open(fileURL)
     // window.open(fileURL, 'testfile')
     // window.open(fileURL, '_blank', 'resizable,scrollbars,status')
     // window.open(fileURL, 'something.pdf', 'resizable,scrollbars,status')
   }
 
   public async testDecrypt() {
+    const passphrase = 'theseam'
+    const privKeyObj = openpgp.key.readArmored(this.selectedKey.keys.private).keys[0]
+    privKeyObj.decrypt(passphrase)
+
+    const pubKeyObj = openpgp.key.readArmored(this.selectedKey.keys.public).keys
+
+
+    console.log('request')
+    // const hash = 'QmaiAsH8ASTbwN5Mupn5Fez9KfS1rckS3vNqVTpGbNqrUB'
+
+    const hash = 'QmV9tSDx9UiPeWExXEeH6aoDvmihvx6jD5eLb4jbTaKGps'
+    // const hash = 'QmWW6SoKVCYovdBMSqrssgocyZnt3FEpu3FYVhvAsAciJg'
+
+    const res = await this.ipfsService.ipfs.files.get(hash)
+    const contentBuffer = res[0].content
+
+    // const content = _Buffer.from(contentBuffer, 'binary')
+    // console.log('content: ', content)
+
+    console.log('contentBuffer: ', contentBuffer)
+
+
+
+    // let options, encrypted
+    let encrypted
+
+    // const input = new Uint8Array([0x01, 0x01, 0x09])
+    const input = contentBuffer
+    console.log('input: ', input)
+    // options = {
+    //     data: input, // input as Uint8Array (or String)
+    //     // passwords: ['secret stuff'],              // multiple passwords possible
+    //     publicKeys: pubKeyObj,
+    //     armor: false                              // don't ASCII armor (for Uint8Array output)
+    // }
+
+    // const ciphertext = await openpgp.encrypt(options)
+    // // console.log('encrypt')
+    // // console.log(ciphertext)
+    // encrypted = ciphertext.message.packets.write() // get raw encrypted packets as Uint8Array
+
+    encrypted = await this.cryptoService.encrypt(input, this.selectedKey)
+
+
+
+
+
+    console.log('encrypted: ', encrypted)
+    console.log('_Buffer.from(encrypted): ', _Buffer.from(encrypted))
+    console.log('new Uint8Array(encrypted): ', new Uint8Array(encrypted))
+    const addRes = await this.ipfsService.ipfs.files.add([{
+      path: 'test_filename.pdf',
+      // content: encrypted
+      content: _Buffer.from(encrypted)
+    }])
+    const addFilesRes = addRes[0]
+    console.log('addFilesRes: ', addFilesRes)
+
+
+
+    const res2 = await this.ipfsService.ipfs.files.get(addFilesRes.hash)
+    const contentBuffer2 = res2[0].content
+    console.log('contentBuffer2: ', contentBuffer2)
+
+
+
+
+
+
+    // options = {
+    //     message: openpgp.message.read(encrypted), // parse encrypted bytes
+    //     // password: 'secret stuff',                 // decrypt with password
+    //     privateKey: privKeyObj,
+    //     format: 'binary'                          // output as Uint8Array
+    // }
+
+    // const plaintext = await openpgp.decrypt(options)
+    // const result = plaintext.data // Uint8Array([0x01, 0x01, 0x01])
+    const result = await this.cryptoService.decrypt(encrypted, this.selectedKey)
+    console.log('result: ', result)
+
+
+
+    const missMatchData = await this.countBufferDifferences(input, result)
+    console.log('missMatchData: ', missMatchData)
+  }
+
+  public async testDecrypt7() {
+    const passphrase = 'theseam'
+    const privKeyObj = openpgp.key.readArmored(this.selectedKey.keys.private).keys[0]
+    privKeyObj.decrypt(passphrase)
+
+    const pubKeyObj = openpgp.key.readArmored(this.selectedKey.keys.public).keys
+
+
+    console.log('request')
+    // const hash = 'QmaiAsH8ASTbwN5Mupn5Fez9KfS1rckS3vNqVTpGbNqrUB'
+
+    const hash = 'QmV9tSDx9UiPeWExXEeH6aoDvmihvx6jD5eLb4jbTaKGps'
+    // const hash = 'QmWW6SoKVCYovdBMSqrssgocyZnt3FEpu3FYVhvAsAciJg'
+
+    const res = await this.ipfsService.ipfs.files.get(hash)
+    const contentBuffer = res[0].content
+
+    // const content = _Buffer.from(contentBuffer, 'binary')
+    // console.log('content: ', content)
+
+    console.log('contentBuffer: ', contentBuffer)
+
+
+
+    let options, encrypted
+
+    // const input = new Uint8Array([0x01, 0x01, 0x09])
+    const input = contentBuffer
+    console.log('input: ', input)
+    options = {
+        data: input, // input as Uint8Array (or String)
+        // passwords: ['secret stuff'],              // multiple passwords possible
+        publicKeys: pubKeyObj,
+        armor: false                              // don't ASCII armor (for Uint8Array output)
+    }
+
+    const ciphertext = await openpgp.encrypt(options)
+    // console.log('encrypt')
+    // console.log(ciphertext)
+    encrypted = ciphertext.message.packets.write() // get raw encrypted packets as Uint8Array
+
+
+
+
+
+
+    console.log('encrypted: ', encrypted)
+    console.log('_Buffer.from(encrypted): ', _Buffer.from(encrypted))
+    console.log('new Uint8Array(encrypted): ', new Uint8Array(encrypted))
+    const addRes = await this.ipfsService.ipfs.files.add([{
+      path: 'test_filename.pdf',
+      // content: encrypted
+      content: _Buffer.from(encrypted)
+    }])
+    const addFilesRes = addRes[0]
+    console.log('addFilesRes: ', addFilesRes)
+
+
+
+    const res2 = await this.ipfsService.ipfs.files.get(addFilesRes.hash)
+    const contentBuffer2 = res2[0].content
+    console.log('contentBuffer2: ', contentBuffer2)
+
+
+
+
+
+
+    options = {
+        message: openpgp.message.read(encrypted), // parse encrypted bytes
+        // password: 'secret stuff',                 // decrypt with password
+        privateKey: privKeyObj,
+        format: 'binary'                          // output as Uint8Array
+    }
+
+    const plaintext = await openpgp.decrypt(options)
+    const result = plaintext.data // Uint8Array([0x01, 0x01, 0x01])
+    console.log('result: ', result)
+
+
+
+    const missMatchData = await this.countBufferDifferences(input, result)
+    console.log('missMatchData: ', missMatchData)
+  }
+
+  public async testDecrypt6() {
+    const passphrase = 'theseam'
+    const privKeyObj = openpgp.key.readArmored(this.selectedKey.keys.private).keys[0]
+    privKeyObj.decrypt(passphrase)
+
+    const pubKeyObj = openpgp.key.readArmored(this.selectedKey.keys.public).keys
+
+
+    console.log('request')
+    // const hash = 'QmaiAsH8ASTbwN5Mupn5Fez9KfS1rckS3vNqVTpGbNqrUB'
+
+    const hash = 'QmV9tSDx9UiPeWExXEeH6aoDvmihvx6jD5eLb4jbTaKGps'
+    // const hash = 'QmWW6SoKVCYovdBMSqrssgocyZnt3FEpu3FYVhvAsAciJg'
+
+    const res = await this.ipfsService.ipfs.files.get(hash)
+    const contentBuffer = res[0].content
+
+    // const content = _Buffer.from(contentBuffer, 'binary')
+    // console.log('content: ', content)
+
+    console.log('contentBuffer: ', contentBuffer)
+
+
+
+    let options, encrypted
+
+    // const input = new Uint8Array([0x01, 0x01, 0x09])
+    const input = contentBuffer
+    console.log('input: ', input)
+    options = {
+        data: input, // input as Uint8Array (or String)
+        // passwords: ['secret stuff'],              // multiple passwords possible
+        publicKeys: pubKeyObj,
+        armor: false                              // don't ASCII armor (for Uint8Array output)
+    }
+
+    const ciphertext = await openpgp.encrypt(options)
+    // console.log('encrypt')
+    // console.log(ciphertext)
+    encrypted = ciphertext.message.packets.write() // get raw encrypted packets as Uint8Array
+
+    options = {
+        message: openpgp.message.read(encrypted), // parse encrypted bytes
+        // password: 'secret stuff',                 // decrypt with password
+        privateKey: privKeyObj,
+        format: 'binary'                          // output as Uint8Array
+    }
+
+    const plaintext = await openpgp.decrypt(options)
+    const result = plaintext.data // Uint8Array([0x01, 0x01, 0x01])
+    console.log('result: ', result)
+
+
+
+    const missMatchData = await this.countBufferDifferences(input, result)
+    console.log('missMatchData: ', missMatchData)
+  }
+
+  public async testDecrypt5() {
+    console.log('request')
+    // const hash = 'QmaiAsH8ASTbwN5Mupn5Fez9KfS1rckS3vNqVTpGbNqrUB'
+
+    const hash = 'QmV9tSDx9UiPeWExXEeH6aoDvmihvx6jD5eLb4jbTaKGps'
+    // const hash = 'QmWW6SoKVCYovdBMSqrssgocyZnt3FEpu3FYVhvAsAciJg'
+
+    const res = await this.ipfsService.ipfs.files.get(hash)
+    const contentBuffer = res[0].content
+
+    // const content = _Buffer.from(contentBuffer, 'binary')
+    // console.log('content: ', content)
+
+    console.log('contentBuffer: ', contentBuffer)
+
+
+
+    let options, encrypted
+
+    // const input = new Uint8Array([0x01, 0x01, 0x09])
+    const input = contentBuffer
+    console.log('input: ', input)
+    options = {
+        data: input, // input as Uint8Array (or String)
+        passwords: ['secret stuff'],              // multiple passwords possible
+        armor: false                              // don't ASCII armor (for Uint8Array output)
+    }
+
+    const ciphertext = await openpgp.encrypt(options)
+    // console.log('encrypt')
+    // console.log(ciphertext)
+    encrypted = ciphertext.message.packets.write() // get raw encrypted packets as Uint8Array
+
+    options = {
+        message: openpgp.message.read(encrypted), // parse encrypted bytes
+        password: 'secret stuff',                 // decrypt with password
+        format: 'binary'                          // output as Uint8Array
+    }
+
+    const plaintext = await openpgp.decrypt(options)
+    const result = plaintext.data // Uint8Array([0x01, 0x01, 0x01])
+    console.log('result: ', result)
+
+
+
+    const missMatchData = await this.countBufferDifferences(input, result)
+    console.log('missMatchData: ', missMatchData)
+  }
+
+  public async testDecrypt4() {
+    let options, encrypted
+
+    const input = new Uint8Array([0x01, 0x01, 0x09])
+    console.log('input: ', input)
+    options = {
+        data: input, // input as Uint8Array (or String)
+        passwords: ['secret stuff'],              // multiple passwords possible
+        armor: false                              // don't ASCII armor (for Uint8Array output)
+    }
+
+    const ciphertext = await openpgp.encrypt(options)
+    // console.log('encrypt')
+    // console.log(ciphertext)
+    encrypted = ciphertext.message.packets.write() // get raw encrypted packets as Uint8Array
+
+    options = {
+        message: openpgp.message.read(encrypted), // parse encrypted bytes
+        password: 'secret stuff',                 // decrypt with password
+        format: 'binary'                          // output as Uint8Array
+    }
+
+    const plaintext = await openpgp.decrypt(options)
+    const result = plaintext.data // Uint8Array([0x01, 0x01, 0x01])
+    console.log('result: ', result)
+  }
+
+  public async testDecrypt3() {
+    let options, encrypted
+
+    options = {
+        data: new Uint8Array([0x01, 0x01, 0x09]), // input as Uint8Array (or String)
+        passwords: ['secret stuff'],              // multiple passwords possible
+        armor: false                              // don't ASCII armor (for Uint8Array output)
+    }
+
+    const ciphertext = await openpgp.encrypt(options)
+    console.log('encrypt')
+    console.log(ciphertext)
+    encrypted = ciphertext.message.packets.write() // get raw encrypted packets as Uint8Array
+
+    options = {
+        message: openpgp.message.read(encrypted), // parse encrypted bytes
+        password: 'secret stuff',                 // decrypt with password
+        format: 'binary'                          // output as Uint8Array
+    }
+
+    const plaintext = await openpgp.decrypt(options)
+    const result = plaintext.data // Uint8Array([0x01, 0x01, 0x01])
+    console.log(result)
+  }
+
+  public async testDecrypt2() {
     // this.http
     //   // .post('https://www.webmerge.me/merge/152179/z4h8m7', data, { responseType: 'blob' })
     //   // .post('https://www.webmerge.me/merge/152179/z4h8m7', data, { responseType: 'text' })
@@ -294,8 +606,8 @@ export class EncryptionDemoComponent implements OnInit {
     console.log('request')
     // const hash = 'QmaiAsH8ASTbwN5Mupn5Fez9KfS1rckS3vNqVTpGbNqrUB'
 
-    // const hash = 'QmV9tSDx9UiPeWExXEeH6aoDvmihvx6jD5eLb4jbTaKGps'
-    const hash = 'QmWW6SoKVCYovdBMSqrssgocyZnt3FEpu3FYVhvAsAciJg'
+    const hash = 'QmV9tSDx9UiPeWExXEeH6aoDvmihvx6jD5eLb4jbTaKGps'
+    // const hash = 'QmWW6SoKVCYovdBMSqrssgocyZnt3FEpu3FYVhvAsAciJg'
 
     // const requestUrl = `http://localhost:8080/ipfs/${hash}`
     // const xhr = new XMLHttpRequest()
