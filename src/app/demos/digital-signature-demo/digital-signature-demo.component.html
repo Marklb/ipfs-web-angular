@@ -47,7 +47,7 @@
           multiple (change)="fileInputChange($event)">
       </div>
 
-      <button type="button" class="btn btn-sm btn-secondary" (click)="testSign()">Test Sign</button>
+      <!-- <button type="button" class="btn btn-sm btn-secondary" (click)="testSign()">Test Sign</button> -->
 
       <div class="card">
         <table class="table table-bordered table-hover table-sm mb-0">
@@ -71,8 +71,8 @@
                     <!-- <button type="button" class="btn btn-secondary btn-sm mr-1">Preview</button> -->
                     <button type="button" class="btn btn-secondary btn-sm"
                       (click)="viewFile(file)">View</button>
-                    <button type="button" class="btn btn-secondary btn-sm"
-                      (click)="verifyFile(file)">Verify</button>
+                    <!-- <button type="button" class="btn btn-secondary btn-sm"
+                      (click)="verifyFile(file)">Verify</button> -->
                   </div>
                 </td>
               </tr>
@@ -97,6 +97,44 @@
           </tbody>
         </table>
       </div>
+
+
+
+      <div class="pt-2"></div>
+
+      <app-card-widget [title]="'Check Validation'">
+        <div class="input-group input-group-sm">
+          <div class="input-group-prepend">
+            <span class="input-group-text">File Hash</span>
+          </div>
+          <input type="text" class="form-control" #inpHash>
+        </div>
+
+        <div class="input-group input-group-sm">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Sig Hash</span>
+          </div>
+          <input type="text" class="form-control" #inpSigHash>
+        </div>
+
+        <button type="button" class="btn btn-sm btn-outline-secondary"
+          (click)="testSign2(inpHash.value, inpSigHash.value)">Verify Signature</button>
+
+        <div class="card p-2" *ngIf="verifyCheckResult">
+          <div><span style="font-weight: bold;">File Hash: </span>{{ verifyCheckResult.hash }}</div>
+          <div><span style="font-weight: bold;">Sig Hash: </span>{{ verifyCheckResult.sigHash }}</div>
+          <div class="card-body p-2">
+            <div *ngFor="let result of verifyCheckResult.results">
+              <div>
+                <span>{{ result.name }} </span>
+                <span style="font-weight: bold;">Valid: </span>
+                <span [class.text-success]="result.valid"
+                      [class.text-danger]="!result.valid">{{ result.valid || false }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-card-widget>
     </div>
 
   </div>

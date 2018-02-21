@@ -45,18 +45,18 @@ export class IpfsService {
       address: 'localhost',
       port: '5001'
     },
-    localhost2: {
-      address: '10.0.0.181',
-      port: '5001'
-    },
+    // localhost2: {
+    //   address: '10.0.0.181',
+    //   port: '5001'
+    // },
     jsuttontest1: {
       address: 'jsuttontest1.theseam.com',
       port: '5001'
     }
   }
 
-  public ipfsConnection = this.ipfsConnections.localhost2
-  // public ipfsConnection = this.ipfsConnections.jsuttontest1
+  // public ipfsConnection = this.ipfsConnections.localhost
+  public ipfsConnection = this.ipfsConnections.jsuttontest1
 
   private _ipfsEnvironmentSubject = new BehaviorSubject<IpfsEnvironmentExtended>({
     environment: this._ipfsEnvironment,

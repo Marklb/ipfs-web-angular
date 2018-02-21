@@ -77,12 +77,12 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
     }
 
     return openpgp.sign(options).then(function(signed) {
-      console.log('Done signing')
+      // console.log('Done signing')
       const cleartext = signed.data
       const detachedSig = signed.signature
-      console.log(signed)
-      console.log(cleartext)
-      console.log(detachedSig)
+      // console.log(signed)
+      // console.log(cleartext)
+      // console.log(detachedSig)
 
       // const parsedArmor = openpgp.cleartext.readArmored(cleartext)
       // console.log('parsedArmor: ', parsedArmor)
@@ -114,7 +114,7 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
     const privKeyObj = openpgp.key.readArmored(signer.keys.private).keys[0]
     privKeyObj.decrypt(passphrase)
 
-    console.log('data: ', data)
+    // console.log('data: ', data)
     // console.log('data2: ', data.toString('binary'))
     // window.g_encrDebug = data.toString('binary')
     // console.log('data2: ', data.toString('utf8'))
@@ -138,12 +138,12 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
     // return msg.packets.write()
 
     return openpgp.encrypt(options).then(function(ciphertext) {
-      console.log('Done encrypting')
+      // console.log('Done encrypting')
       // const cleartext = ciphertext.data
       const cleartext = ciphertext.message.packets.write()
       // const detachedSig = ciphertext.signature
-      console.log(ciphertext)
-      console.log(cleartext)
+      // console.log(ciphertext)
+      // console.log(cleartext)
       // console.log(detachedSig)
       // return ciphertext
       return cleartext
@@ -170,11 +170,11 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
     }
 
     return openpgp.decrypt(options).then(function(plaintext) {
-      console.log('Done decrypting')
+      // console.log('Done decrypting')
       // console.log(plaintext)
       // console.log(plaintext.data)
 
-      console.log('Done opening')
+      // console.log('Done opening')
 
       return plaintext.data // 'Hello, World!'
       // return plaintext

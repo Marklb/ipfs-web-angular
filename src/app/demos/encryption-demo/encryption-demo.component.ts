@@ -210,6 +210,23 @@ export class EncryptionDemoComponent implements OnInit {
     // window.open(fileURL, 'something.pdf', 'resizable,scrollbars,status')
   }
 
+  public async openFileDecrypted(file: any): Promise<any> {
+    const res = await this.ipfsService.ipfs.files.get(file.hash)
+    const contentBuffer = res[0].content
+    const fileContentBuffer = contentBuffer
+    // console.log('fileContentBuffer: ', { data: fileContentBuffer })
+
+    const resultTest = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
+    // const file1 = new Blob([resultTest], { type: 'application/pdf' })
+    const file1 = new Blob([resultTest], { type: 'application/octet-stream' })
+    const fileURL = URL.createObjectURL(file1)
+    // console.log('fileURL: ', fileURL)
+    window.open(fileURL)
+    // window.open(fileURL, 'testfile')
+    // window.open(fileURL, '_blank', 'resizable,scrollbars,status')
+    // window.open(fileURL, 'something.pdf', 'resizable,scrollbars,status')
+  }
+
   public async testDecrypt() {
     const passphrase = 'theseam'
     const privKeyObj = openpgp.key.readArmored(this.selectedKey.keys.private).keys[0]
