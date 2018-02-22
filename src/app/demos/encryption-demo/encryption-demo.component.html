@@ -4,10 +4,6 @@
       Encryption Demo
     </div>
 
-    <!-- <div class="pl-2 pr-2 pt-1">
-      <app-stored-keys-manager-ui></app-stored-keys-manager-ui>
-    </div> -->
-
     <div class="card-body p-1">
 
       <!-- Options -->
@@ -17,13 +13,13 @@
           <label>User to encrypt for:</label>
           <div class="btn-group btn-group-sm" dropdown>
             <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
-              {{ selectedKey.userIds[0].name || 'None' }} <span class="caret"></span>
+              {{ selectedKey.userIds[0].userId || 'None' }} <span class="caret"></span>
             </button>
             <ul *dropdownMenu class="dropdown-menu" role="menu">
               <li *ngFor="let key of keys">
                 <div class="dropdown-item" style="cursor: pointer;"
                   (click)="selectedKey = key">
-                  {{ key.userIds[0].name }}
+                  {{ key.userIds[0].userId }}
                 </div>
               </li>
             </ul>
@@ -99,13 +95,6 @@
         </div>
       </ng-container> -->
     </div>
-    <!-- <button (click)="testDecrypt()">Test</button> -->
-
-    <!-- <div class="p-2">
-      <app-card-widget [title]="'Test widget'">
-        Content
-      </app-card-widget>
-    </div> -->
 
 
   </div>

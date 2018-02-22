@@ -45,18 +45,14 @@ export class IpfsService {
       address: 'localhost',
       port: '5001'
     },
-    // localhost2: {
-    //   address: '10.0.0.181',
-    //   port: '5001'
-    // },
     jsuttontest1: {
       address: 'jsuttontest1.theseam.com',
       port: '5001'
     }
   }
 
-  // public ipfsConnection = this.ipfsConnections.localhost
-  public ipfsConnection = this.ipfsConnections.jsuttontest1
+  public ipfsConnection = this.ipfsConnections.localhost
+  // public ipfsConnection = this.ipfsConnections.jsuttontest1
 
   private _ipfsEnvironmentSubject = new BehaviorSubject<IpfsEnvironmentExtended>({
     environment: this._ipfsEnvironment,
@@ -182,6 +178,21 @@ export class IpfsService {
 
   public setIpfsConnection(connectionName: string): void {
     this.ipfsConnection = this.ipfsConnections[connectionName]
+  }
+
+  public getGatewayUrl(hash: string = null): string {
+    let url
+    if (this.ipfsEnvironment === IPFSEnvironments.Browser) {
+      url = `https://ipfs.io/ipfs`
+    } else {
+      url = `http://${this.ipfsConnection.address}:8080/ipfs`
+    }
+
+    if (hash === null) {
+      url = `${url}/${hash}`
+    }
+
+    return url
   }
 
   public addFiles(files: any) {

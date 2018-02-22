@@ -1,141 +1,125 @@
-<div class="card border-bottom-0 p-2">
-  <div class="card">
-    <div class="card-header p-2">
-      Digital Signature Demo
-    </div>
+<h2 class="p-2">Digital Signature Demo</h2>
 
-    <!-- <div class="pl-2 pr-2 pt-1">
-      <app-stored-keys-manager-ui></app-stored-keys-manager-ui>
-    </div> -->
+<div class="card-body p-1">
 
+  <!-- Options -->
+  <div class="card mb-1">
+    <div class="card-header p-1">Options</div>
     <div class="card-body p-1">
-
-      <!-- Options -->
-      <div class="card mb-1">
-        <div class="card-header p-1">Options</div>
-        <div class="card-body p-1">
-          <label>Signer:</label>
-          <div class="btn-group btn-group-sm" dropdown>
-            <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
-              {{ selectedSigner?.userIds[0].name || 'None' }} <span class="caret"></span>
-            </button>
-            <ul *dropdownMenu class="dropdown-menu" role="menu">
-              <li *ngFor="let key of keys">
-                <div class="dropdown-item" style="cursor: pointer;"
-                  (click)="selectedSigner = key">
-                  {{ key.userIds[0].name }}
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="card p-2">
-        <div class="upload-files-btn" (click)="uploadFileBtnClick($event)">
-          <file-drop customstyle="border border-secondary"
-            (onFileDrop)="dropped($event)"
-            (onFileOver)="fileOver($event)"
-            (onFileLeave)="fileLeave($event)">
-            <span>Upload Files</span>
-          </file-drop>
-        </div>
-      </div>
-
-      <div class="card invisible d-none">
-        <input type="file" #filesInput
-          multiple (change)="fileInputChange($event)">
-      </div>
-
-      <!-- <button type="button" class="btn btn-sm btn-secondary" (click)="testSign()">Test Sign</button> -->
-
-      <div class="card">
-        <table class="table table-bordered table-hover table-sm mb-0">
-          <thead>
-            <tr>
-              <th scope="col">Path</th>
-              <th scope="col">Hash</th>
-              <th scope="col">Size</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let file of addedFiles; let i=index">
-              <tr>
-                <td>{{ file.path }}</td>
-                <td>{{ file.hash }}</td>
-                <td>{{ file.size }}</td>
-                <td>
-                  <!-- <button type="button" class="btn btn-sm btn-dark">View</button> -->
-                  <div class="btn-group" role="group">
-                    <!-- <button type="button" class="btn btn-secondary btn-sm mr-1">Preview</button> -->
-                    <button type="button" class="btn btn-secondary btn-sm"
-                      (click)="viewFile(file)">View</button>
-                    <!-- <button type="button" class="btn btn-secondary btn-sm"
-                      (click)="verifyFile(file)">Verify</button> -->
-                  </div>
-                </td>
-              </tr>
-              <ng-container *ngIf="file.signResults">
-                <tr>
-                  <!-- <td>Signer tests</td> -->
-                  <td></td>
-                  <td colspan="3">
-                    <div class="font-weight-bold">Signer tests:</div>
-                    <div *ngFor="let signResult of file.signResults" class="pl-2">
-                      <span>{{ signResult.name }}: </span>
-                      <span
-                        [class.text-success]="signResult.valid"
-                        [class.text-danger]="!signResult.valid">
-                        {{ signResult.valid }}
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              </ng-container>
-            </ng-container>
-          </tbody>
-        </table>
-      </div>
-
-
-
-      <div class="pt-2"></div>
-
-      <app-card-widget [title]="'Check Validation'">
-        <div class="input-group input-group-sm">
-          <div class="input-group-prepend">
-            <span class="input-group-text">File Hash</span>
-          </div>
-          <input type="text" class="form-control" #inpHash>
-        </div>
-
-        <div class="input-group input-group-sm">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Sig Hash</span>
-          </div>
-          <input type="text" class="form-control" #inpSigHash>
-        </div>
-
-        <button type="button" class="btn btn-sm btn-outline-secondary"
-          (click)="testSign2(inpHash.value, inpSigHash.value)">Verify Signature</button>
-
-        <div class="card p-2" *ngIf="verifyCheckResult">
-          <div><span style="font-weight: bold;">File Hash: </span>{{ verifyCheckResult.hash }}</div>
-          <div><span style="font-weight: bold;">Sig Hash: </span>{{ verifyCheckResult.sigHash }}</div>
-          <div class="card-body p-2">
-            <div *ngFor="let result of verifyCheckResult.results">
-              <div>
-                <span>{{ result.name }} </span>
-                <span style="font-weight: bold;">Valid: </span>
-                <span [class.text-success]="result.valid"
-                      [class.text-danger]="!result.valid">{{ result.valid || false }}</span>
-              </div>
+      <label>Signer:</label>
+      <div class="btn-group btn-group-sm" dropdown>
+        <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
+          {{ selectedSigner?.userIds[0].userId || 'None' }} <span class="caret"></span>
+        </button>
+        <ul *dropdownMenu class="dropdown-menu" role="menu">
+          <li *ngFor="let key of keys">
+            <div class="dropdown-item" style="cursor: pointer;"
+              (click)="selectedSigner = key">
+              {{ key.userIds[0].userId }}
             </div>
-          </div>
-        </div>
-      </app-card-widget>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-2">
+    <div class="upload-files-btn" (click)="uploadFileBtnClick($event)">
+      <file-drop customstyle="border border-secondary"
+        (onFileDrop)="dropped($event)"
+        (onFileOver)="fileOver($event)"
+        (onFileLeave)="fileLeave($event)">
+        <span>Upload Files</span>
+      </file-drop>
+    </div>
+  </div>
+
+  <div class="card invisible d-none">
+    <input type="file" #filesInput
+      multiple (change)="fileInputChange($event)">
+  </div>
+
+  <div class="card">
+    <table class="table table-bordered table-hover table-sm mb-0">
+      <thead>
+        <tr>
+          <th scope="col">Path</th>
+          <th scope="col">Hash</th>
+          <th scope="col">Size</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let file of addedFiles; let i=index">
+          <tr>
+            <td>{{ file.path }}</td>
+            <td>{{ file.hash }}</td>
+            <td>{{ file.size }}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <!-- <button type="button" class="btn btn-secondary btn-sm mr-1">Preview</button> -->
+                <button type="button" class="btn btn-secondary btn-sm"
+                  (click)="viewFile(file)">View</button>
+              </div>
+            </td>
+          </tr>
+          <ng-container *ngIf="file.signResults">
+            <tr>
+              <!-- <td>Signer tests</td> -->
+              <td></td>
+              <td colspan="3">
+                <div class="font-weight-bold">Signer tests:</div>
+                <div *ngFor="let signResult of file.signResults" class="pl-2">
+                  <span>{{ signResult.name }}: </span>
+                  <span
+                    [class.text-success]="signResult.valid"
+                    [class.text-danger]="!signResult.valid">
+                    {{ signResult.valid }}
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+
+
+  <div class="pt-2"></div>
+
+  <app-card-widget [title]="'Check Validation'">
+    <div class="input-group input-group-sm">
+      <div class="input-group-prepend">
+        <span class="input-group-text">File Hash</span>
+      </div>
+      <input type="text" class="form-control" #inpHash>
     </div>
 
-  </div>
+    <div class="input-group input-group-sm">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Sig Hash</span>
+      </div>
+      <input type="text" class="form-control" #inpSigHash>
+    </div>
+
+    <button type="button" class="btn btn-sm btn-outline-secondary"
+      (click)="testSign2(inpHash.value, inpSigHash.value)">Verify Signature</button>
+
+    <div class="card p-2" *ngIf="verifyCheckResult">
+      <div><span style="font-weight: bold;">File Hash: </span>{{ verifyCheckResult.hash }}</div>
+      <div><span style="font-weight: bold;">Sig Hash: </span>{{ verifyCheckResult.sigHash }}</div>
+      <div class="card-body p-2">
+        <div *ngFor="let result of verifyCheckResult.results">
+          <div>
+            <span>{{ result.name }} </span>
+            <span style="font-weight: bold;">Valid: </span>
+            <span [class.text-success]="result.valid"
+                  [class.text-danger]="!result.valid">{{ result.valid || false }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-card-widget>
 </div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { environment } from '../../environments/environment'
+import * as openpgp from 'openpgp'
 
 const LOCAL_STORAGE_ITEM_KEY = 'stored-keys-service'
 
@@ -27,7 +28,19 @@ export class StoredKeysService {
       ...localStorageKeys
     ]
 
-    this._storedKeysSubject.next(keys)
+    const keys2 = []
+
+    for (const k of keys) {
+      console.log('k: ', k)
+      const privateKey = openpgp.key.readArmored(k.keys.private)
+      const publicKey = openpgp.key.readArmored(k.keys.public)
+      keys2.push({
+        userIds: [ { userId: publicKey.keys[0].users[0].userId.userid } ],
+        keys: k.keys
+      })
+    }
+
+    this._storedKeysSubject.next(keys2)
   }
 
   public getLocalStorageJson(): any {

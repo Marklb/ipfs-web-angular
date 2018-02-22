@@ -1,28 +1,28 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+import { By } from '@angular/platform-browser'
+import { DebugElement } from '@angular/core'
 
-import { JspdfTplExample-1Component } from './jspdf-tpl-example-1.component';
+import { JspdfTplExample1Component } from './jspdf-tpl-example-1.component'
 
-describe('JspdfTplExample-1Component', () => {
-  let component: JspdfTplExample-1Component;
-  let fixture: ComponentFixture<JspdfTplExample-1Component>;
+describe('JspdfTplExample1Component', () => {
+  let component: JspdfTplExample1Component
+  let fixture: ComponentFixture<JspdfTplExample1Component>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JspdfTplExample-1Component ]
+      declarations: [ JspdfTplExample1Component ]
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(JspdfTplExample-1Component);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(JspdfTplExample1Component)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

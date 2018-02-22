@@ -86,7 +86,7 @@
         </div>
         <div class="card-body p-1" *ngIf="_storedKeysExpanded">
           <div *ngFor="let key of keys" class="mb-1">
-            <span>{{ key.userIds[0].name }}</span>
+            <span>{{ key.userIds[0].userId }}</span>
             <div class="btn-group btn-group-sm" role="group">
               <button type="button" class="btn btn-secondary"
                 (click)="onClickPrivateKey($event, key)">Private</button>

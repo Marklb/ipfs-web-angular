@@ -358,14 +358,12 @@ export const environment = {
   production: false,
   encryptionDemoKeys: [
     {
-      userIds: [{ name: 'Mark', email: 'mark@example.com' }],
       keys: {
         private: privateKeyMark,
         public: publicKeyMark
       }
     },
     {
-      userIds: [{ name: 'Eric', email: 'eric@example.com' }],
       keys: {
         private: privateKeyEric,
         public: publicKeyEric

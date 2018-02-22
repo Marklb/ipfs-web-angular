@@ -3,6 +3,7 @@ import { StoredKeysService } from 'app/services/stored-keys.service'
 import { CryptoService } from 'app/services/crypto.service'
 import { IFormSubmittedEvent } from './generate-key-form/generate-key-form.component'
 import { ModalDirective } from 'ngx-bootstrap/modal'
+import * as openpgp from 'openpgp'
 // import * as kbpgp from 'kbpgp'
 // const F = kbpgp['const'].openpgp
 declare const kbpgp: any
@@ -96,13 +97,13 @@ export class StoredKeysManagerUiComponent implements OnInit {
       userIds: [{ name: formModel.name, email: formModel.email }],
       numBits: 4096,
       passphrase: 'theseam'
-    }).then((key) => {
-      console.log('new key: ', key)
+    }).then((keys) => {
+      const publicKey = openpgp.key.readArmored(keys.publicKey)
       const keyEntry = {
-        userIds: [{ name: formModel.name, email: formModel.email }],
+        userIds: [ { userId: publicKey.keys[0].users[0].userId.userid } ],
         keys: {
-          private: key.privateKey,
-          public: key.publicKey
+          private: keys.privateKey,
+          public: keys.publicKey
         }
       }
       this.storedKeysService.storeNewKey(keyEntry, true)
