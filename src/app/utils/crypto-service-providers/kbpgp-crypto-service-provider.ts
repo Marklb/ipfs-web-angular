@@ -7,6 +7,7 @@ export class KBPGPCryptoServiceProvider implements ICryptoServiceProvider {
   constructor() {}
 
   public async generateKey(options: any): Promise<any> {
+    // console.log('kbpgp: ', kbpgp)
     return new Promise((resolve, reject) => {
       // console.log('generate_rsa')
       kbpgp.KeyManager.generate_rsa(options, (err, charlie) => {

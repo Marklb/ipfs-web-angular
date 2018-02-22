@@ -35,7 +35,9 @@ export class CryptoService {
   constructor() { }
 
   public async generateKey(options: any): Promise<any> {
-    return this._cryptoProvider.generateKey(options)
+    // TODO: Implement a nice way of allowing multiple providers or pick one
+    const _tmpProvider: ICryptoServiceProvider = new KBPGPCryptoServiceProvider()
+    return _tmpProvider.generateKey(options)
   }
 
   public async sign(data: any, signer: any): Promise<any> {

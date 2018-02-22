@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core'
+import { Component, OnInit, Input, TemplateRef, ViewChild, ChangeDetectorRef } from '@angular/core'
 import { StoredKeysService } from 'app/services/stored-keys.service'
 import { CryptoService } from 'app/services/crypto.service'
 import { IFormSubmittedEvent } from './generate-key-form/generate-key-form.component'
@@ -58,8 +58,13 @@ export class StoredKeysManagerUiComponent implements OnInit {
 
   public keys: any[] = []
 
+  public isGeneratingNewKey: boolean = false
+  public generatingMessage: string = 'Generating...'
+
+
   constructor(private storedKeysService: StoredKeysService,
-              private cryptoService: CryptoService) {
+              private cryptoService: CryptoService,
+              private cd: ChangeDetectorRef) {
     this.storedKeysService.storedKeys.subscribe((keys) => {
       this.keys = keys
     })
@@ -88,26 +93,30 @@ export class StoredKeysManagerUiComponent implements OnInit {
     this._expanded = !this._expanded
   }
 
+  public onClickShowKey(event: any, key: any) {
+    key.isShown = !key.isShown
+  }
+
   public onSubmittedGenerateForm(event: IFormSubmittedEvent) {
     console.log('onSubmitGenerateForm: ', event)
     const formModel = event.formModel
 
     // OpenPGP
-    this.cryptoService.generateKey({
-      userIds: [{ name: formModel.name, email: formModel.email }],
-      numBits: 4096,
-      passphrase: 'theseam'
-    }).then((keys) => {
-      const publicKey = openpgp.key.readArmored(keys.publicKey)
-      const keyEntry = {
-        userIds: [ { userId: publicKey.keys[0].users[0].userId.userid } ],
-        keys: {
-          private: keys.privateKey,
-          public: keys.publicKey
-        }
-      }
-      this.storedKeysService.storeNewKey(keyEntry, true)
-    })
+    // this.cryptoService.generateKey({
+    //   userIds: [{ name: formModel.name, email: formModel.email }],
+    //   numBits: 4096,
+    //   passphrase: 'theseam'
+    // }).then((key) => {
+    //   const publicKey = openpgp.key.readArmored(key.publicKey)
+    //   const keyEntry = {
+    //     userIds: [ { userId: publicKey.keys[0].users[0].userId.userid } ],
+    //     keys: {
+    //       private: key.privateKey,
+    //       public: key.publicKey
+    //     }
+    //   }
+    //   this.storedKeysService.storeNewKey(keyEntry, true)
+    // })
 
     // KBPGP
     // // tslint:disable:no-bitwise
@@ -133,35 +142,58 @@ export class StoredKeysManagerUiComponent implements OnInit {
     // // tslint:enable:no-bitwise
 
 
+
+    const my_asp = new kbpgp.ASP({
+      progress_hook: (o) => {
+        const bi = o.p
+        let n = -1
+        if (bi) {
+          const s = o.p.toString(10)
+          n = s.substr(s.length - Math.min(4, s.length - 1))
+        }
+        // console.log(`I was called with progress! ...${n} `, o)
+        setTimeout(() => {
+          this.generatingMessage = `Generating Key  ...${n}`
+          this.cd.detectChanges()
+        })
+      }
+    })
+
+    const opts = {
+      asp: my_asp,
+      userid: `${formModel.name} <${formModel.email}>`
+    }
+
     // const opts = {
-    //   userid: `${formModel.name} <${formModel.email}>`
+    //   asp: my_asp,
+    //   userid: `${formModel.name} <${formModel.email}>`,
+    //   primary: {
+    //     nbits: 4096
+    //   },
+    //   subkeys: []
     // }
 
-    // // const my_asp = new kbpgp.ASP({
-    // //   progress_hook: function(o) {
-    // //     console.log('I was called with progress!', o)
-    // //   }
-    // // })
+    setTimeout(() => {
+      this.isGeneratingNewKey = true
+    })
 
-    // // const opts = {
-    // //   asp: my_asp,
-    // //   userid: `${formModel.name} <${formModel.email}>`,
-    // //   primary: {
-    // //     nbits: 4096
-    // //   },
-    // //   subkeys: []
-    // // }
-    // this.cryptoService.generateKey(opts).then((key) => {
-    //   console.log('new key: ', key)
-    //   const keyEntry = {
-    //     userIds: [{ name: formModel.name, email: formModel.email }],
-    //     keys: {
-    //       private: key.privateKey,
-    //       public: key.publicKey
-    //     }
-    //   }
-    //   this.storedKeysService.storeNewKey(keyEntry, true)
-    // })
+    this.cryptoService.generateKey(opts).then((key) => {
+      // console.log('new key: ', key)
+      const publicKey = openpgp.key.readArmored(key.publicKey)
+      const keyEntry = {
+        userIds: [ { userId: publicKey.keys[0].users[0].userId.userid } ],
+        keys: {
+          private: key.privateKey,
+          public: key.publicKey
+        }
+      }
+      // console.log('keyEntry: ', keyEntry)
+      this.storedKeysService.storeNewKey(keyEntry, true)
+      setTimeout(() => {
+        this.isGeneratingNewKey = false
+        this.generatingMessage = 'Generating...'
+      })
+    })
   }
 
   onClickToggleModal(event: any) {

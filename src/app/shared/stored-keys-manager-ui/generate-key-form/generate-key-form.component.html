@@ -1,21 +1,39 @@
-<form #f="ngForm" (ngSubmit)="onSubmit()">
-  <!-- Name -->
-  <div class="form-group mb-1">
-    <label class="form-label mb-0">Name</label>
-    <input type="text" class="form-control form-control-sm"
-      placeholder="Enter name"
-      name="name" [(ngModel)]="inpModel.name" required>
+<ng-container *ngIf="!isGenerating">
+  <ng-template [ngTemplateOutlet]="formTpl"></ng-template>
+</ng-container>
+
+<ng-container *ngIf="isGenerating">
+  <ng-template [ngTemplateOutlet]="generatingTpl"></ng-template>
+</ng-container>
+
+
+
+<ng-template #formTpl>
+  <form #f="ngForm" (ngSubmit)="onSubmit()">
+    <!-- Name -->
+    <div class="form-group mb-1">
+      <label class="form-label mb-0">Name</label>
+      <input type="text" class="form-control form-control-sm"
+        placeholder="Enter name"
+        name="name" [(ngModel)]="inpModel.name" required>
+    </div>
+    <!-- Email -->
+    <div class="form-group mb-1">
+      <label class="form-label mb-0">Email address</label>
+      <input type="email" class="form-control form-control-sm"
+        placeholder="Enter email"
+        name="email" [(ngModel)]="inpModel.email" required>
+    </div>
+    <!-- Buttons -->
+    <div class="btn-group btn-group-sm mt-1">
+      <button type="submit" class="btn btn-secondary"
+        [disabled]="!f.valid">Generate</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #generatingTpl>
+  <div class="card">
+    <div class="card-body p-5">{{ generatingMessage }}</div>
   </div>
-  <!-- Email -->
-  <div class="form-group mb-1">
-    <label class="form-label mb-0">Email address</label>
-    <input type="email" class="form-control form-control-sm"
-      placeholder="Enter email"
-      name="email" [(ngModel)]="inpModel.email" required>
-  </div>
-  <!-- Buttons -->
-  <div class="btn-group btn-group-sm mt-1">
-    <button type="submit" class="btn btn-secondary"
-      [disabled]="!f.valid">Generate</button>
-  </div>
-</form>
+</ng-template>

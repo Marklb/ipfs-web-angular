@@ -50,6 +50,8 @@
         </div>
         <div class="card-body p-1" *ngIf="_newKeyExpanded">
           <app-generate-key-form
+            [generatingMessage]="generatingMessage"
+            [isGenerating]="isGeneratingNewKey"
             (submitted)="onSubmittedGenerateForm($event)">
           </app-generate-key-form>
         </div>
@@ -85,15 +87,32 @@
           <span class="noselect">Stored Keys</span>
         </div>
         <div class="card-body p-1" *ngIf="_storedKeysExpanded">
-          <div *ngFor="let key of keys" class="mb-1">
-            <span>{{ key.userIds[0].userId }}</span>
-            <div class="btn-group btn-group-sm" role="group">
-              <button type="button" class="btn btn-secondary"
-                (click)="onClickPrivateKey($event, key)">Private</button>
-              <button type="button" class="btn btn-secondary"
-                (click)="onClickPublicKey($event, key)">Public</button>
-              <button type="button" class="btn btn-danger"
-                (click)="onClickRemoveKey($event, key)">Remove</button>
+          <div *ngFor="let key of keys" class="card mb-1 pl-1">
+            <div>
+              <span>{{ key.userIds[0].userId }}</span>
+              <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-secondary"
+                  (click)="onClickShowKey($event, key)">{{ (key.isShown) ? 'Hide' : 'Show' }}</button>
+                <!-- <button type="button" class="btn btn-secondary"
+                  (click)="onClickPrivateKey($event, key)">Private</button>
+                <button type="button" class="btn btn-secondary"
+                  (click)="onClickPublicKey($event, key)">Public</button> -->
+                <button type="button" class="btn btn-danger"
+                  (click)="onClickRemoveKey($event, key)">Remove</button>
+              </div>
+            </div>
+            <div *ngIf="key.isShown">
+              <div class="font-weight-bold">PGP Private Key</div>
+              <!-- <p class="font-weight-bold">PGP Private Key</p> -->
+              <textarea #textAreaPrivKey (click)="textAreaPrivKey.select()"
+                style="width: 100%"
+                rows="10" readonly>{{ key.keys.private }}</textarea>
+
+              <div class="font-weight-bold">PGP Public Key</div>
+              <!-- <p class="font-weight-bold">PGP Public Key</p> -->
+              <textarea #textAreaPubKey (click)="textAreaPubKey.select()"
+                style="width: 100%"
+                rows="10" readonly>{{ key.keys.public }}</textarea>
             </div>
           </div>
           <button type="button" class="btn btn-sm btn-secondary"

@@ -51,8 +51,8 @@ export class IpfsService {
     }
   }
 
-  public ipfsConnection = this.ipfsConnections.localhost
-  // public ipfsConnection = this.ipfsConnections.jsuttontest1
+  // public ipfsConnection = this.ipfsConnections.localhost
+  public ipfsConnection = this.ipfsConnections.jsuttontest1
 
   private _ipfsEnvironmentSubject = new BehaviorSubject<IpfsEnvironmentExtended>({
     environment: this._ipfsEnvironment,

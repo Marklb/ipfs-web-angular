@@ -8,6 +8,7 @@ import { FilesUploadDemoModule } from './files-upload-demo/files-upload-demo.mod
 import { HashCheckDemoModule } from './hash-check-demo/hash-check-demo.module'
 import { DigitalSignatureDemoModule } from './digital-signature-demo/digital-signature-demo.module'
 import { EncryptionDemoModule } from './encryption-demo/encryption-demo.module'
+import { DocumentEditorDemoModule } from './document-editor-demo/document-editor-demo.module'
 
 import { DemosComponent } from './demos.component'
 
@@ -21,7 +22,8 @@ import { DemosComponent } from './demos.component'
     FilesUploadDemoModule,
     HashCheckDemoModule,
     DigitalSignatureDemoModule,
-    EncryptionDemoModule
+    EncryptionDemoModule,
+    DocumentEditorDemoModule
   ],
   exports: [
     DemosComponent

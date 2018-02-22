@@ -31,7 +31,7 @@ export class StoredKeysService {
     const keys2 = []
 
     for (const k of keys) {
-      console.log('k: ', k)
+      // console.log('k: ', k)
       const privateKey = openpgp.key.readArmored(k.keys.private)
       const publicKey = openpgp.key.readArmored(k.keys.public)
       keys2.push({

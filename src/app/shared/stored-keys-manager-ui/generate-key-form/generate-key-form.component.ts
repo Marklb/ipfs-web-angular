@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
 import { NgForm } from '@angular/forms'
 
 export interface IGenerateKeyFormModel {
@@ -26,6 +26,29 @@ export class GenerateKeyFormComponent implements OnInit {
 
   @Output('submitted')
   public submitted: EventEmitter<IFormSubmittedEvent> = new EventEmitter()
+
+  private _isGenerating: boolean = false
+  private _generatingMessage: string = ''
+
+  @Input('isGenerating')
+  set isGenerating(val: boolean) {
+    // console.log('set isGenerating: ', val)
+    this._isGenerating = val
+  }
+  get isGenerating() {
+    return this._isGenerating
+  }
+  // public isGenerating: boolean = false
+
+  @Input('generatingMessage')
+  set generatingMessage(val: string) {
+    // console.log('set generatingMessage: ', val)
+    this._generatingMessage = val
+  }
+  get generatingMessage() {
+    return this._generatingMessage
+  }
+  // public generatingMessage: string = ''
 
   constructor() { }
 
