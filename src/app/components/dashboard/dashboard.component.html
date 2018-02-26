@@ -15,24 +15,26 @@
     </div>
   </div>
 </div> -->
-<div fxLayout="column" fxFlexFill>
-  <div fxLayout="row" fxFlex="grow" fxFlexFill>
-    <!-- <div fxFlex="200px" class="card text-white bg-dark"> -->
-    <div [fxFlex]="flexSide" class="card text-white bg-dark">
-      <app-side-nav *ngIf="sidebarVisible"></app-side-nav>
-    </div>
-    <!-- <div fxFlex="1 1 calc(100% - 200px)" fxFlexFill> -->
-    <div [fxFlex]="flexContent" fxFlexFill>
-      <div fxLayout="column" fxFlexFill>
-        <div fxFlex>
-          <app-top-nav></app-top-nav>
+<span class="bootstrap4-scope">
+  <div fxLayout="column" fxFlexFill>
+    <div fxLayout="row" fxFlex="grow" fxFlexFill>
+      <!-- <div fxFlex="200px" class="card text-white bg-dark"> -->
+      <div [fxFlex]="flexSide" class="card text-white bg-dark">
+        <app-side-nav *ngIf="sidebarVisible"></app-side-nav>
+      </div>
+      <!-- <div fxFlex="1 1 calc(100% - 200px)" fxFlexFill> -->
+      <div [fxFlex]="flexContent" fxFlexFill>
+        <div fxLayout="column" fxFlexFill>
+          <div fxFlex>
+            <app-top-nav></app-top-nav>
+          </div>
+          <ng-container *ngIf="ipfsService.isReady">
+            <perfect-scrollbar fxLayout="column" fxFlex="grow" fxFlexFill>
+              <router-outlet></router-outlet>
+            </perfect-scrollbar>
+          </ng-container>
         </div>
-        <ng-container *ngIf="ipfsService.isReady">
-          <perfect-scrollbar fxLayout="column" fxFlex="grow" fxFlexFill>
-            <router-outlet></router-outlet>
-          </perfect-scrollbar>
-        </ng-container>
       </div>
     </div>
   </div>
-</div>
+</span>

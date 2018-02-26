@@ -15,6 +15,7 @@ import { DagGraphComponent } from './components/dag-graph/dag-graph.component'
 import { DagExplorerComponent } from './components/dag-explorer/dag-explorer.component'
 import { DagExplorerFilesListComponent } from './components/dag-explorer-files-list/dag-explorer-files-list.component'
 import { DemosComponent } from 'app/demos/demos.component'
+import { DocumentEditorComponent } from './document-editor/document-editor.component'
 
 import { demosRoutes } from './demos/demos.routing'
 
@@ -23,6 +24,9 @@ const routes: Routes = [
     path: '',
     redirectTo: '/home',
     pathMatch: 'full'
+  },
+  {
+    path: 'editor', component: DocumentEditorComponent
   },
   {
     path: '', component: DashboardComponent,

@@ -32,6 +32,8 @@ export class DashboardComponent implements OnInit {
               public layoutService: LayoutService) { }
 
   ngOnInit() {
+    const root = document.getElementsByTagName( 'html' )[0]
+    root.classList.add('bootstrap4-scope')
     this.layoutService.sideNavExpanded.subscribe(res => {
       this.sidebarVisible = res
     })

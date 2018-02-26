@@ -19,6 +19,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'
 
 import { SharedModule } from './shared/shared.module'
 import { DemosModule } from './demos/demos.module'
+import { DocumentEditorModule } from './document-editor/document-editor.module'
 
 import { AppComponent } from './app.component'
 import { DashboardComponent } from './components/dashboard/dashboard.component'
@@ -76,6 +77,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ModalModule.forRoot(),
     SharedModule,
     DemosModule,
+    DocumentEditorModule,
     NgxDatatableModule
   ],
   providers: [

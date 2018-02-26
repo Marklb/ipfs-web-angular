@@ -5,12 +5,66 @@
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 
 @import "variables";
-@import "~bootstrap/scss/bootstrap";
+// @import "~bootstrap/scss/bootstrap";
+.bootstrap4-scope {
+  @import "~bootstrap/scss/bootstrap";
+}
+// :not(.exclude-bootstrap4) {
+//   @import "~bootstrap/scss/bootstrap";
+// }
 @import "theme";
 
-@import "~quill/dist/quill.core.css";
-// @import "~quill/dist/quill.bubble.css";
-@import "~quill/dist/quill.snow.css";
+// @import "~quill/dist/quill.core.css";
+// // @import "~quill/dist/quill.bubble.css";
+// @import "~quill/dist/quill.snow.css";
+
+// @import "~prosemirror-view/style/prosemirror.css";
+// @import "~prosemirror-menu/style/menu.css";
+// @import "~prosemirror-example-setup/style/style.css";
+// @import "~prosemirror-gapcursor/style/gapcursor.css";
+
+.prosemirror-scope {
+  @import "~prosemirror-view/style/prosemirror.css";
+  @import "~prosemirror-menu/style/menu.css";
+  @import "~prosemirror-example-setup/style/style.css";
+  @import "~prosemirror-gapcursor/style/gapcursor.css";
+
+  .editor-main {
+    height: 800px;
+  }
+
+  #editor, .editor {
+    background: white;
+    color: black;
+    background-clip: padding-box;
+    // border-radius: 4px;
+    // border: 2px solid rgba(0, 0, 0, 0.2);
+    // padding: 5px 0;
+    // margin-bottom: 23px;
+  }
+
+  .ProseMirror p:first-child,
+  .ProseMirror h1:first-child,
+  .ProseMirror h2:first-child,
+  .ProseMirror h3:first-child,
+  .ProseMirror h4:first-child,
+  .ProseMirror h5:first-child,
+  .ProseMirror h6:first-child {
+    margin-top: 10px;
+  }
+
+  .ProseMirror {
+    padding: 4px 8px 4px 14px;
+    line-height: 1.2;
+    outline: none;
+  }
+
+  .ProseMirror p { margin-bottom: 1em }
+
+}
+
+
+
 
 html, body {
   // width: 100%;
