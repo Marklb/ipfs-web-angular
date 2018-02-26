@@ -7,8 +7,12 @@ import { EditorComponent } from './editor/editor.component'
   imports: [
     CommonModule
   ],
-  declarations: [DocumentEditorDemoComponent,
+  declarations: [
+    DocumentEditorDemoComponent,
     EditorComponent
-]
+  ],
+  // entryComponents: [
+  //   EditorComponent
+  // ]
 })
 export class DocumentEditorDemoModule { }

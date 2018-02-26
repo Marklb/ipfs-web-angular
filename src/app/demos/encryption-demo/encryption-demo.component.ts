@@ -7,6 +7,7 @@ import { Buffer as _Buffer } from 'buffer/'
 import * as openpgp from 'openpgp'
 import { CryptoService } from 'app/services/crypto.service'
 import { HttpClient } from '@angular/common/http'
+import * as fileType from 'file-type'
 
 interface IpfsAddedFile {
   path: string,
@@ -148,6 +149,7 @@ export class EncryptionDemoComponent implements OnInit {
           })
           console.log('this.rawTextData: ', this.rawTextData)
           this.cryptoService.encrypt(fileData[0].content, this.selectedKey)
+          // this.cryptoService.encrypt(fileData[0].content, this.keys)
           .then((encrypted) => {
             // console.log(encrypted)
             // const encryptedDataBuffer = _Buffer.from(encrypted.data)
@@ -199,6 +201,8 @@ export class EncryptionDemoComponent implements OnInit {
     const fileContentBuffer = contentBuffer
     // console.log('fileContentBuffer: ', { data: fileContentBuffer })
 
+    console.log('fileType: ', fileType(fileContentBuffer))
+
     const resultTest = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
     const file1 = new Blob([resultTest], { type: 'application/pdf' })
     // const file1 = new Blob([resultTest], { type: 'application/octet-stream' })
@@ -216,15 +220,26 @@ export class EncryptionDemoComponent implements OnInit {
     const fileContentBuffer = contentBuffer
     // console.log('fileContentBuffer: ', { data: fileContentBuffer })
 
-    const resultTest = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
-    // const file1 = new Blob([resultTest], { type: 'application/pdf' })
-    const file1 = new Blob([resultTest], { type: 'application/octet-stream' })
-    const fileURL = URL.createObjectURL(file1)
-    // console.log('fileURL: ', fileURL)
-    window.open(fileURL)
-    // window.open(fileURL, 'testfile')
-    // window.open(fileURL, '_blank', 'resizable,scrollbars,status')
-    // window.open(fileURL, 'something.pdf', 'resizable,scrollbars,status')
+    let decryptedBuffer
+    let decryptError = false
+    try {
+      decryptedBuffer = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
+      // console.log('decryptedBuffer: ', decryptedBuffer)
+    } catch (err) {
+      console.error('err: ', err)
+      decryptError = true
+    }
+    if (!decryptError) {
+      // const resultTest = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
+      // const file1 = new Blob([decryptedBuffer], { type: 'application/pdf' })
+      const file1 = new Blob([decryptedBuffer], { type: 'application/octet-stream' })
+      const fileURL = URL.createObjectURL(file1)
+      // console.log('fileURL: ', fileURL)
+      window.open(fileURL)
+      // window.open(fileURL, 'testfile')
+      // window.open(fileURL, '_blank', 'resizable,scrollbars,status')
+      // window.open(fileURL, 'something.pdf', 'resizable,scrollbars,status')
+    }
   }
 
   public async testDecrypt() {

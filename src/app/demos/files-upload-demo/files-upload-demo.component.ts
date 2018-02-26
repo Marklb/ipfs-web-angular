@@ -115,7 +115,7 @@ export class FilesUploadDemoComponent implements OnInit {
 
         this.ipfsService.ipfs.files.add(fileData)
         .then(addResult => {
-          // console.log('addResult: ', addResult)
+          console.log('addResult: ', addResult)
           resolve(addResult[0])
         })
       }
@@ -165,6 +165,17 @@ export class FilesUploadDemoComponent implements OnInit {
         // reader.readAsArrayBuffer(info)
       })
     })
+  }
+
+  public async viewTest() {
+    const hash = 'QmcxFSX8dh2YzxF9M1D8XwSpjoaJfGGxFTFZ9cP1i7CmqM'
+    const res = await this.ipfsService.ipfs.files.get(hash)
+    console.log(res)
+    const res2 = await this.ipfsService.ipfs.object.get(hash)
+    console.log(res2.toJSON())
+    const res3 = await this.ipfsService.ipfs.object.data(hash)
+    console.log(res3.toString())
+
   }
 
 }

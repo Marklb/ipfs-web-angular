@@ -1,6 +1,7 @@
 <h2 class="p-2">Document Editor Demo</h2>
 
-<button (click)="test($event)">Test</button>
+<!-- <button (click)="test($event)">Test</button> -->
+<!-- <button (click)="createComponent()">Test2</button> -->
 
 <!-- Create the toolbar container -->
 <!-- <div id="toolbar">
@@ -21,11 +22,16 @@
 <!-- <div #editorRef class="editor"></div>
 <div #contentRef></div> -->
 
-<div class="card exclude-bootstrap4 prosemirror-scope">
+<div class="card border-0 exclude-bootstrap4 prosemirror-scope">
   <app-editor></app-editor>
 </div>
 
 <!-- <iframe src="http://localhost:4200/#/editor" frameborder="0"></iframe> -->
 <!-- <div class="embed-responsive embed-responsive-16by9 border border-danger">
   <iframe class="embed-responsive-item" src="http://localhost:4200/#/editor" allowfullscreen></iframe>
+</div> -->
+
+<!-- <iframe #testIframe (load)="onLoadIframe()" frameborder="0"></iframe> -->
+<!-- <div class="embed-responsive embed-responsive-16by9 border border-danger">
+  <iframe #testIframe class="embed-responsive-item" (load)="onLoadIframe()" allowfullscreen></iframe>
 </div> -->

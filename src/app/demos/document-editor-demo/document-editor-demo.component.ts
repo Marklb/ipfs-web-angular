@@ -1,5 +1,8 @@
-import { Component, OnInit, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core'
+import { Component, OnInit, ElementRef, ViewChild, ViewEncapsulation,
+  ComponentRef, ViewContainerRef, ComponentFactoryResolver, AfterViewInit,
+  OnDestroy } from '@angular/core'
 import * as jsPDF from 'jspdf'
+import { EditorComponent } from './editor/editor.component'
 
 // import { EditorState } from 'prosemirror-state'
 // import { EditorView } from 'prosemirror-view'
@@ -152,3 +155,51 @@ export class DocumentEditorDemoComponent implements OnInit {
   }
 
 }
+
+
+
+
+// @Component({
+//   selector: 'app-document-editor-demo',
+//   templateUrl: './document-editor-demo.component.html',
+//   styleUrls: ['./document-editor-demo.component.scss'],
+//   // encapsulation: ViewEncapsulation.Native
+// })
+// export class DocumentEditorDemoComponent implements OnInit, AfterViewInit, OnDestroy {
+
+//   @ViewChild('testIframe') iframe: ElementRef
+
+//   doc: any
+//   compRef: ComponentRef<EditorComponent>
+
+//   constructor(private vcRef: ViewContainerRef,
+//               private resolver: ComponentFactoryResolver) { }
+
+//   createComponent() {
+//     const compFactory = this.resolver.resolveComponentFactory(EditorComponent)
+//     this.compRef = this.vcRef.createComponent(compFactory)
+
+//     this.doc.body.appendChild(this.compRef.location.nativeElement)
+//   }
+
+//   ngOnInit() {
+
+//   }
+
+//   ngAfterViewInit() {
+//     this.onLoadIframe() // in Firefox state is uninitialized while
+//                    // in Chrome is complete so i use `load` event for Firefox
+//   }
+
+//   ngOnDestroy() {
+//     if(this.compRef) {
+//       this.compRef.destroy()
+//     }
+//   }
+
+//   onLoadIframe() {
+//     this.doc = this.iframe.nativeElement.contentDocument ||
+//       this.iframe.nativeElement.contentWindow
+//   }
+
+// }
