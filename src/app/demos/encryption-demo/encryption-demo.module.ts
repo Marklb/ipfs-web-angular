@@ -8,6 +8,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar'
 import { SharedModule } from 'app/shared/shared.module'
 
 import { EncryptionDemoComponent } from './encryption-demo.component'
+import { EncryptPanelComponent } from './encrypt-panel/encrypt-panel.component'
+import { DecryptPanelComponent } from './decrypt-panel/decrypt-panel.component'
 
 @NgModule({
   imports: [
@@ -17,6 +19,10 @@ import { EncryptionDemoComponent } from './encryption-demo.component'
     PerfectScrollbarModule,
     SharedModule
   ],
-  declarations: [EncryptionDemoComponent]
+  declarations: [
+    EncryptionDemoComponent,
+    EncryptPanelComponent,
+    DecryptPanelComponent
+  ]
 })
 export class EncryptionDemoModule { }

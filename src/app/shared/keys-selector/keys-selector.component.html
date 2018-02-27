@@ -1,0 +1,32 @@
+<div class="card" style="max-width: 500px;">
+
+  <div class="card-header p-1">
+    <span>Selected Keys ({{ selectedKeys.length }})</span>
+  </div>
+
+  <div class="card-body p-1">
+    <div *ngIf="selectedKeys?.length === 0;else selectKeysBlock" class="text-danger">None</div>
+    <ng-template #selectKeysBlock>
+      <div *ngFor="let key of selectedKeys; let i = index" class="card"
+        [class.border-top-0]="i !== 0">
+        <span>{{ key.userIds[0].userId }} <span
+          class="badge badge-light text-danger" style="cursor: pointer;"
+          (click)="unselectKey(key)">X</span></span>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="btn-group" dropdown container="body">
+    <button type="button" dropdownToggle
+      class="btn btn-sm btn-outline-secondary btn-block pt-0 pb-0 border border-bottom-0 border-left-0 border-right-0">
+      <span>+</span>
+    </button>
+    <div *dropdownMenu class="dropdown-menu" role="menu">
+      <button *ngFor="let key of keys" class="dropdown-item" type="button"
+        (click)="selectKey(key)">
+        <span>{{ key.userIds[0].userId }}</span>
+      </button>
+    </div>
+  </div>
+
+</div>

@@ -50,17 +50,8 @@ export class DigitalSignatureDemoComponent implements OnInit {
     .catch(err => console.log(err))
   }
 
-  public fileOver(event) {
-    // console.log(event)
-  }
-
-  public fileLeave(event) {
-    // console.log(event)
-  }
-
-  public previewFile(file: IpfsAddedFile) {
-
-  }
+  public fileOver(event) { }
+  public fileLeave(event) { }
 
   public fileInputChange(event: any) {
     // console.log('fileInputChange: ', event)
@@ -91,13 +82,9 @@ export class DigitalSignatureDemoComponent implements OnInit {
 
   private async addFileToIpfs(file: any, filePath?: string): Promise<any> {
     const fileData = await readFileAsync(file)
-    // console.log('fileData: ', fileData)
     const fileContent = this.ipfsService.toIpfsBuffer(fileData)
 
     const signed = await this.cryptoService.sign(fileContent, this.selectedSigner)
-
-    // console.log('fileContent: ', fileContent)
-    // console.log('signed.signature: ', signed.signature)
 
     const added1 = await this.ipfsService.ipfs.files.add([{
       path: file.name,

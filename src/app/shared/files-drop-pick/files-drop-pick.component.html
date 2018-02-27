@@ -1,0 +1,13 @@
+<div class="upload-files-btn" (click)="uploadFileBtnClick($event)">
+  <file-drop customstyle="border border-secondary"
+    (onFileDrop)="_fileDrop($event)"
+    (onFileOver)="_fileOver($event)"
+    (onFileLeave)="_fileLeave($event)">
+    <span>[Upload Files]</span>
+  </file-drop>
+</div>
+
+<div class="invisible d-none">
+  <input type="file" #filesInput
+    multiple (change)="_fileInputChange($event)">
+</div>
