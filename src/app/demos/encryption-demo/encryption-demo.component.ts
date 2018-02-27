@@ -35,6 +35,8 @@ export class EncryptionDemoComponent implements OnInit {
 
   public rawTextData: any = []
 
+  public encryptedFiles: any[] = []
+
   @ViewChild('filesInput') filesInput: ElementRef
 
   constructor(private ipfsService: IpfsService,
@@ -47,6 +49,10 @@ export class EncryptionDemoComponent implements OnInit {
       this.keys = keys
       this.selectedKey = keys[0]
     })
+  }
+
+  public onFileEncrypted(event: any) {
+    this.encryptedFiles.push(event)
   }
 
   public dropped(event: UploadEvent) {

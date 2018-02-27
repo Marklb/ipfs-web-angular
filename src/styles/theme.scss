@@ -5,3 +5,10 @@
 .noselect {
   user-select: none;
 }
+
+.no-margin-alert .alert {
+  // background-color: #009688;
+  // border-color: #00695C;
+  // color: #fff;
+  margin-bottom: 0;
+}

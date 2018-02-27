@@ -9,6 +9,7 @@ import { routing } from './app.routing'
 import { AccordionModule } from 'ngx-bootstrap/accordion'
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { ModalModule } from 'ngx-bootstrap/modal'
+import { AlertModule } from 'ngx-bootstrap/alert'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { NgxGraphModule } from '@swimlane/ngx-graph'
 import { NgxDatatableModule } from '@swimlane/ngx-datatable'
@@ -75,6 +76,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
+    AlertModule.forRoot(),
     SharedModule,
     DemosModule,
     DocumentEditorModule,

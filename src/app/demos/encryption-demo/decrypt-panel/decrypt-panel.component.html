@@ -1,3 +1,69 @@
-<div class="card p-1">
-  <app-keys-selector></app-keys-selector>
+<div class="card p-1 border-0">
+
+  <div class="d-inline">
+    <label class="mr-1">Private Key</label>
+    <div class="btn-group btn-group-sm" dropdown>
+      <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
+        {{ selectedKey?.userIds[0].userId || 'None' }} <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu" role="menu">
+        <li *ngFor="let key of keys">
+          <div class="dropdown-item" style="cursor: pointer;"
+            (click)="selectedKey = key">
+            {{ key.userIds[0].userId }}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pt-1"></div>
+
+  <div class="card">
+    <div class="card-header p-1">Encrypted Files</div>
+    <div class="mb-0" *ngFor="let alert of alerts">
+      <alert [type]="alert.type" class="no-margin-alert"
+        [dismissOnTimeout]="alert.timeout"
+        [dismissible]="alert.dismissible">{{ alert.msg }}</alert>
+      <!-- <alert [type]="alert.type" class="no-margin-alert"
+        [dismissible]="true">{{ alert.msg }}</alert> -->
+    </div>
+    <div class="card-body p-1">
+      <table class="table table-bordered table-hover table-sm mb-0">
+        <thead>
+          <tr>
+            <th scope="col">Path</th>
+            <th scope="col">Hash</th>
+            <th scope="col">Size</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let file of encryptedFiles; let i=index">
+            <tr>
+              <td>{{ file.path }}</td>
+              <td>{{ file.hash }}</td>
+              <td>{{ file.size }}</td>
+              <td>
+                <!-- <button type="button" class="btn btn-sm btn-dark">View</button> -->
+                <div class="btn-group" role="group">
+                  <!-- <button type="button" class="btn btn-secondary btn-sm mr-1">Preview</button> -->
+                  <button type="button" class="btn btn-secondary btn-sm mr-1"
+                    (click)="viewFile(file)">View</button>
+                  <!-- <button type="button" class="btn btn-secondary btn-sm"
+                    (click)="viewFile(file)">View Raw</button> -->
+                  <button type="button" class="btn btn-secondary btn-sm mr-1"
+                    [disabled]="!selectedKey"
+                    (click)="viewFileDecrypted(file)">View Decrypted</button>
+                  <button type="button" class="btn btn-secondary btn-sm"
+                    [disabled]="!selectedKey"
+                    (click)="openFileDecrypted(file)">Open Decrypted</button>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

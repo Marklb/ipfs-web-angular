@@ -22,7 +22,7 @@ export interface ICryptoServiceProvider {
   generateKey: (options: any) => Promise<any>
   sign: (data: any, signer: any) => Promise<ICryptoSignature>
   verify: (data: any, signer: any) => Promise<any>
-  encrypt: (data: any, signer: any) => Promise<any>
+  encrypt: (data: any, signer: any, filename: string) => Promise<any>
   decrypt: (data: any, signer: any) => Promise<any>
 }
 
@@ -48,8 +48,8 @@ export class CryptoService {
     return this._cryptoProvider.verify(data, signer)
   }
 
-  public async encrypt(data: any, signer: any): Promise<any> {
-    return this._cryptoProvider.encrypt(data, signer)
+  public async encrypt(data: any, signer: any, filename: string = null): Promise<any> {
+    return this._cryptoProvider.encrypt(data, signer, filename)
   }
 
   public async decrypt(data: any, signer: any): Promise<any> {

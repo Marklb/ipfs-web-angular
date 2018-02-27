@@ -1,13 +1,18 @@
-<div class="card p-1">
+<div class="card p-1 border-0">
   <app-keys-selector (selectedKeysChange)="onSelectedKeysChange($event)"></app-keys-selector>
 
   <div class="pt-1"></div>
 
   <div class="card">
-    <div class="card-header p-1">Files to Encrypt</div>
+    <div class="card-header p-1">Add Files to Encrypt</div>
     <div class="card-body p-1">
-      <app-files-drop-pick></app-files-drop-pick>
-      <div class="input-group input-group-sm">
+      <!-- Add files from hard drive -->
+      <app-files-drop-pick
+        (fileDrop)="onFileDrop($event)"
+        (fileInputChange)="onFileInputChange($event)">
+      </app-files-drop-pick>
+      <!-- Add files from IPFS -->
+      <!-- <div class="input-group input-group-sm">
         <div class="input-group-prepend">
           <span class="input-group-text">Ipfs Hash</span>
         </div>
@@ -15,7 +20,46 @@
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button">Button</button>
         </div>
-      </div>
+      </div> -->
+      <!-- <pre>{{ filesPending | json }}</pre> -->
     </div>
   </div>
+
+  <div class="pt-1"></div>
+
+  <div class="card">
+    <div class="card-header p-1">Files pending encryption ({{ filesPending?.length }})</div>
+    <div class="card-body p-1">
+      <table *ngIf="filesPending?.length > 0" class="table table-bordered table-hover table-sm mb-0">
+        <thead>
+          <tr>
+            <th scope="col">Path</th>
+            <th scope="col">Size</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let file of filesPending; let i=index">
+            <td>{{ file.name }}</td>
+            <td>{{ file.size }}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <!-- <button type="button" class="btn btn-secondary btn-sm mr-1"
+                  (click)="viewFile(file)">View</button> -->
+                <button type="button" class="btn btn-danger btn-sm"
+                  (click)="removePendingFile(file)">Remove</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="pt-1"></div>
+
+  <button *ngIf="filesPending?.length > 0"
+    [disabled]="selectedKeys?.length === 0"
+    type="button" class="btn btn-secondary btn-sm"
+    (click)="encryptFilesPending()">Encrypt Files</button>
 </div>

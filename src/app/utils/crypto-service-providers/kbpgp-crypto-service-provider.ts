@@ -171,7 +171,7 @@ export class KBPGPCryptoServiceProvider implements ICryptoServiceProvider {
     })
   }
 
-  public async encrypt(data: any, signer: any): Promise<any> {
+  public async encrypt(data: any, signer: any, filename: string = null): Promise<any> {
 
   }
 

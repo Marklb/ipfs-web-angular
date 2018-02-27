@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common'
 
 import { FileDropModule } from 'ngx-file-drop'
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
+import { AlertModule } from 'ngx-bootstrap/alert'
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar'
 
 import { SharedModule } from 'app/shared/shared.module'
@@ -16,6 +17,7 @@ import { DecryptPanelComponent } from './decrypt-panel/decrypt-panel.component'
     CommonModule,
     FileDropModule,
     BsDropdownModule,
+    AlertModule,
     PerfectScrollbarModule,
     SharedModule
   ],

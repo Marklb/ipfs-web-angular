@@ -109,7 +109,7 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
     })
   }
 
-  public async encrypt(data: any, signer: any): Promise<any> {
+  public async encrypt(data: any, signer: any, filename: string = null): Promise<any> {
     // const passphrase = 'theseam'
     // const privKeyObj = openpgp.key.readArmored(signer.keys.private).keys[0]
     // privKeyObj.decrypt(passphrase)
@@ -124,15 +124,18 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
     // window.g_encrDebug = data.toString('binary')
     // console.log('data2: ', data.toString('utf8'))
     // console.log('data2: ', data.toString())
-    const options = {
+    const options: any = {
       data: data, // input as String (or Uint8Array)
       // data: data.toString('binary'),
       // data: 'Hello World', // input as String (or Uint8Array)
-      publicKeys: openpgp.key.readArmored(signer.keys.public).keys,
-      // publicKeys: pubKeys,
+      // publicKeys: openpgp.key.readArmored(signer.keys.public).keys,
+      publicKeys: pubKeys,
       // privateKeys: privKeyObj, // for signing
       armor: false,
-      filename: 'somename.pdf'
+      // filename: 'somename.pdf'
+    }
+    if (filename != null) {
+      options.filename = filename
     }
 
     // https://github.com/openpgpjs/openpgpjs/issues/204
