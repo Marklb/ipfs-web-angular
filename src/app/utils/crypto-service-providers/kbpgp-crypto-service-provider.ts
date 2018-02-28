@@ -1,32 +1,24 @@
 // import * as kbpgp from 'kbpgp'
-import { ICryptoServiceProvider } from 'app/services/crypto.service'
+import { ICryptoServiceProvider, ICryptoKeysPair } from 'app/services/crypto.service'
 declare const kbpgp: any
 
 export class KBPGPCryptoServiceProvider implements ICryptoServiceProvider {
 
   constructor() {}
 
-  public async generateKey(options: any): Promise<any> {
-    // console.log('kbpgp: ', kbpgp)
-    return new Promise((resolve, reject) => {
-      // console.log('generate_rsa')
+  public async generateKey(options: any): Promise<ICryptoKeysPair> {
+    return new Promise<ICryptoKeysPair>((resolve, reject) => {
       kbpgp.KeyManager.generate_rsa(options, (err, charlie) => {
-        // console.log('charlie: ', charlie)
         charlie.sign({}, function(err2) {
-          // console.log('done!')
-
           let privateKey
           let publicKey
 
-          charlie.export_pgp_private ({
-            passphrase: 'theseam'
-          }, (err3, pgp_private) => {
-            // console.log('private key: ', pgp_private)
+          const privOpts = { passphrase: 'theseam' }
+          charlie.export_pgp_private(privOpts, (err3, pgp_private) => {
             privateKey = pgp_private
           })
 
-          charlie.export_pgp_public({}, function(err3, pgp_public) {
-            // console.log('public key: ', pgp_public)
+          charlie.export_pgp_public({}, (err3, pgp_public) => {
             publicKey = pgp_public
           })
 
@@ -36,25 +28,6 @@ export class KBPGPCryptoServiceProvider implements ICryptoServiceProvider {
           })
         })
       })
-
-      // console.log('generate')
-      // kbpgp.KeyManager.generate(options, (err, charlie) => {
-      //   console.log('charlie: ', charlie)
-
-      //   charlie.export_pgp_private ({
-      //     passphrase: 'theseam'
-      //   }, (err2, pgp_private) => {
-      //     console.log('private key: ', pgp_private)
-      //   })
-
-      //   charlie.export_pgp_public({}, function(err2, pgp_public) {
-      //     console.log('public key: ', pgp_public)
-      //   })
-
-      //   console.log('Done')
-
-      //   resolve()
-      // })
     })
   }
 

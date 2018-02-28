@@ -1,6 +1,6 @@
 import * as openpgp from 'openpgp'
 import { Buffer as _Buffer } from 'buffer/'
-import { ICryptoServiceProvider, ICryptoSignature } from 'app/services/crypto.service'
+import { ICryptoServiceProvider, ICryptoSignature, ICryptoKeysPair } from 'app/services/crypto.service'
 
 declare var window: any
 
@@ -8,13 +8,10 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
 
   constructor() {}
 
-  public async generateKey(options: any): Promise<any> {
+  public async generateKey(options: any): Promise<ICryptoKeysPair> {
     return openpgp.generateKey(options).then((key) => {
         const privKey = key.privateKeyArmored // '-----BEGIN PGP PRIVATE KEY BLOCK ... '
         const pubKey = key.publicKeyArmored   // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
-        // console.log(key)
-        // console.log('privKey: ', privKey)
-        // console.log('pubKey: ', pubKey)
         return {
           privateKey: privKey,
           publicKey: pubKey
@@ -23,76 +20,22 @@ export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
 
   }
 
-  // public async sign(data: any, signer: any): Promise<ICryptoSignature> {
-  //   const passphrase = 'theseam'
-  //   const privKeyObj = openpgp.key.readArmored(signer.keys.private).keys[0]
-  //   privKeyObj.decrypt(passphrase)
-
-  //   // console.log('data: ', data)
-  //   // console.log('data2: ', data.toString('binary'))
-  //   // console.log('data2: ', data.toString('utf8'))
-  //   // console.log('data2: ', data.toString())
-  //   const options = {
-  //     data: data.toString('binary'),
-  //     privateKeys: privKeyObj, // for signing
-  //   }
-
-  //   return openpgp.sign(options).then(function(signed) {
-  //     // console.log('Done signing')
-  //     const cleartext = signed.data
-  //     // const detachedSig = signed.signature
-  //     // console.log(signed)
-  //     // console.log(cleartext)
-  //     // console.log(detachedSig)
-
-  //     const parsedArmor = openpgp.cleartext.readArmored(cleartext)
-  //     console.log('parsedArmor: ', parsedArmor)
-  //     console.log('parsedArmor.text: ', parsedArmor.text)
-  //     const sig = parsedArmor.signature.packets.write()
-  //     console.log('sig: ', sig)
-  //     console.log('sig.toString(): ', sig.toString('utf8'))
-
-
-  //     return signed
-  //   })
-  // }
-
   public async sign(data: any, signer: any): Promise<ICryptoSignature> {
     const passphrase = 'theseam'
     const privKeyObj = openpgp.key.readArmored(signer.keys.private).keys[0]
     privKeyObj.decrypt(passphrase)
 
-    // console.log('data: ', data)
-    // console.log('data2: ', data.toString('binary'))
-    // console.log('data2: ', data.toString('utf8'))
-    // console.log('data2: ', data.toString())
-    // const options = {
-    //   data: data.toString('binary'),
-    //   privateKeys: privKeyObj, // for signing
-    // }
     const options = {
-      data: data,                             // input as String (or Uint8Array)
+      data: data, // input as String (or Uint8Array)
       privateKeys: privKeyObj, // for signing
       detached: true
     }
 
     return openpgp.sign(options).then(function(signed) {
-      // console.log('Done signing')
-      const cleartext = signed.data
       const detachedSig = signed.signature
-      // console.log(signed)
-      // console.log(cleartext)
-      // console.log(detachedSig)
-
-      // const parsedArmor = openpgp.cleartext.readArmored(cleartext)
-      // console.log('parsedArmor: ', parsedArmor)
-      // console.log('parsedArmor.text: ', parsedArmor.text)
-      // const sig = parsedArmor.signature.packets.write()
-      // console.log('sig: ', sig)
-      // console.log('sig.toString(): ', sig.toString('utf8'))
-
-
-      return signed
+      return {
+        signature: detachedSig
+      }
     })
   }
 
