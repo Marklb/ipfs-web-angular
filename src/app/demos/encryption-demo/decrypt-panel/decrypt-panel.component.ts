@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { IpfsService } from 'app/services/ipfs.service'
-import { CryptoService } from 'app/services/crypto.service'
+import { CryptoService } from 'app/services/crypto/crypto.service'
 import { StoredKeysService } from 'app/services/stored-keys.service'
 import * as fileType from 'file-type'
 
@@ -61,8 +61,10 @@ export class DecryptPanelComponent implements OnInit {
     let decryptedBuffer
     let decryptError = false
     try {
-      decryptedBuffer = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
-      // console.log('decryptedBuffer: ', decryptedBuffer)
+      const keyPassphrase = 'theseam'
+      decryptedBuffer = await this.cryptoService.decrypt(fileContentBuffer,
+        this.selectedKey.keys.private, keyPassphrase)
+      console.log('decryptedBuffer: ', decryptedBuffer)
     } catch (err) {
       // console.error('err: ', err)
       decryptError = true
@@ -95,8 +97,10 @@ export class DecryptPanelComponent implements OnInit {
     let decryptedBuffer
     let decryptError = false
     try {
-      decryptedBuffer = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
-      // console.log('decryptedBuffer: ', decryptedBuffer)
+      const keyPassphrase = 'theseam'
+      decryptedBuffer = await this.cryptoService.decrypt(fileContentBuffer,
+        this.selectedKey.keys.private, keyPassphrase)
+      console.log('decryptedBuffer: ', decryptedBuffer)
     } catch (err) {
       // console.error('err: ', err)
       decryptError = true

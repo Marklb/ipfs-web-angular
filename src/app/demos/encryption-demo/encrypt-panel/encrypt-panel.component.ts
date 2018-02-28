@@ -3,7 +3,7 @@ import { UploadEvent, UploadFile } from 'ngx-file-drop'
 import { Buffer as _Buffer } from 'buffer/'
 import { IpfsService } from 'app/services/ipfs.service'
 import { readFileAsync } from 'app/utils/file-utils'
-import { CryptoService } from 'app/services/crypto.service'
+import { CryptoService } from 'app/services/crypto/crypto.service'
 
 interface IpfsAddedFile {
   path: string,
@@ -87,20 +87,27 @@ export class EncryptPanelComponent implements OnInit {
   }
 
   public async encryptFilesPending() {
+    const keys = this.selectedKeys.map(k =>  k.keys.public)
+
+    const encrypting: Promise<any>[] = []
     for (const file of this.filesPending) {
-      const keys = this.selectedKeys.map(k => ({ keys: { public: k.keys.public } }))
-      const encrypted = await this.cryptoService.encrypt(file.buffer, keys, file.name)
-      const encryptedDataBuffer = _Buffer.from(encrypted)
-
-      const added = await this.ipfsService.ipfs.files.add([{
-        path: file.name,
-        content: this.ipfsService.toIpfsBuffer(encryptedDataBuffer)
-      }])
-
-      this.fileEncrypted.emit(added[0])
-
-      this.removePendingFile(file)
+      encrypting.push(this.encryptFile(file, keys))
     }
+    await encrypting
+  }
+
+  public async encryptFile(file: any, keys: any[]) {
+    const encrypted = await this.cryptoService.encrypt(file.buffer, keys, file.name)
+    const encryptedDataBuffer = _Buffer.from(encrypted)
+
+    const added = await this.ipfsService.ipfs.files.add([{
+      path: file.name,
+      content: this.ipfsService.toIpfsBuffer(encryptedDataBuffer)
+    }])
+
+    this.fileEncrypted.emit(added[0])
+
+    this.removePendingFile(file)
   }
 
   private async _getFileInfo(file: UploadFile): Promise<any> {

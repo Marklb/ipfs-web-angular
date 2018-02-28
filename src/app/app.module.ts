@@ -40,7 +40,7 @@ import { PinnedFilesComponent } from './components/pinned-files/pinned-files.com
 import { IpfsService } from './services/ipfs.service'
 import { LayoutService } from './services/layout.service'
 import { StoredKeysService } from './services/stored-keys.service'
-import { CryptoService } from './services/crypto.service'
+import { CryptoService } from './services/crypto/crypto.service'
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 

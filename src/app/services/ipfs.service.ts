@@ -43,16 +43,27 @@ export class IpfsService {
   public ipfsConnections = {
     localhost: {
       address: 'localhost',
-      port: '5001'
+      port: '5001',
+      protocol: 'http',
+      gatewayUrl: 'http://localhost:8080/ipfs'
     },
     jsuttontest1: {
       address: 'jsuttontest1.theseam.com',
-      port: '5001'
+      port: '5001',
+      protocol: 'http',
+      gatewayUrl: 'http://jsuttontest1.theseam.com:8080/ipfs'
+    },
+    infura: {
+      address: 'ipfs.infura.io',
+      port: '5001',
+      protocol: 'https',
+      gatewayUrl: 'https://ipfs.infura.io/ipfs'
     }
   }
 
   public ipfsConnection = this.ipfsConnections.localhost
   // public ipfsConnection = this.ipfsConnections.jsuttontest1
+  // public ipfsConnection = this.ipfsConnections.infura
 
   private _ipfsEnvironmentSubject = new BehaviorSubject<IpfsEnvironmentExtended>({
     environment: this._ipfsEnvironment,
@@ -142,7 +153,7 @@ export class IpfsService {
     // this.ipfs = ipfsAPI('localhost', '5001', { protocol: 'http' })
     // this.ipfs = ipfsAPI('jsuttontest1.theseam.com', '5001', { protocol: 'http' })
     this.ipfs = ipfsAPI(this.ipfsConnection.address, this.ipfsConnection.port,
-      { protocol: 'http' })
+      { protocol: this.ipfsConnection.protocol })
     console.log('IPFS Local Ready')
     this.isReady = true
 
@@ -185,10 +196,10 @@ export class IpfsService {
     if (this.ipfsEnvironment === IPFSEnvironments.Browser) {
       url = `https://ipfs.io/ipfs`
     } else {
-      url = `http://${this.ipfsConnection.address}:8080/ipfs`
+      url = this.ipfsConnection.gatewayUrl
     }
 
-    if (hash === null) {
+    if (hash !== null) {
       url = `${url}/${hash}`
     }
 

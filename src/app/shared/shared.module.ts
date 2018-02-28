@@ -10,6 +10,7 @@ import { JspdfTemplatesModule } from 'app/shared/jspdf-templates/jspdf-templates
 import { CardWidgetComponent } from './card-widget/card-widget.component'
 import { KeysSelectorComponent } from './keys-selector/keys-selector.component'
 import { FilesDropPickComponent } from './files-drop-pick/files-drop-pick.component'
+import { PrivatekeyPassphraseDialogComponent } from './privatekey-passphrase-dialog/privatekey-passphrase-dialog.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { FilesDropPickComponent } from './files-drop-pick/files-drop-pick.compon
   declarations: [
     CardWidgetComponent,
     KeysSelectorComponent,
-    FilesDropPickComponent
-  ]
+    FilesDropPickComponent,
+    PrivatekeyPassphraseDialogComponent
+]
 })
 export class SharedModule { }

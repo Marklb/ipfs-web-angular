@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, TemplateRef, ViewChild, ChangeDetectorRef } from '@angular/core'
 import { StoredKeysService } from 'app/services/stored-keys.service'
-import { CryptoService } from 'app/services/crypto.service'
+import { CryptoService } from 'app/services/crypto/crypto.service'
 import { IFormSubmittedEvent } from './generate-key-form/generate-key-form.component'
 import { ModalDirective } from 'ngx-bootstrap/modal'
 import * as openpgp from 'openpgp'

@@ -89,7 +89,7 @@
 
   <div class="pt-2"></div>
 
-  <app-card-widget [title]="'Check Validation'">
+  <app-card-widget [title]="'Check Validation'" [expanded]="true">
     <div class="input-group input-group-sm">
       <div class="input-group-prepend">
         <span class="input-group-text">File Hash</span>
@@ -105,7 +105,7 @@
     </div>
 
     <button type="button" class="btn btn-sm btn-outline-secondary"
-      (click)="testSign2(inpHash.value, inpSigHash.value)">Verify Signature</button>
+      (click)="verifySignature(inpHash.value, inpSigHash.value)">Verify Signature</button>
 
     <div class="card p-2" *ngIf="verifyCheckResult">
       <div><span style="font-weight: bold;">File Hash: </span>{{ verifyCheckResult.hash }}</div>

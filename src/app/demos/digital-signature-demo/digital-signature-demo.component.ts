@@ -4,7 +4,7 @@ import { IpfsService, IPFSEnvironments } from 'app/services/ipfs.service'
 import { StoredKeysService } from 'app/services/stored-keys.service'
 import { Buffer as _Buffer } from 'buffer/'
 import * as openpgp from 'openpgp'
-import { CryptoService } from 'app/services/crypto.service'
+import { CryptoService } from 'app/services/crypto/crypto.service'
 import { readFileAsync } from 'app/utils/file-utils'
 
 interface IpfsAddedFile {
@@ -39,7 +39,6 @@ export class DigitalSignatureDemoComponent implements OnInit {
   ngOnInit() {
     this.storedKeysService.storedKeys.subscribe((keys) => {
       this.keys = keys
-      this.selectedSigner = keys[0]
     })
   }
 
@@ -84,7 +83,9 @@ export class DigitalSignatureDemoComponent implements OnInit {
     const fileData = await readFileAsync(file)
     const fileContent = this.ipfsService.toIpfsBuffer(fileData)
 
-    const signed = await this.cryptoService.sign(fileContent, this.selectedSigner)
+    const keyPassphrase = 'theseam'
+    const signature = await this.cryptoService.sign(fileContent,
+      this.selectedSigner.keys.private, keyPassphrase)
 
     const added1 = await this.ipfsService.ipfs.files.add([{
       path: file.name,
@@ -93,7 +94,7 @@ export class DigitalSignatureDemoComponent implements OnInit {
 
     const added2 = await this.ipfsService.ipfs.files.add([{
       path: 'sig_' + file.name,
-      content: this.ipfsService.toIpfsBuffer(signed.signature)
+      content: this.ipfsService.toIpfsBuffer(signature)
     }])
 
     this.addedFiles.push(added1[0])
@@ -108,71 +109,21 @@ export class DigitalSignatureDemoComponent implements OnInit {
     })
   }
 
-  public async testSign2(hash: string, sigHash: string) {
-    console.log('testSign2 hash: ', hash)
-    console.log('testSign2 sigHash: ', sigHash)
+  public async verifySignature(hash: string, sigHash: string) {
     const dataFile = await this.ipfsService.ipfs.files.get(hash)
     const sigFile = await this.ipfsService.ipfs.files.get(sigHash)
-
-    // console.log('dataFile: ', dataFile)
-    // console.log('sigFile: ', sigFile)
-
-    // console.log('dataFile[0].content: ', dataFile[0].content)
-    // console.log('sigFile[0].content: ', sigFile[0].content)
 
     const dataFileStr = dataFile[0].content.toString()
     const sigFileStr = sigFile[0].content.toString()
 
-    // console.log('dataFileStr: ', dataFileStr)
-    // console.log('sigFileStr: ', sigFileStr)
-
-    const options = {
-      // message: openpgp.message.read(_Buffer.from(dataFile[0].content)),
-      message: openpgp.message.fromBinary(_Buffer.from(dataFile[0].content)),
-      // message: openpgp.message.fromBinary(dataFile[0].content),
-      // message: openpgp.message.fromText(dataFileStr), // input as Message object
-      signature: openpgp.signature.readArmored(sigFileStr), // parse detached signature
-      publicKeys: openpgp.key.readArmored(this.selectedSigner.keys.public).keys   // for verification
-    }
-
-    // const verified = await openpgp.verify(options)
-    // console.log('verified: ', verified)
-    // const validity = verified.signatures[0].valid // true
-    // console.log('verified: ', verified)
-    // if (validity) {
-    //   console.log('signed by key id ' + verified.signatures[0].keyid.toHex())
-    // } else {
-    //   console.log('not signed by key id ' + verified.signatures[0].keyid.toHex())
-    // }
-
-    // options.publicKeys = openpgp.key.readArmored(this.keys[0].keys.public).keys
-    // const verified2 = await openpgp.verify(options)
-    // const validity2 = verified2.signatures[0].valid // true
-    // if (validity2) {
-    //   console.log('signed by key id ' + verified2.signatures[0].keyid.toHex())
-    // } else {
-    //   console.log('not signed by key id ' + verified2.signatures[0].keyid.toHex())
-    // }
-
-    // options.publicKeys = openpgp.key.readArmored(this.keys[1].keys.public).keys
-    // const verified3 = await openpgp.verify(options)
-    // const validity3 = verified3.signatures[0].valid // true
-    // if (validity3) {
-    //   console.log('signed by key id ' + verified3.signatures[0].keyid.toHex())
-    // } else {
-    //   console.log('not signed by key id ' + verified3.signatures[0].keyid.toHex())
-    // }
-
     const results = []
     for (const keyUser of this.keys) {
-      options.publicKeys = openpgp.key.readArmored(keyUser.keys.public).keys
-      const verified = await openpgp.verify(options)
-      const validity = verified.signatures[0].valid // true
-      if (validity) {
-        // console.log('signed by key id ' + verified.signatures[0].keyid.toHex())
-      } else {
-        // console.log('not signed by key id ' + verified.signatures[0].keyid.toHex())
-      }
+      const msg = dataFile[0].content
+      const sig = sigFileStr
+      const key = keyUser.keys.public
+
+      const validity = await this.cryptoService.verify(msg, key, sig)
+
       results.push({
         name: keyUser.userIds[0].userId,
         valid: validity

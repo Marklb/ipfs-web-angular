@@ -1,4 +1,4 @@
-export const readFileAsync = async (file: any) => {
+export const readFileAsync = async (file: any): Promise<any> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => {
