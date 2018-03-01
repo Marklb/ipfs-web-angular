@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { IpfsService, IPFSEnvironments } from '../../services/ipfs.service'
+import { IpfsService, IpfsEnvironment, IpfsConnection } from '../../services/ipfs.service'
 
 @Component({
   selector: 'app-config-file',
@@ -11,7 +11,7 @@ export class ConfigFileComponent implements OnInit {
   public configFile: any
 
   constructor(public ipfsService: IpfsService) {
-    this.ipfsService.ipfsEnvironmentExtended.subscribe((env) => {
+    this.ipfsService.ipfsConnectionChange.subscribe((conn) => {
       this.loadConfig()
     })
   }
@@ -25,7 +25,9 @@ export class ConfigFileComponent implements OnInit {
       console.log(res)
       // console.log(res.toString())
       // console.log(JSON.parse(res.toString()))
-      if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+      const ipfsConn: IpfsConnection = this.ipfsService.getIpfsConnection()
+      const ipfsEnv: IpfsEnvironment = ipfsConn.environment
+      if (ipfsEnv === IpfsEnvironment.Local) {
         this.configFile = JSON.parse(res.toString())
       } else {
         this.configFile = res

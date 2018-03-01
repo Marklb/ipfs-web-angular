@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { IJspdfTplExample1Model } from 'app/shared/jspdf-templates/jspdf-tpl-example-1/jspdf-tpl-example-1.component'
-import { IpfsService, IPFSEnvironments } from 'app/services/ipfs.service'
+import { IpfsService, IpfsEnvironment, IpfsConnection } from 'app/services/ipfs.service'
 import * as jsPDF from 'jspdf'
 import * as _buffer from 'buffer/'
 const _Buffer = _buffer.Buffer
@@ -34,12 +34,7 @@ export class WebmergeDemoComponent implements OnInit {
   public postedDocInfo: any
 
   get gatewayUrl(): string {
-    if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
-      // return 'http://localhost:8080/ipfs/'
-      return `http://${this.ipfsService.ipfsConnection.address}:8080/ipfs/`
-    }
-    return 'https://ipfs.io/ipfs/'
-    // return 'http://localhost:8080/ipfs/'
+    return this.ipfsService.getGatewayUrl()
   }
 
   get hostLocation(): string {
@@ -151,7 +146,9 @@ export class WebmergeDemoComponent implements OnInit {
 
           let fileData
           let content
-          if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+          const ipfsConn: IpfsConnection = this.ipfsService.getIpfsConnection()
+          const ipfsEnv: IpfsEnvironment = ipfsConn.environment
+          if (ipfsEnv === IpfsEnvironment.Local) {
             content = _Buffer.from(reader.result)
             fileData = [{
               path: 'TestDoc',
@@ -195,7 +192,9 @@ export class WebmergeDemoComponent implements OnInit {
 
       let fileData
       let content
-      if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+      const ipfsConn: IpfsConnection = this.ipfsService.getIpfsConnection()
+      const ipfsEnv: IpfsEnvironment = ipfsConn.environment
+      if (ipfsEnv === IpfsEnvironment.Local) {
         content = _Buffer.from(pdfArrayBuffer)
         fileData = [{
           path: 'TestDoc',
@@ -227,7 +226,9 @@ export class WebmergeDemoComponent implements OnInit {
 
     let fileData
     let content
-    if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+    const ipfsConn: IpfsConnection = this.ipfsService.getIpfsConnection()
+    const ipfsEnv: IpfsEnvironment = ipfsConn.environment
+    if (ipfsEnv === IpfsEnvironment.Local) {
       content = _Buffer.from(JSON.stringify(contentJson))
       fileData = [{
         path: 'TestDocData',

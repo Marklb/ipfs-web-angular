@@ -60,12 +60,13 @@ export class EncryptPanelComponent implements OnInit {
     for (const file of files) {
       const info = await this._getFileInfo(file)
       const fileData = await readFileAsync(info)
+
       this.filesPending.push({
         from: FromType.Drop,
         name: info.name,
         path: file.relativePath,
         size: info.size,
-        buffer: this.ipfsService.toIpfsBuffer(fileData),
+        buffer: _Buffer.from(fileData),
         extra: file
       })
     }
@@ -80,7 +81,7 @@ export class EncryptPanelComponent implements OnInit {
         from: FromType.Browse,
         name: file.name,
         size: file.size,
-        buffer: this.ipfsService.toIpfsBuffer(fileData),
+        buffer: _Buffer.from(fileData),
         extra: file
       })
     }
@@ -102,7 +103,7 @@ export class EncryptPanelComponent implements OnInit {
 
     const added = await this.ipfsService.ipfs.files.add([{
       path: file.name,
-      content: this.ipfsService.toIpfsBuffer(encryptedDataBuffer)
+      content: _Buffer.from(encryptedDataBuffer)
     }])
 
     this.fileEncrypted.emit(added[0])

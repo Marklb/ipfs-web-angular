@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { UploadEvent, UploadFile } from 'ngx-file-drop'
-import { IpfsService, IPFSEnvironments } from 'app/services/ipfs.service'
+import { IpfsService } from 'app/services/ipfs.service'
 import { StoredKeysService } from 'app/services/stored-keys.service'
 import { Buffer as _Buffer } from 'buffer/'
 import * as openpgp from 'openpgp'
@@ -81,7 +81,7 @@ export class DigitalSignatureDemoComponent implements OnInit {
 
   private async addFileToIpfs(file: any, filePath?: string): Promise<any> {
     const fileData = await readFileAsync(file)
-    const fileContent = this.ipfsService.toIpfsBuffer(fileData)
+    const fileContent = _Buffer.from(fileData)
 
     const keyPassphrase = 'theseam'
     const signature = await this.cryptoService.sign(fileContent,
@@ -94,7 +94,7 @@ export class DigitalSignatureDemoComponent implements OnInit {
 
     const added2 = await this.ipfsService.ipfs.files.add([{
       path: 'sig_' + file.name,
-      content: this.ipfsService.toIpfsBuffer(signature)
+      content: _Buffer.from(signature)
     }])
 
     this.addedFiles.push(added1[0])

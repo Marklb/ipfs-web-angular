@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit {
   public idData: any
 
   constructor(public ipfsService: IpfsService) {
-    this.ipfsService.ipfsEnvironmentExtended.subscribe((env) => {
+    this.ipfsService.ipfsConnectionChange.subscribe(conn => {
       this.ipfsService.ipfs.id()
       .then((id) => {
         // console.log(id)

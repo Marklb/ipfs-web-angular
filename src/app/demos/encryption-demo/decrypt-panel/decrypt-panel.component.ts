@@ -76,6 +76,7 @@ export class DecryptPanelComponent implements OnInit {
       })
     }
     if (!decryptError) {
+      // const fType
       // const resultTest = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
       const file1 = new Blob([decryptedBuffer], { type: 'application/pdf' })
       // const file1 = new Blob([decryptedBuffer], { type: 'application/octet-stream' })

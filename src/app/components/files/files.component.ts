@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { IpfsService, IPFSEnvironments } from '../../services/ipfs.service'
+import { IpfsService, IpfsEnvironment, IpfsConnection } from '../../services/ipfs.service'
 import * as dagPB from 'ipld-dag-pb'
 // const dagPB = require('ipld-dag-pb')
 const DAGNode = dagPB.DAGNode
@@ -25,8 +25,8 @@ export class FilesComponent implements OnInit {
 
   ngOnInit() {
     // this.loadFiles()
-    this.ipfsService.ipfsEnvironmentExtended.subscribe((env) => {
-      if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Browser) {
+    this.ipfsService.ipfsConnectionChange.subscribe((conn) => {
+      if (conn.environment === IpfsEnvironment.Browser) {
         this.implementationMissing = true
       } else {
         this.loadFiles()

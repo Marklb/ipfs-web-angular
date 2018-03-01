@@ -2,8 +2,6 @@ import * as openpgp from 'openpgp'
 import { Buffer as _Buffer } from 'buffer/'
 import { ICryptoServiceProvider, ICryptoKeysPair } from '../crypto.models'
 
-declare var window: any
-
 export class OpenPGPCryptoServiceProvider implements ICryptoServiceProvider {
 
   constructor() {}

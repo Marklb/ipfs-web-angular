@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core'
 import { UploadEvent, UploadFile } from 'ngx-file-drop'
-import { IpfsService, IPFSEnvironments } from 'app/services/ipfs.service'
+import { IpfsService, IpfsEnvironment, IpfsConnection } from 'app/services/ipfs.service'
 import * as _buffer from 'buffer/'
 const _Buffer = _buffer.Buffer
 
@@ -143,7 +143,9 @@ export class HashCheckDemoComponent implements OnInit {
         }
 
         let fileData
-        if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+        const ipfsConn: IpfsConnection = this.ipfsService.getIpfsConnection()
+        const ipfsEnv: IpfsEnvironment = ipfsConn.environment
+        if (ipfsEnv === IpfsEnvironment.Local) {
           fileData = [{
             path: filename,
             content: _Buffer.from(reader.result)

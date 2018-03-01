@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { IpfsService, IPFSEnvironments } from '../../services/ipfs.service'
+import { IpfsService, IpfsEnvironment, IpfsConnection } from '../../services/ipfs.service'
 
 interface IPeer {
   id: string
@@ -13,14 +13,11 @@ interface IPeer {
 export class PeersListComponent implements OnInit, OnDestroy {
 
   public peersList: IPeer[] = []
-  public knownPeers: any
   public peersInterval: any
 
   constructor(public ipfsService: IpfsService) { }
 
   ngOnInit() {
-    this.ipfsService.knownPeers.subscribe(known => this.knownPeers = known)
-
     this.peersInterval = setInterval(() => {
       this.refreshPeers()
     }, 1000)
@@ -34,9 +31,11 @@ export class PeersListComponent implements OnInit, OnDestroy {
   public refreshPeers(): void {
     this.ipfsService.ipfs.swarm.peers()
     .then((peers) => {
+      const ipfsConn: IpfsConnection = this.ipfsService.getIpfsConnection()
+      const ipfsEnv: IpfsEnvironment = ipfsConn.environment
       // console.log('peers: ', peers)
       peers = peers.sort((a, b) => {
-        if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+        if (ipfsEnv === IpfsEnvironment.Local) {
           return a.peer.toB58String() > b.peer.toB58String() ? 1 : -1
         } else {
           return a.peer.id.toB58String() > b.peer.id.toB58String() ? 1 : -1
@@ -46,7 +45,7 @@ export class PeersListComponent implements OnInit, OnDestroy {
       const peersListTmp: IPeer[] = []
       peers.forEach((peer, i) => {
         let id
-        if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+        if (ipfsEnv === IpfsEnvironment.Local) {
           id = peer.peer.toB58String()
         } else {
           id = peer.peer.id.toB58String()

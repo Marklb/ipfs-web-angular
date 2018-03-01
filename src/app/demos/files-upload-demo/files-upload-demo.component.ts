@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { UploadEvent, UploadFile } from 'ngx-file-drop'
-import { IpfsService, IPFSEnvironments } from 'app/services/ipfs.service'
-import * as _buffer from 'buffer/'
-const _Buffer = _buffer.Buffer
+import { IpfsService, IpfsEnvironment, IpfsConnection } from 'app/services/ipfs.service'
+import { Buffer as _Buffer } from 'buffer/'
 
 interface IpfsAddedFile {
   path: string,
@@ -67,13 +66,7 @@ export class FilesUploadDemoComponent implements OnInit {
   }
 
   public viewFile(file: IpfsAddedFile) {
-    let url
-    if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Browser) {
-      url = `https://ipfs.io/ipfs/${file.hash}`
-    } else {
-      // url = `http://localhost:8080/ipfs/${file.hash}`
-      url = `http://${this.ipfsService.ipfsConnection.address}:8080/ipfs/${file.hash}`
-    }
+    const url = this.ipfsService.getGatewayUrl(file.hash)
     window.open(url, '_blank')
   }
 
@@ -101,7 +94,9 @@ export class FilesUploadDemoComponent implements OnInit {
         }
 
         let fileData
-        if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+        const ipfsConn: IpfsConnection = this.ipfsService.getIpfsConnection()
+        const ipfsEnv: IpfsEnvironment = ipfsConn.environment
+        if (ipfsEnv === IpfsEnvironment.Local) {
           fileData = [{
             path: filename,
             content: _Buffer.from(reader.result)
@@ -144,7 +139,7 @@ export class FilesUploadDemoComponent implements OnInit {
         //   console.log('reader.result', reader.result)
 
         //   let fileData
-        //   if (this.ipfsService.ipfsEnvironment === IPFSEnvironments.Local) {
+        //   if (this.ipfsService.ipfsEnvironment === IpfsEnvironment.Local) {
         //     fileData = [{
         //       path: info.name,
         //       content: _Buffer.from(reader.result)

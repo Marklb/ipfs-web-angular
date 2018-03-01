@@ -27,6 +27,18 @@ export class CryptoService {
   /**
    * Sign data
    *
+   * Returns armored signature
+   * Example return format:
+   *  -----BEGIN PGP SIGNATURE-----
+   *  Version: OpenPGP.js v2.6.2
+   *  Comment: https://openpgpjs.org
+   *
+   *  wsFcBAABCAAQBQJalkPcCRC739vf130X9AAAzSIP/3inkZ2bZYwkZEAhGIvh
+   *  ...
+   *  ...
+   *  =3koB
+   *  -----END PGP SIGNATURE-----
+   *
    * @param data
    * @param privateKey
    * @param keyPassphrase (optional) Required if private key is secured with a passphrase

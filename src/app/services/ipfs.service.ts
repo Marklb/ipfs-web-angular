@@ -4,92 +4,98 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import * as IPFS from 'ipfs'
 import * as ipfsAPI from 'ipfs-api'
 import { Buffer as _Buffer } from 'buffer/'
+import 'rxjs/add/operator/toPromise'
 
-declare var window: any
-
-export interface IpfsConnection {
-  address: string,
-  port: string
-}
-
-export enum IPFSEnvironments {
+export enum IpfsEnvironment {
   Browser = 'browser',
   Local = 'local'
 }
 
-export interface IpfsEnvironmentExtended {
-  environment: IPFSEnvironments,
-  connection: IpfsConnection
+export interface IpfsConnection {
+  address: string,
+  port: string,
+  protocol: string,
+  gatewayUrl: string,
+  environment: IpfsEnvironment
 }
 
 @Injectable()
 export class IpfsService {
 
   public ipfs: any
-  // private _ipfsEnvironment: IPFSEnvironments = IPFSEnvironments.Browser
-  private _ipfsEnvironment: IPFSEnvironments = IPFSEnvironments.Local
-
-  private _knownPeersSubject = new BehaviorSubject<any>({
-    'Qma3QYuNc2KVMNtnmT92Z4Pn5dzZ8SHU6R7SjDc1pCzppb': { name: 'markb_office_desktop' },
-    'QmRymhAzvKAsL5B1MegZUhTeC9ZL37XxCct3VtnZUZakb5': { name: 'markb_docker_ipfs_host_01' },
-    'QmfNCXBCj6CMrRnbdTcoWHBG2Gck68Cg1FrfpKunW73bsL': { name: 'markb_docker_ipfs_host_02' },
-    'QmX7whGzuhmzZKNQB4y4XtjKBCRXFgLTH6rL7SbFtR195u': { name: 'markb_docker_ipfs_host_03' },
-    'QmXZ5KYKmiWwU3W9pdvxyB5fdYfA818WABdg9KFHHy8PRH': { name: 'markb_docker_ipfs_host_04' }
-  })
-  public knownPeers = this._knownPeersSubject.asObservable()
 
   public isReady: boolean = false
 
   public ipfsConnections = {
+    browser: {
+      gatewayUrl: 'https://ipfs.io/ipfs',
+      environment: IpfsEnvironment.Browser
+    },
     localhost: {
       address: 'localhost',
       port: '5001',
       protocol: 'http',
-      gatewayUrl: 'http://localhost:8080/ipfs'
+      gatewayUrl: 'http://localhost:8080/ipfs',
+      environment: IpfsEnvironment.Local
     },
+    // mberry2017: {
+    //   address: 'mberry2017.theseam.com',
+    //   port: '5001',
+    //   protocol: 'https',
+    //   gatewayUrl: 'https://mberry2017.theseam.com/ipfs',
+    //   environment: IpfsEnvironment.Local
+    // },
     jsuttontest1: {
       address: 'jsuttontest1.theseam.com',
-      port: '5001',
-      protocol: 'http',
-      gatewayUrl: 'http://jsuttontest1.theseam.com:8080/ipfs'
+      port: '443',
+      protocol: 'https',
+      gatewayUrl: 'https://jsuttontest1.theseam.com/ipfs',
+      environment: IpfsEnvironment.Local
     },
     infura: {
       address: 'ipfs.infura.io',
       port: '5001',
       protocol: 'https',
-      gatewayUrl: 'https://ipfs.infura.io/ipfs'
+      gatewayUrl: 'https://ipfs.infura.io/ipfs',
+      environment: IpfsEnvironment.Local
     }
   }
 
-  public ipfsConnection = this.ipfsConnections.localhost
-  // public ipfsConnection = this.ipfsConnections.jsuttontest1
-  // public ipfsConnection = this.ipfsConnections.infura
+  private _initialIpfsConnection: IpfsConnection = this.ipfsConnections.jsuttontest1
 
-  private _ipfsEnvironmentSubject = new BehaviorSubject<IpfsEnvironmentExtended>({
-    environment: this._ipfsEnvironment,
-    connection: this.ipfsConnection
-  })
-  public ipfsEnvironmentExtended = this._ipfsEnvironmentSubject.asObservable()
+  private _ipfsConnectionSubject = new BehaviorSubject<IpfsConnection>(
+    this._initialIpfsConnection)
+  public ipfsConnectionChange = this._ipfsConnectionSubject.asObservable()
+
+  private _ipfsConnection: IpfsConnection = this._initialIpfsConnection
+  private get ipfsConnection(): IpfsConnection {
+    return this._ipfsConnection
+  }
+  private set ipfsConnection(val: IpfsConnection) {
+    this._ipfsConnection = val
+    this._ipfsConnectionSubject.next(this._ipfsConnection)
+  }
 
   constructor() {
     this._initIPFS().then(() => console.log('IPFS Initialized'))
   }
 
   private async _initIPFS (): Promise<any> {
-    if (this._ipfsEnvironment === IPFSEnvironments.Browser) {
-      return this._initBrowserIPFS()
-    } else if (this._ipfsEnvironment === IPFSEnvironments.Local) {
-      return this._initLocalIPFS()
+    const ipfsConn: IpfsConnection = this.ipfsConnection
+    const ipfsEnv: IpfsEnvironment = ipfsConn.environment
+
+    if (ipfsEnv === IpfsEnvironment.Browser) {
+      return this._initBrowserIPFS(ipfsConn)
+    } else if (ipfsEnv === IpfsEnvironment.Local) {
+      return this._initLocalIPFS(ipfsConn)
     } else {
       throw new Error('IPFS Environment not recognized')
     }
   }
 
-  private async _initBrowserIPFS(): Promise<any> {
+  private async _initBrowserIPFS(ipfsConn: IpfsConnection): Promise<any> {
     // Create the IPFS node instance
     const repoPath = String(Math.random())
-    // const repoPath = 'TestBrowserNode'
-    console.log(`repoPath: ${repoPath}`)
 
     this.ipfs = new IPFS({
       init: true,
@@ -125,7 +131,6 @@ export class IpfsService {
     return new Promise<any>((resolve, reject) => {
       this.ipfs.on('ready', () => {
         console.log('IPFS Browser Ready')
-        window.g_ipfs = this.ipfs
         this.isReady = true
 
         this.ipfs.id().then(id => { console.log(id) })
@@ -140,60 +145,51 @@ export class IpfsService {
         //   })
         // })
 
-        this._ipfsEnvironmentSubject.next({
-          environment: this.ipfsEnvironment,
-          connection: this.ipfsConnection
-        })
+        this._ipfsConnection = ipfsConn
         resolve()
       })
     })
   }
 
-  private async _initLocalIPFS(): Promise<any> {
-    // this.ipfs = ipfsAPI('localhost', '5001', { protocol: 'http' })
-    // this.ipfs = ipfsAPI('jsuttontest1.theseam.com', '5001', { protocol: 'http' })
-    this.ipfs = ipfsAPI(this.ipfsConnection.address, this.ipfsConnection.port,
-      { protocol: this.ipfsConnection.protocol })
+  private async _initLocalIPFS(ipfsConn: IpfsConnection): Promise<any> {
+    this.ipfs = ipfsAPI(ipfsConn.address, ipfsConn.port,
+      { protocol: ipfsConn.protocol })
     console.log('IPFS Local Ready')
     this.isReady = true
 
-    this._ipfsEnvironmentSubject.next({
-      environment: this.ipfsEnvironment,
-      connection: this.ipfsConnection
-    })
+    this._ipfsConnection = ipfsConn
   }
 
-  public useIPFSEnvironment(env: IPFSEnvironments) {
-    // if (this._ipfsEnvironment === env) { return }
+  public getIpfsConnection(): IpfsConnection {
+    return this.ipfsConnection
+  }
 
-    // this._ipfsEnvironment = env
+  public async setIpfsConnection(connectionName: string): Promise<any> {
+    if (!this.ipfsConnections[connectionName]) {
+      throw new Error('IPFS Connection not known')
+    }
 
-    if (this._ipfsEnvironment === IPFSEnvironments.Browser) {
+    const ipfsConn = this.ipfsConnections[connectionName]
+    if (ipfsConn.environment === IpfsEnvironment.Browser) {
       this.isReady = false
-      this._ipfsEnvironment = env
       this.ipfs.stop().then(this._initIPFS()).then(() => {
         console.log('Environment switched')
       })
-    } else {
+    } else if (ipfsConn.environment === IpfsEnvironment.Local) {
       this.isReady = false
-      this._ipfsEnvironment = env
       this._initIPFS().then(() => {
         console.log('Environment switched')
       })
+    } else {
+      throw new Error('IPFS Connection environment not known')
     }
   }
 
-  public get ipfsEnvironment() {
-    return this._ipfsEnvironment
-  }
-
-  public setIpfsConnection(connectionName: string): void {
-    this.ipfsConnection = this.ipfsConnections[connectionName]
-  }
-
   public getGatewayUrl(hash: string = null): string {
+    const ipfsEnv = this.ipfsConnection.environment
+
     let url
-    if (this.ipfsEnvironment === IPFSEnvironments.Browser) {
+    if (ipfsEnv === IpfsEnvironment.Browser) {
       url = `https://ipfs.io/ipfs`
     } else {
       url = this.ipfsConnection.gatewayUrl
@@ -204,28 +200,6 @@ export class IpfsService {
     }
 
     return url
-  }
-
-  public addFiles(files: any) {
-
-  }
-
-  public _addFilesBrowser(files: any) {
-
-  }
-
-  public _addFilesLocal(files: any) {
-
-  }
-
-  public toIpfsBuffer(data: any) {
-    let buf
-    if (this.ipfsEnvironment === IPFSEnvironments.Local) {
-      buf = _Buffer.from(data)
-    } else {
-      buf = new this.ipfs.types.Buffer(data)
-    }
-    return buf
   }
 
 }
