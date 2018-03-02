@@ -22,14 +22,14 @@
 <!-- <div #editorRef class="editor"></div>
 <div #contentRef></div> -->
 
-<div class="text-danger pb-1">
+<!-- <div class="text-danger pb-1">
   NOTE: Editor is not configured yet. It will create a PDF with the PDF button,
   but it may not display correctly until it gets configured.
 </div>
 
 <div class="card border-0 exclude-bootstrap4 prosemirror-scope">
   <app-editor></app-editor>
-</div>
+</div> -->
 
 <!-- <iframe src="http://localhost:4200/#/editor" frameborder="0"></iframe> -->
 <!-- <div class="embed-responsive embed-responsive-16by9 border border-danger">
@@ -40,3 +40,12 @@
 <!-- <div class="embed-responsive embed-responsive-16by9 border border-danger">
   <iframe #testIframe class="embed-responsive-item" (load)="onLoadIframe()" allowfullscreen></iframe>
 </div> -->
+
+
+<div class="p-2">
+  <trumbowyg liveUpdate="false" togglePreview="false" [options]="options" [initialContent]="initialContentTwo" (savedContent)="contentTwo=$event"></trumbowyg>
+  <!-- <div>
+    <p [innerHTML]="contentTwo"></p>
+  </div> -->
+  <!-- <div [innerHTML]="contentTwo"></div> -->
+</div>

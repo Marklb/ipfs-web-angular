@@ -61,7 +61,7 @@ export class IpfsService {
     }
   }
 
-  private _initialIpfsConnection: IpfsConnection = this.ipfsConnections.jsuttontest1
+  private _initialIpfsConnection: IpfsConnection = this.ipfsConnections.localhost
 
   private _ipfsConnectionSubject = new BehaviorSubject<IpfsConnection>(
     this._initialIpfsConnection)

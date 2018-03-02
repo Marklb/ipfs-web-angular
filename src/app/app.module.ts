@@ -17,6 +17,7 @@ import { TreeModule } from 'ng2-tree'
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar'
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar'
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'
+import { TrumbowygModule } from 'ng2-lazy-trumbowyg'
 
 import { SharedModule } from './shared/shared.module'
 import { DemosModule } from './demos/demos.module'
@@ -80,7 +81,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SharedModule,
     DemosModule,
     DocumentEditorModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    TrumbowygModule.forRoot({
+      plugins: [
+        'colors', 'noembed', 'preformatted', 'pasteimage', 'upload', 'base64', 'template'
+      ],
+      version: '2.9.4'
+    })
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: window['_app_base'] || '/' },

@@ -34,3 +34,8 @@
 // }
 
 // .ProseMirror p { margin-bottom: 1em }
+
+
+:host ::ng-deep .trumbowyg-editor, :host ::ng-deep .trumbowyg-textarea {
+  min-height: 800px;
+}
