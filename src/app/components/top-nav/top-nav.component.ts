@@ -14,7 +14,8 @@ export class TopNavComponent implements OnInit {
   public buttonStates = {
       browser: false,
       localhost: false,
-      jsuttontest1: false
+      jsuttontest1: false,
+      infura: false
   }
 
   constructor(public ipfsService: IpfsService,
@@ -24,15 +25,23 @@ export class TopNavComponent implements OnInit {
         this.buttonStates.browser = true
         this.buttonStates.localhost = false
         this.buttonStates.jsuttontest1 = false
+        this.buttonStates.infura = false
       } else if (conn.environment === IpfsEnvironment.Local) {
         if (conn.address === 'localhost' || conn.address === '127.0.0.1') {
           this.buttonStates.browser = false
           this.buttonStates.localhost = true
           this.buttonStates.jsuttontest1 = false
+          this.buttonStates.infura = false
         } else if (conn.address === 'jsuttontest1.theseam.com') {
           this.buttonStates.browser = false
           this.buttonStates.localhost = false
           this.buttonStates.jsuttontest1 = true
+          this.buttonStates.infura = false
+        } else if (conn.address === 'ipfs.infura.io') {
+          this.buttonStates.browser = false
+          this.buttonStates.localhost = false
+          this.buttonStates.jsuttontest1 = false
+          this.buttonStates.infura = true
         }
       }
     })
@@ -54,6 +63,10 @@ export class TopNavComponent implements OnInit {
 
   onClickJSuttonTest1() {
     this.ipfsService.setIpfsConnection('jsuttontest1')
+  }
+
+  onClickInfura() {
+    this.ipfsService.setIpfsConnection('infura')
   }
 
 }

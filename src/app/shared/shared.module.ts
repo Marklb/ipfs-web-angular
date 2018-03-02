@@ -11,6 +11,7 @@ import { CardWidgetComponent } from './card-widget/card-widget.component'
 import { KeysSelectorComponent } from './keys-selector/keys-selector.component'
 import { FilesDropPickComponent } from './files-drop-pick/files-drop-pick.component'
 import { PrivatekeyPassphraseDialogComponent } from './privatekey-passphrase-dialog/privatekey-passphrase-dialog.component';
+import { SettingsManagerComponent } from './settings-manager/settings-manager.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { PrivatekeyPassphraseDialogComponent } from './privatekey-passphrase-dia
     CardWidgetComponent,
     KeysSelectorComponent,
     FilesDropPickComponent,
-    PrivatekeyPassphraseDialogComponent
+    PrivatekeyPassphraseDialogComponent,
+    SettingsManagerComponent
 ]
 })
 export class SharedModule { }

@@ -22,6 +22,12 @@
       <span class="noselect"><i class="fas fa-key"></i></span>
     </button>
 
+    <!-- <button class="btn btn-sm btn-outline-light mr-1" type="button"
+      [disabled]="storedKeysManagerUiRef.isModalShown"
+      (click)="storedKeysManagerUiRef.toggleModal()">
+      <span class="noselect"><i class="fas fa-cog"></i></span>
+    </button> -->
+
     <button class="btn btn-sm btn-primary mr-1" type="button"
       [disabled]="buttonStates.browser"
       (click)="onClickBrowser()">Browser</button>
@@ -30,9 +36,13 @@
       [disabled]="buttonStates.localhost"
       (click)="onClickLocal()">Local</button>
 
-    <button class="btn btn-sm btn-primary" type="button"
+    <button class="btn btn-sm btn-primary mr-1" type="button"
       [disabled]="buttonStates.jsuttontest1"
       (click)="onClickJSuttonTest1()">JSuttonTest1</button>
+
+    <button class="btn btn-sm btn-primary" type="button"
+      [disabled]="buttonStates.infura"
+      (click)="onClickInfura()">Infura</button>
   </form>
 </nav>
 

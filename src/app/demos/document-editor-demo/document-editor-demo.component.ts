@@ -57,6 +57,14 @@ export class DocumentEditorDemoComponent implements OnInit {
         {
             name: 'Template 2',
             html: '<p>I am a different template!</p>'
+        },
+        {
+          name: 'Name Insert',
+          html: `<h2>This is the <strong>Name Insert</strong> template</h2>
+            <p>My name is {var:name}</p>
+            <p>Click the <strong>PDF</strong> button to create a PDF with the name
+            <i>Mark</i> replaced with the name variable placeholder.</p>
+          `
         }
     ]
     }

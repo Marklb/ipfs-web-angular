@@ -35,6 +35,9 @@
 
 // .ProseMirror p { margin-bottom: 1em }
 
+:host ::ng-deep .trumbowyg-box, :host ::ng-deep .trumbowyg-editor {
+  margin: auto;
+}
 
 :host ::ng-deep .trumbowyg-editor, :host ::ng-deep .trumbowyg-textarea {
   min-height: 800px;

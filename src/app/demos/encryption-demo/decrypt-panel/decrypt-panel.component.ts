@@ -76,9 +76,12 @@ export class DecryptPanelComponent implements OnInit {
       })
     }
     if (!decryptError) {
-      // const fType
+      const fType = fileType(decryptedBuffer)
+      console.log('fType: ', fType)
+      const mime = (fType) ? fType.mime : 'application/octet-stream'
       // const resultTest = await this.cryptoService.decrypt(fileContentBuffer, this.selectedKey)
-      const file1 = new Blob([decryptedBuffer], { type: 'application/pdf' })
+      const file1 = new Blob([decryptedBuffer], { type: mime })
+      // const file1 = new Blob([decryptedBuffer], { type: 'application/pdf' })
       // const file1 = new Blob([decryptedBuffer], { type: 'application/octet-stream' })
       const fileURL = URL.createObjectURL(file1)
       // console.log('fileURL: ', fileURL)

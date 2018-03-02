@@ -61,7 +61,7 @@ export class IpfsService {
     }
   }
 
-  private _initialIpfsConnection: IpfsConnection = this.ipfsConnections.localhost
+  private _initialIpfsConnection: IpfsConnection = this.ipfsConnections.jsuttontest1
 
   private _ipfsConnectionSubject = new BehaviorSubject<IpfsConnection>(
     this._initialIpfsConnection)
@@ -73,16 +73,21 @@ export class IpfsService {
   }
   private set ipfsConnection(val: IpfsConnection) {
     this._ipfsConnection = val
-    this._ipfsConnectionSubject.next(this._ipfsConnection)
+    this._ipfsConnectionSubject.next(val)
   }
 
   constructor() {
     this._initIPFS().then(() => console.log('IPFS Initialized'))
   }
 
-  private async _initIPFS (): Promise<any> {
-    const ipfsConn: IpfsConnection = this.ipfsConnection
-    const ipfsEnv: IpfsEnvironment = ipfsConn.environment
+  private async _initIPFS (conn: IpfsConnection = null): Promise<any> {
+    let ipfsConn: IpfsConnection = this.ipfsConnection
+    let ipfsEnv: IpfsEnvironment = ipfsConn.environment
+
+    if (conn !== null) {
+      ipfsConn = conn
+      ipfsEnv = conn.environment
+    }
 
     if (ipfsEnv === IpfsEnvironment.Browser) {
       return this._initBrowserIPFS(ipfsConn)
@@ -145,7 +150,7 @@ export class IpfsService {
         //   })
         // })
 
-        this._ipfsConnection = ipfsConn
+        this.ipfsConnection = ipfsConn
         resolve()
       })
     })
@@ -157,7 +162,7 @@ export class IpfsService {
     console.log('IPFS Local Ready')
     this.isReady = true
 
-    this._ipfsConnection = ipfsConn
+    this.ipfsConnection = ipfsConn
   }
 
   public getIpfsConnection(): IpfsConnection {
@@ -172,12 +177,12 @@ export class IpfsService {
     const ipfsConn = this.ipfsConnections[connectionName]
     if (ipfsConn.environment === IpfsEnvironment.Browser) {
       this.isReady = false
-      this.ipfs.stop().then(this._initIPFS()).then(() => {
+      this.ipfs.stop().then(this._initIPFS(ipfsConn)).then(() => {
         console.log('Environment switched')
       })
     } else if (ipfsConn.environment === IpfsEnvironment.Local) {
       this.isReady = false
-      this._initIPFS().then(() => {
+      this._initIPFS(ipfsConn).then(() => {
         console.log('Environment switched')
       })
     } else {
