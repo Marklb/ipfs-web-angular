@@ -1,0 +1,27 @@
+<app-card-widget [title]="'Schema Form Editor'" [expanded]="false">
+  <div class="card-body p-2">
+
+    <div class="mb-1">
+      <app-card-widget [title]="'Schema'" [expanded]="true">
+        <div class="card-body p-0">
+          <td-code-editor style="height: 600px" theme="vs" flex language="json"
+            [(ngModel)]="jsonSchema"></td-code-editor>
+        </div>
+      </app-card-widget>
+    </div>
+
+    <div class="mb-1">
+      <app-card-widget [title]="'Model'" [expanded]="true">
+        <div class="card-body p-0">
+          <td-code-editor style="height: 600px" theme="vs" flex language="json"
+            [(ngModel)]="jsonModel"></td-code-editor>
+        </div>
+      </app-card-widget>
+    </div>
+
+  </div>
+
+  <div class="card-footer" *ngIf="footerBtnTemplates.length > 0">
+    <ng-content select="[appDocumentSchemaFooterButtons]"></ng-content>
+  </div>
+</app-card-widget>

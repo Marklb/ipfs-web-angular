@@ -1,44 +1,55 @@
 <h2 class="p-2 mb-0">Document Editor Demo</h2>
 
-<div class="card mb-1">
-  <div class="card-header">Schema Form</div>
-  <div class="card-body p-2">
-
-    <div class="card mb-1">
-      <div class="card-header p-1">Schema</div>
-      <div class="card-body p-0">
-        <td-code-editor style="height: 600px" theme="vs" flex language="json" [(ngModel)]="jsonEditorSchema"></td-code-editor>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header p-1">Model</div>
-      <div class="card-body p-0">
-        <td-code-editor style="height: 600px" theme="vs" flex language="json" [(ngModel)]="jsonEditorModel"></td-code-editor>
-      </div>
-    </div>
-
-    <button (click)="updateSchema()">Update</button>
-  </div>
+<div class="mb-1">
+  <app-document-schema
+    [(jsonSchema)]="jsonEditorSchema"
+    [(jsonModel)]="jsonEditorModel">
+    <button appDocumentSchemaFooterButtons class="btn btn-sm btn-secondary"
+      (click)="updateSchema()">Update Schema</button>
+  </app-document-schema>
 </div>
 
-<div class="card mb-1">
-  <div class="card-header">Schema Form</div>
-  <div class="card-body">
-    <app-document-form [schema]="mySchema" [model]="myModel"></app-document-form>
-  </div>
+<div class="mb-1">
+  <app-card-widget [title]="'Schema Form'" [expanded]="false">
+    <div class="card-body">
+      <app-document-form [schema]="mySchema" [model]="myModel"></app-document-form>
+    </div>
+  </app-card-widget>
 </div>
 
+<div class="mb-1">
+  <app-card-widget [title]="'Document Editor'" [expanded]="true">
+    <div class="card-body pl-2 pr-2 pb-2 pt-1">
+      <button (click)="testImgClick()">Test</button>
+      <!-- <trumbowyg
+        liveUpdate="false"
+        togglePreview="false"
+        [options]="options"
+        [initialContent]="initialContentTwo"
+        (savedContent)="contentTwo=$event">
+      </trumbowyg> -->
+      <trumbowyg
+        #docEditor
+        [options]="options"
+        [initialContent]="initialContentTwo"
+        (savedContent)="contentTwo=$event">
+      </trumbowyg>
+      <!-- <div>
+        <p [innerHTML]="contentTwo"></p>
+      </div> -->
+      <!-- <div [innerHTML]="contentTwo"></div> -->
+    </div>
+  </app-card-widget>
+</div>
 
-<!-- <button (click)="onClickJsonTest()">JSON Test</button> -->
-
-<div class="card">
-  <div class="card-header">Document Editor</div>
-  <div class="card-body pl-2 pr-2 pb-2 pt-0">
-    <trumbowyg liveUpdate="false" togglePreview="false" [options]="options" [initialContent]="initialContentTwo" (savedContent)="contentTwo=$event"></trumbowyg>
-    <!-- <div>
-      <p [innerHTML]="contentTwo"></p>
-    </div> -->
-    <!-- <div [innerHTML]="contentTwo"></div> -->
-  </div>
+<div class="mb-1">
+  <app-card-widget [title]="'Signature Pad'" [expanded]="false">
+    <div class="card-body">
+      <signature-pad
+        [options]="signaturePadOptions"
+        (onBeginEvent)="drawStart()"
+        (onEndEvent)="drawComplete()">
+      </signature-pad>
+    </div>
+  </app-card-widget>
 </div>

@@ -37,6 +37,7 @@
     "@swimlane/ngx-datatable": "^11.1.7",
     "@swimlane/ngx-graph": "^4.0.2",
     "angular2-schema-form": "^1.2.1",
+    "angular2-signaturepad": "^2.7.0",
     "bootstrap": "^4.0.0",
     "buffer": "^5.0.8",
     "canonical-json": "0.0.4",

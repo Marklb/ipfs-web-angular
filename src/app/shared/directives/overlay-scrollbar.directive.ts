@@ -14,7 +14,7 @@ export class OverlayScrollbarDirective implements OnInit, AfterViewInit, OnDestr
 
   ngAfterViewInit() {
     this.zone.runOutsideAngular(() => {
-      console.log('OverlayScrollbarDirective: ', this.ref.nativeElement)
+      // console.log('OverlayScrollbarDirective: ', this.ref.nativeElement)
 
       this.instance = OverlayScrollbars(this.ref.nativeElement, {
         className       : 'os-theme-minimal-dark os-theme-no-hover',

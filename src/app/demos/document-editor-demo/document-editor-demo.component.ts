@@ -1,15 +1,18 @@
 import { Component, OnInit, ElementRef, ViewChild, ViewEncapsulation,
   ComponentRef, ViewContainerRef, ComponentFactoryResolver, AfterViewInit,
-  OnDestroy } from '@angular/core'
+  OnDestroy, NgZone } from '@angular/core'
 import * as jsPDF from 'jspdf'
-
+import { SignaturePad } from 'angular2-signaturepad/signature-pad'
+import * as interact from 'interactjs'
+// const interact: any = _interact
+// declare var interact: Function
 
 @Component({
   selector: 'app-document-editor-demo',
   templateUrl: './document-editor-demo.component.html',
   styleUrls: ['./document-editor-demo.component.scss'],
 })
-export class DocumentEditorDemoComponent implements OnInit {
+export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
 
   public initialContentTwo: string = `<h2>This is an initial title Two.</h2><p>This is an initial content.</p><p><br></p><p><br></p>`
   public contentTwo: string
@@ -17,7 +20,7 @@ export class DocumentEditorDemoComponent implements OnInit {
     autogrow: true,
     removeformatPasted: true,
     semantic: false,
-    imageWidthModalEdit: true,
+    // imageWidthModalEdit: true,
     btns: [
       ['viewHTML'],
       ['undo', 'redo'], // Only supported in Blink browsers
@@ -108,21 +111,114 @@ export class DocumentEditorDemoComponent implements OnInit {
   public jsonEditorSchema: string
   public jsonEditorModel: string
 
-  constructor() { }
+  @ViewChild(SignaturePad) signaturePad: SignaturePad
+
+  private signaturePadOptions: Object = {
+    // 'minWidth': 0.5,
+    // 'maxWidth': 2.5,
+    'canvasWidth': 500,
+    'canvasHeight': 300
+  }
+
+  @ViewChild('docEditor')
+  public docEditor: any
+
+  constructor(public zone: NgZone) { }
 
   ngOnInit() {
     this.jsonEditorSchema = JSON.stringify(this.mySchema, null, 2)
     this.jsonEditorModel = JSON.stringify(this.myModel, null, 2)
   }
 
-  public onClickJsonTest() {
-    console.log('this.jsonEditorSchema: ', this.jsonEditorSchema)
-    console.log('this.jsonEditorModel: ', this.jsonEditorModel)
+  ngAfterViewInit() {
+    // this.signaturePad is now available
+    // this.signaturePad.set('minWidth', 5) // set szimek/signature_pad options at runtime
+    this.signaturePad.clear() // invoke functions from szimek/signature_pad API
+  }
+
+  public drawComplete() {
+    // will be notified of szimek/signature_pad's onEnd event
+    // console.log(this.signaturePad.toDataURL())
+  }
+
+  public drawStart() {
+    // will be notified of szimek/signature_pad's onBegin event
+    // console.log('begin drawing')
   }
 
   public updateSchema() {
     this.mySchema = JSON.parse(this.jsonEditorSchema)
     this.myModel = JSON.parse(this.jsonEditorModel)
+  }
+
+  public testImgClick() {
+    console.log('this.docEditor: ', this.docEditor)
+    const imgs = this.docEditor.trumbowygEl[0].querySelectorAll('.trumbowyg-editor img')
+    console.log('imgs: ', imgs)
+
+
+    // this.zone.runOutsideAngular(() => {
+      const dragMoveListener = (event) => {
+        const target = event.target,
+            // keep the dragged position in the data-x/data-y attributes
+            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+
+        // translate the element
+        target.style.webkitTransform =
+        target.style.transform =
+          'translate(' + x + 'px, ' + y + 'px)'
+
+        // update the posiion attributes
+        target.setAttribute('data-x', x)
+        target.setAttribute('data-y', y)
+      }
+
+      console.log(interact)
+      // console.log(interact('.trumbowyg-editor img'))
+      const elem: any = (<Function>interact)('.trumbowyg-editor img')
+      console.log(elem)
+      // target elements with the "draggable" class
+      // interact('.draggable')
+      // interact('.trumbowyg-editor img')
+
+      console.log(elem.draggable)
+      const f = elem.draggable
+      console.log(f)
+      f({
+        onmove: function() { console.log('move') }
+      })
+      // elem
+      // .draggable({
+      //   // enable inertial throwing
+      //   inertia: true,
+      //   // keep the element within the area of it's parent
+      //   restrict: {
+      //     restriction: 'parent',
+      //     endOnly: true,
+      //     elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+      //   },
+      //   // enable autoScroll
+      //   autoScroll: true,
+
+      //   // call this function on every dragmove event
+      //   onmove: dragMoveListener,
+      //   // call this function on every dragend event
+      //   onend: (event) => {
+      //     const textEl = event.target.querySelector('p')
+
+      //     // if (textEl) {
+      //     //   textEl.textContent = 'moved a distance of '
+      //     //     + (Math.sqrt(Math.pow(event.pageX - event.x0, 2)
+      //     //     + Math.pow(event.pageY - event.y0, 2) | 0)).toFixed(2) + 'px'
+      //     // }
+      //   }
+      // })
+
+      // this is used later in the resizing and gesture demos
+      (<any>window).dragMoveListener = dragMoveListener
+
+    // })
   }
 
   public test2(event: any) {
