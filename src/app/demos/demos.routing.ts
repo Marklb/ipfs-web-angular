@@ -5,7 +5,7 @@ import { JspdfDemoComponent } from 'app/demos/jspdf-demo/jspdf-demo.component'
 import { FilesUploadDemoComponent } from 'app/demos/files-upload-demo/files-upload-demo.component'
 import { HashCheckDemoComponent } from 'app/demos/hash-check-demo/hash-check-demo.component'
 import { DigitalSignatureDemoComponent } from 'app/demos/digital-signature-demo/digital-signature-demo.component'
-import { EncryptionDemoComponent } from 'app/demos/encryption-demo/encryption-demo.component'
+// import { EncryptionDemoComponent } from 'app/demos/encryption-demo/encryption-demo.component'
 import { DocumentEditorDemoComponent } from 'app/demos/document-editor-demo/document-editor-demo.component'
 
 const routes: Routes = [
@@ -14,7 +14,8 @@ const routes: Routes = [
   { path: 'files-upload', component: FilesUploadDemoComponent },
   { path: 'hash-check', component: HashCheckDemoComponent },
   { path: 'digital-signature', component: DigitalSignatureDemoComponent },
-  { path: 'encryption', component: EncryptionDemoComponent },
+  // { path: 'encryption', component: EncryptionDemoComponent },
+  { path: 'encryption', loadChildren: 'app/demos/encryption-demo/encryption-demo.module#EncryptionDemoModule'},
   { path: 'document-editor', component: DocumentEditorDemoComponent }
 ]
 

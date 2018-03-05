@@ -10,8 +10,10 @@ import { JspdfTemplatesModule } from 'app/shared/jspdf-templates/jspdf-templates
 import { CardWidgetComponent } from './card-widget/card-widget.component'
 import { KeysSelectorComponent } from './keys-selector/keys-selector.component'
 import { FilesDropPickComponent } from './files-drop-pick/files-drop-pick.component'
-import { PrivatekeyPassphraseDialogComponent } from './privatekey-passphrase-dialog/privatekey-passphrase-dialog.component';
-import { SettingsManagerComponent } from './settings-manager/settings-manager.component';
+import { PrivatekeyPassphraseDialogComponent } from './privatekey-passphrase-dialog/privatekey-passphrase-dialog.component'
+import { SettingsManagerComponent } from './settings-manager/settings-manager.component'
+
+import { OverlayScrollbarDirective } from './directives/overlay-scrollbar.directive'
 
 
 @NgModule({
@@ -27,14 +29,17 @@ import { SettingsManagerComponent } from './settings-manager/settings-manager.co
     StoredKeysManagerUiModule,
     CardWidgetComponent,
     KeysSelectorComponent,
-    FilesDropPickComponent
+    FilesDropPickComponent,
+    SettingsManagerComponent,
+    OverlayScrollbarDirective
   ],
   declarations: [
     CardWidgetComponent,
     KeysSelectorComponent,
     FilesDropPickComponent,
     PrivatekeyPassphraseDialogComponent,
-    SettingsManagerComponent
-]
+    SettingsManagerComponent,
+    OverlayScrollbarDirective
+  ]
 })
 export class SharedModule { }

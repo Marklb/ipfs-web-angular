@@ -29,9 +29,11 @@
             <app-top-nav></app-top-nav>
           </div>
           <ng-container *ngIf="ipfsService.isReady">
-            <perfect-scrollbar fxLayout="column" fxFlex="grow" fxFlexFill>
-              <router-outlet></router-outlet>
-            </perfect-scrollbar>
+            <div fxLayout="column" fxFlex="grow" fxFlexFill>
+              <div fxLayout="column" fxFlex="grow" fxFlexFill appOverlayScrollbar>
+                <router-outlet></router-outlet>
+              </div>
+            </div>
           </ng-container>
         </div>
       </div>

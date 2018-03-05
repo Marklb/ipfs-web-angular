@@ -14,22 +14,18 @@
           <div class="pt-1"></div>
 
           <strong>Public Key: </strong>
-          <div class="card">
-            <perfect-scrollbar>
-              <!-- <pre class="panel textarea-panel mb-0 p-1">{{ idData.publicKey }}</pre> -->
-              <div class="p-1" style="white-space:nowrap;">{{ idData.publicKey }}</div>
-            </perfect-scrollbar>
+          <div class="card" appOverlayScrollbar>
+            <!-- <pre class="panel textarea-panel mb-0 p-1">{{ idData.publicKey }}</pre> -->
+            <div class="p-1" style="white-space:nowrap;">{{ idData.publicKey }}</div>
           </div>
 
           <div class="pt-1"></div>
 
           <div><strong>  Addresses:</strong></div>
           <div class="card">
-            <div class="card-body p-1">
-              <perfect-scrollbar>
-                <div *ngFor="let addr of idData.addresses; let i = index"
-                  style="white-space:nowrap;">{{ addr }}</div>
-              </perfect-scrollbar>
+            <div class="card-body p-1" appOverlayScrollbar>
+              <div *ngFor="let addr of idData.addresses; let i = index"
+                style="white-space:nowrap;">{{ addr }}</div>
             </div>
           </div>
         </div>

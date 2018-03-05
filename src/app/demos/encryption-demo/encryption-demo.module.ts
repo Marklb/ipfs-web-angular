@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core'
+import { Routes, RouterModule } from '@angular/router'
 import { CommonModule } from '@angular/common'
 
 import { FileDropModule } from 'ngx-file-drop'
@@ -12,9 +13,17 @@ import { EncryptionDemoComponent } from './encryption-demo.component'
 import { EncryptPanelComponent } from './encrypt-panel/encrypt-panel.component'
 import { DecryptPanelComponent } from './decrypt-panel/decrypt-panel.component'
 
+const routes: Routes = [
+  {
+    path: '',
+    component: EncryptionDemoComponent
+  }
+]
+
 @NgModule({
   imports: [
     CommonModule,
+    RouterModule.forChild(routes),
     FileDropModule,
     BsDropdownModule,
     AlertModule,
@@ -25,6 +34,9 @@ import { DecryptPanelComponent } from './decrypt-panel/decrypt-panel.component'
     EncryptionDemoComponent,
     EncryptPanelComponent,
     DecryptPanelComponent
+  ],
+  exports: [
+    RouterModule
   ]
 })
 export class EncryptionDemoModule { }

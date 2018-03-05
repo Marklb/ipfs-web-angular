@@ -7,7 +7,7 @@ import { JspdfDemoModule } from './jspdf-demo/jspdf-demo.module'
 import { FilesUploadDemoModule } from './files-upload-demo/files-upload-demo.module'
 import { HashCheckDemoModule } from './hash-check-demo/hash-check-demo.module'
 import { DigitalSignatureDemoModule } from './digital-signature-demo/digital-signature-demo.module'
-import { EncryptionDemoModule } from './encryption-demo/encryption-demo.module'
+// import { EncryptionDemoModule } from './encryption-demo/encryption-demo.module'
 import { DocumentEditorDemoModule } from './document-editor-demo/document-editor-demo.module'
 
 import { DemosComponent } from './demos.component'
@@ -22,7 +22,7 @@ import { DemosComponent } from './demos.component'
     FilesUploadDemoModule,
     HashCheckDemoModule,
     DigitalSignatureDemoModule,
-    EncryptionDemoModule,
+    // EncryptionDemoModule,
     DocumentEditorDemoModule
   ],
   exports: [
@@ -30,6 +30,6 @@ import { DemosComponent } from './demos.component'
   ],
   declarations: [
     DemosComponent
-  ]
+]
 })
 export class DemosModule { }

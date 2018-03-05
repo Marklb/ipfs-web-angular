@@ -1,51 +1,44 @@
 <h2 class="p-2 mb-0">Document Editor Demo</h2>
 
-<!-- <button (click)="test($event)">Test</button> -->
-<!-- <button (click)="createComponent()">Test2</button> -->
+<div class="card mb-1">
+  <div class="card-header">Schema Form</div>
+  <div class="card-body p-2">
 
-<!-- Create the toolbar container -->
-<!-- <div id="toolbar">
-  <button class="ql-bold">Bold</button>
-  <button class="ql-italic">Italic</button>
-</div> -->
+    <div class="card mb-1">
+      <div class="card-header p-1">Schema</div>
+      <div class="card-body p-0">
+        <td-code-editor style="height: 600px" theme="vs" flex language="json" [(ngModel)]="jsonEditorSchema"></td-code-editor>
+      </div>
+    </div>
 
-<!-- Create the editor container -->
-<!-- <div id="editor" class="editor-main">
-  <p>Hello World! fasdfasdnfkjhdf dsjafh dslah fjkdsh flahsd lkfjh asdklj hf kjlasdh fkjlha sdkjlhf kjasdhf lkjasdh fljkhasd lfkjh asdkjlhf jkaslhd fkjhas dlkjfh asdkjlhfkjasdhf kjhsadkj fjklasd hfjklhs dajkfh asdlkjfhlajksdhfjkdshfjklh djklhfaljksdhfjkasdhfjklahsd kjfh asldkjhfjkalsdhf jklasdhf ajskd hflkjha sdkljfh lkjasdh fjklahs dlkjfh asdlkjfh aljksdh fkjashd flkjha sdjklfh sadkjlhf kjsdah kjfhasdkjh fasdkj hfkjlasd hfjk hsdkjh fkjasldh fjklh asdjkflhasdkjfhlaskdjhflkajsdhflkjahsdflkjh</p>
-  <p>1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9</p>
-</div> -->
+    <div class="card">
+      <div class="card-header p-1">Model</div>
+      <div class="card-body p-0">
+        <td-code-editor style="height: 600px" theme="vs" flex language="json" [(ngModel)]="jsonEditorModel"></td-code-editor>
+      </div>
+    </div>
 
-<!-- Include the Quill library -->
-<!-- <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script> -->
-
-
-<!-- <div #editorRef class="editor"></div>
-<div #contentRef></div> -->
-
-<!-- <div class="text-danger pb-1">
-  NOTE: Editor is not configured yet. It will create a PDF with the PDF button,
-  but it may not display correctly until it gets configured.
+    <button (click)="updateSchema()">Update</button>
+  </div>
 </div>
 
-<div class="card border-0 exclude-bootstrap4 prosemirror-scope">
-  <app-editor></app-editor>
-</div> -->
-
-<!-- <iframe src="http://localhost:4200/#/editor" frameborder="0"></iframe> -->
-<!-- <div class="embed-responsive embed-responsive-16by9 border border-danger">
-  <iframe class="embed-responsive-item" src="http://localhost:4200/#/editor" allowfullscreen></iframe>
-</div> -->
-
-<!-- <iframe #testIframe (load)="onLoadIframe()" frameborder="0"></iframe> -->
-<!-- <div class="embed-responsive embed-responsive-16by9 border border-danger">
-  <iframe #testIframe class="embed-responsive-item" (load)="onLoadIframe()" allowfullscreen></iframe>
-</div> -->
+<div class="card mb-1">
+  <div class="card-header">Schema Form</div>
+  <div class="card-body">
+    <app-document-form [schema]="mySchema" [model]="myModel"></app-document-form>
+  </div>
+</div>
 
 
-<div class="pl-2 pr-2 pb-2 pt-0">
-  <trumbowyg liveUpdate="false" togglePreview="false" [options]="options" [initialContent]="initialContentTwo" (savedContent)="contentTwo=$event"></trumbowyg>
-  <!-- <div>
-    <p [innerHTML]="contentTwo"></p>
-  </div> -->
-  <!-- <div [innerHTML]="contentTwo"></div> -->
+<!-- <button (click)="onClickJsonTest()">JSON Test</button> -->
+
+<div class="card">
+  <div class="card-header">Document Editor</div>
+  <div class="card-body pl-2 pr-2 pb-2 pt-0">
+    <trumbowyg liveUpdate="false" togglePreview="false" [options]="options" [initialContent]="initialContentTwo" (savedContent)="contentTwo=$event"></trumbowyg>
+    <!-- <div>
+      <p [innerHTML]="contentTwo"></p>
+    </div> -->
+    <!-- <div [innerHTML]="contentTwo"></div> -->
+  </div>
 </div>

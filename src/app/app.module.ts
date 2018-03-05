@@ -16,14 +16,12 @@ import { FlexLayoutModule } from '@angular/flex-layout'
 import { NgxGraphModule } from '@swimlane/ngx-graph'
 import { NgxDatatableModule } from '@swimlane/ngx-datatable'
 import { TreeModule } from 'ng2-tree'
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar'
-import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar'
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'
 import { TrumbowygModule } from 'ng2-lazy-trumbowyg'
+import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'angular2-schema-form'
 
 import { SharedModule } from './shared/shared.module'
 import { DemosModule } from './demos/demos.module'
-import { DocumentEditorModule } from './document-editor/document-editor.module'
+import { LayoutModule } from 'app/layout/layout.module'
 
 import { AppComponent } from './app.component'
 import { DashboardComponent } from './components/dashboard/dashboard.component'
@@ -44,10 +42,6 @@ import { IpfsService } from './services/ipfs.service'
 import { LayoutService } from './services/layout.service'
 import { StoredKeysService } from './services/stored-keys.service'
 import { CryptoService } from './services/crypto/crypto.service'
-
-const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
-
-}
 
 
 @NgModule({
@@ -76,32 +70,29 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FlexLayoutModule,
     NgxGraphModule,
     TreeModule,
-    PerfectScrollbarModule,
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     SharedModule,
     DemosModule,
-    DocumentEditorModule,
     NgxDatatableModule,
     TrumbowygModule.forRoot({
       plugins: [
-        'colors', 'noembed', 'preformatted', 'pasteimage', 'upload', 'base64', 'template'
+        'colors', 'noembed', 'preformatted', 'pasteimage', 'upload', 'base64', 'template', 'table'
       ],
       version: '2.9.4'
-    })
+    }),
+    SchemaFormModule.forRoot(),
+    LayoutModule
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: window['_app_base'] || '/' },
-    {
-      provide: PERFECT_SCROLLBAR_CONFIG,
-      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-    },
     IpfsService,
     LayoutService,
     StoredKeysService,
-    CryptoService
+    CryptoService,
+    {provide: WidgetRegistry, useClass: DefaultWidgetRegistry}
   ],
   bootstrap: [AppComponent]
 })
