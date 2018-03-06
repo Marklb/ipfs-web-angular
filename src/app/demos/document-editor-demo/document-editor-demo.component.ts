@@ -7,6 +7,8 @@ import * as interact from 'interactjs'
 // const interact: any = _interact
 // declare var interact: Function
 
+declare const jQuery: any
+
 @Component({
   selector: 'app-document-editor-demo',
   templateUrl: './document-editor-demo.component.html',
@@ -59,12 +61,16 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
       },
       imageDropdown: {
         dropdown: ['insertImage', 'base64', 'noembed'],
-        title: 'Media Insers',
+        title: 'Media Insert',
         ico: 'insert-image',
         hasIcon: true
       }
     },
     plugins: {
+      resizimg : {
+        minSize: 64,
+        step: 16,
+      },
       templates: [
         {
           name: 'Template 1',
@@ -82,7 +88,7 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
             <i>Mark</i> replaced with the name variable placeholder.</p>
           `
         }
-    ]
+      ]
     }
   }
 
@@ -123,17 +129,32 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
   @ViewChild('docEditor')
   public docEditor: any
 
-  constructor(public zone: NgZone) { }
+  constructor(public zone: NgZone) {
+    // console.log('jQuery: ', jQuery)
+  }
 
   ngOnInit() {
     this.jsonEditorSchema = JSON.stringify(this.mySchema, null, 2)
     this.jsonEditorModel = JSON.stringify(this.myModel, null, 2)
+
+    // const win = (<any>window)
+    // const waitForDefined = () => {
+    //   console.log('~jQuery: ', win.jQuery)
+    //   if (!win.jQuery) {
+    //     setTimeout(waitForDefined, 30)
+    //   } else {
+    //     console.log('window.jQuery: ', win.jQuery)
+    //     this.loadFile('/assets/trumbowyg.resizimg.js')
+    //   }
+    // }
+    // setTimeout(waitForDefined, 30)
   }
 
   ngAfterViewInit() {
     // this.signaturePad is now available
     // this.signaturePad.set('minWidth', 5) // set szimek/signature_pad options at runtime
     this.signaturePad.clear() // invoke functions from szimek/signature_pad API
+    // this.loadFile('/assets/trumbowyg.resizimg.js')
   }
 
   public drawComplete() {
@@ -152,9 +173,40 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
   }
 
   public testImgClick() {
+    const win = (<any>window)
+    const waitForDefined = () => {
+      console.log('~jQuery: ', win.jQuery)
+      if (!win.jQuery) {
+        setTimeout(waitForDefined, 30)
+      } else {
+        console.log('window.jQuery: ', win.jQuery)
+        this.loadFile('https://rawgit.com/RickStrahl/jquery-resizable/master/dist/jquery-resizable.min.js')
+        .then(() => { this.loadFile('/assets/trumbowyg.resizimg.js') })
+      }
+    }
+    setTimeout(waitForDefined, 30)
+
+
+    console.log('jQuery: ', jQuery)
+
     console.log('this.docEditor: ', this.docEditor)
     const imgs = this.docEditor.trumbowygEl[0].querySelectorAll('.trumbowyg-editor img')
     console.log('imgs: ', imgs)
+    const img = imgs[0]
+    img.classList.add('dragging-box')
+
+    img.addEventListener('click', (event) => {
+      console.log('event: ', event)
+    })
+
+
+  }
+
+  public testImgClick2() {
+    console.log('this.docEditor: ', this.docEditor)
+    const imgs = this.docEditor.trumbowygEl[0].querySelectorAll('.trumbowyg-editor img')
+    console.log('imgs: ', imgs)
+    imgs[0].classList.add('dragging-box')
 
 
     // this.zone.runOutsideAngular(() => {
@@ -176,44 +228,46 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
 
       console.log(interact)
       // console.log(interact('.trumbowyg-editor img'))
-      const elem: any = (<Function>interact)('.trumbowyg-editor img')
-      console.log(elem)
+      // const elem: any = (<Function>interact)('.trumbowyg-editor img');
+      // const elem: any = (<Function>interact)('.drag-box');
+      const elem: any = (<Function>interact)('.dragging-box');
+      console.log('elem: ', elem);
       // target elements with the "draggable" class
       // interact('.draggable')
       // interact('.trumbowyg-editor img')
 
-      console.log(elem.draggable)
-      const f = elem.draggable
-      console.log(f)
-      f({
-        onmove: function() { console.log('move') }
-      })
-      // elem
-      // .draggable({
-      //   // enable inertial throwing
-      //   inertia: true,
-      //   // keep the element within the area of it's parent
-      //   restrict: {
-      //     restriction: 'parent',
-      //     endOnly: true,
-      //     elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-      //   },
-      //   // enable autoScroll
-      //   autoScroll: true,
-
-      //   // call this function on every dragmove event
-      //   onmove: dragMoveListener,
-      //   // call this function on every dragend event
-      //   onend: (event) => {
-      //     const textEl = event.target.querySelector('p')
-
-      //     // if (textEl) {
-      //     //   textEl.textContent = 'moved a distance of '
-      //     //     + (Math.sqrt(Math.pow(event.pageX - event.x0, 2)
-      //     //     + Math.pow(event.pageY - event.y0, 2) | 0)).toFixed(2) + 'px'
-      //     // }
-      //   }
+      // console.log(elem.draggable)
+      // const f = elem.draggable
+      // console.log(f)
+      // f({
+      //   onmove: function() { console.log('move') }
       // })
+      elem
+      .draggable({
+        // enable inertial throwing
+        inertia: true,
+        // keep the element within the area of it's parent
+        restrict: {
+          restriction: 'parent',
+          endOnly: true,
+          elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+        },
+        // enable autoScroll
+        autoScroll: true,
+
+        // call this function on every dragmove event
+        onmove: dragMoveListener,
+        // call this function on every dragend event
+        onend: (event) => {
+          const textEl = event.target.querySelector('p')
+
+          // if (textEl) {
+          //   textEl.textContent = 'moved a distance of '
+          //     + (Math.sqrt(Math.pow(event.pageX - event.x0, 2)
+          //     + Math.pow(event.pageY - event.y0, 2) | 0)).toFixed(2) + 'px'
+          // }
+        }
+      });
 
       // this is used later in the resizing and gesture demos
       (<any>window).dragMoveListener = dragMoveListener
@@ -314,6 +368,30 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
       },
       margins
     )
+  }
+
+  private loadFile(path: string) {
+
+    return new Promise<any>((resolve, reject) => {
+      let e: any
+      if (/(^css!|\.css$)/.test(path)) {
+        // css
+        e = document.createElement('link')
+        e.rel = 'stylesheet'
+        e.href = path.replace(/^css!/, '')  // remove "css!" prefix
+      } else {
+        // javascript
+        e = document.createElement('script')
+        e.src = path
+        e.async = true
+      }
+      document.getElementsByTagName('head')[0].appendChild(e)
+
+      e.onload = () => {
+        resolve()
+      }
+      e.onerror = (err: any) => reject(new Error('Files not found.'))
+    })
   }
 
 }
