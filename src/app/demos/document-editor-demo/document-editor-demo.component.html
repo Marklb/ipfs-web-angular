@@ -1,12 +1,12 @@
 <h2 class="p-2 mb-0">Document Editor Demo</h2>
 
 <div class="mb-1">
-  <app-document-schema
+  <!-- <app-document-schema
     [(jsonSchema)]="jsonEditorSchema"
     [(jsonModel)]="jsonEditorModel">
     <button appDocumentSchemaFooterButtons class="btn btn-sm btn-secondary"
       (click)="updateSchema()">Update Schema</button>
-  </app-document-schema>
+  </app-document-schema> -->
 </div>
 
 <div class="mb-1">
@@ -20,25 +20,8 @@
 <div class="mb-1">
   <app-card-widget [title]="'Document Editor'" [expanded]="true">
     <div class="card-body pl-2 pr-2 pb-2 pt-1">
-      <button (click)="testImgClick()">Test</button>
-      <div class="drag-box" style="width: 50px; height: 50px; background-color: blue;"></div>
-      <!-- <trumbowyg
-        liveUpdate="false"
-        togglePreview="false"
-        [options]="options"
-        [initialContent]="initialContentTwo"
-        (savedContent)="contentTwo=$event">
-      </trumbowyg> -->
-      <trumbowyg
-        #docEditor
-        [options]="options"
-        [initialContent]="initialContentTwo"
-        (savedContent)="contentTwo=$event">
-      </trumbowyg>
-      <!-- <div>
-        <p [innerHTML]="contentTwo"></p>
-      </div> -->
-      <!-- <div [innerHTML]="contentTwo"></div> -->
+      <!-- <app-document-text-editor></app-document-text-editor> -->
+      <app-summernote></app-summernote>
     </div>
   </app-card-widget>
 </div>

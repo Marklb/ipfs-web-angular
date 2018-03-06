@@ -13,7 +13,8 @@ import { DocumentEditorDemoComponent } from './document-editor-demo.component'
 import { DocumentTextEditorComponent } from './document-text-editor/document-text-editor.component'
 import { DocumentFormComponent } from './document-form/document-form.component'
 import { DocumentSchemaComponent } from './document-schema/document-schema.component'
-import { DocumentSchemaFooterButtonsDirective } from './document-schema/document-schema-footer-buttons.directive';
+import { DocumentSchemaFooterButtonsDirective } from './document-schema/document-schema-footer-buttons.directive'
+import { SummernoteComponent } from './summernote/summernote.component'
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { DocumentSchemaFooterButtonsDirective } from './document-schema/document
     DocumentTextEditorComponent,
     DocumentFormComponent,
     DocumentSchemaComponent,
-    DocumentSchemaFooterButtonsDirective
+    DocumentSchemaFooterButtonsDirective,
+    SummernoteComponent
   ]
 })
 export class DocumentEditorDemoModule { }

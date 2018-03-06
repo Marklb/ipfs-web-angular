@@ -1,3 +1,19 @@
-<p>
-  document-text-editor works!
-</p>
+<button (click)="testImgClick()">Test</button>
+<trumbowyg
+  #docEditor
+  liveUpdate="false"
+  togglePreview="false"
+  [options]="options"
+  [initialContent]="initialContentTwo"
+  (savedContent)="contentTwo=$event">
+</trumbowyg>
+<!-- <trumbowyg
+  #docEditor
+  [options]="options"
+  [initialContent]="initialContentTwo"
+  (savedContent)="contentTwo=$event">
+</trumbowyg> -->
+<!-- <div>
+  <p [innerHTML]="contentTwo"></p>
+</div> -->
+<div [innerHTML]="contentTwo"></div>

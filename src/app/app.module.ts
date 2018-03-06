@@ -42,7 +42,7 @@ import { IpfsService } from './services/ipfs.service'
 import { LayoutService } from './services/layout.service'
 import { StoredKeysService } from './services/stored-keys.service'
 import { CryptoService } from './services/crypto/crypto.service'
-
+import { LoadExternalFilesService } from './services/load-external-files.service'
 
 @NgModule({
   declarations: [
@@ -92,6 +92,7 @@ import { CryptoService } from './services/crypto/crypto.service'
     LayoutService,
     StoredKeysService,
     CryptoService,
+    LoadExternalFilesService,
     {provide: WidgetRegistry, useClass: DefaultWidgetRegistry}
   ],
   bootstrap: [AppComponent]
