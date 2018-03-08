@@ -6,10 +6,10 @@
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 
 @import 'bs-variables';
-@import '~bootstrap/scss/bootstrap';
-// .bootstrap4-scope {
-//   @import '~bootstrap/scss/bootstrap';
-// }
+// @import '~bootstrap/scss/bootstrap';
+.bootstrap4-scope {
+  @import '~bootstrap/scss/bootstrap';
+}
 // :not(.exclude-bootstrap4) {
 //   @import '~bootstrap/scss/bootstrap';
 // }

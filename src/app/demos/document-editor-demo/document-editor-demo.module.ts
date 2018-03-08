@@ -2,8 +2,11 @@ import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { CommonModule } from '@angular/common'
 
-import { TrumbowygModule } from 'ng2-lazy-trumbowyg'
 import { CovalentCodeEditorModule } from '@covalent/code-editor'
+import { CovalentJsonFormatterModule, CovalentExpansionPanelModule } from '@covalent/core'
+import { MatIconModule, MatListModule, MatFormFieldModule, MatInputModule,
+  MatButtonModule, MatTabsModule, MatCardModule } from '@angular/material'
+import { TrumbowygModule } from 'ng2-lazy-trumbowyg'
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'angular2-schema-form'
 import { SignaturePadModule } from 'angular2-signaturepad'
 
@@ -22,9 +25,20 @@ import { SummernoteComponent } from './summernote/summernote.component'
     FormsModule,
     SharedModule,
     TrumbowygModule,
-    CovalentCodeEditorModule,
     SchemaFormModule,
-    SignaturePadModule
+    SignaturePadModule,
+    /** Material Modules */
+    MatListModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatCardModule,
+    /** Covalent Modules */
+    CovalentCodeEditorModule,
+    CovalentExpansionPanelModule,
+    CovalentJsonFormatterModule
   ],
   declarations: [
     DocumentEditorDemoComponent,

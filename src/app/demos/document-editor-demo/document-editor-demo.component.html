@@ -1,39 +1,111 @@
-<h2 class="p-2 mb-0">Document Editor Demo</h2>
+<ng-container *ngIf="false">
+  <h2 class="p-2 mb-0">Document Editor Demo</h2>
 
-<div class="mb-1">
-  <!-- <app-document-schema
-    [(jsonSchema)]="jsonEditorSchema"
-    [(jsonModel)]="jsonEditorModel">
-    <button appDocumentSchemaFooterButtons class="btn btn-sm btn-secondary"
-      (click)="updateSchema()">Update Schema</button>
-  </app-document-schema> -->
-</div>
+  <div class="mb-1">
+    <!-- <app-document-schema
+      [(jsonSchema)]="jsonEditorSchema"
+      [(jsonModel)]="jsonEditorModel">
+      <button appDocumentSchemaFooterButtons class="btn btn-sm btn-secondary"
+        (click)="updateSchema()">Update Schema</button>
+    </app-document-schema> -->
+  </div>
 
-<div class="mb-1">
-  <app-card-widget [title]="'Schema Form'" [expanded]="false">
-    <div class="card-body">
+  <div class="mb-1">
+    <app-card-widget [title]="'Schema Form'" [expanded]="false">
+      <div class="card-body">
+        <app-document-form [schema]="mySchema" [model]="myModel"></app-document-form>
+      </div>
+    </app-card-widget>
+  </div>
+
+  <div class="mb-1">
+    <app-card-widget [title]="'Document Editor'" [expanded]="true">
+      <div class="card-body pl-2 pr-2 pb-2 pt-1">
+        <!-- <app-document-text-editor></app-document-text-editor> -->
+        <app-summernote></app-summernote>
+      </div>
+    </app-card-widget>
+  </div>
+
+  <div class="mb-1">
+    <app-card-widget [title]="'Signature Pad'" [expanded]="false">
+      <div class="card-body">
+        <signature-pad
+          [options]="signaturePadOptions"
+          (onBeginEvent)="drawStart()"
+          (onEndEvent)="drawComplete()">
+        </signature-pad>
+      </div>
+    </app-card-widget>
+  </div>
+</ng-container>
+
+
+
+
+
+<mat-card>
+  <td-expansion-panel label="JSON Schema">
+    <div class="md-padding">
+      <mat-tab-group (selectedTabChange)="updateJsonSchema();schemaEditDisplayed=true" [selectedIndex]="0">
+        <mat-tab label="Explore">
+          <td-json-formatter #schemaFormatter [data]="this.mySchema" [levelsOpen]="1">
+          </td-json-formatter>
+        </mat-tab>
+        <mat-tab label="Edit">
+          <td-code-editor *ngIf="schemaEditDisplayed" style="height: 600px" theme="vs" flex language="json"
+            automaticLayout
+            [(ngModel)]="jsonEditorSchema">
+          </td-code-editor>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </td-expansion-panel>
+</mat-card>
+
+<mat-card>
+  <td-expansion-panel label="JSON Model">
+    <div class="md-padding">
+      <mat-tab-group (selectedTabChange)="updateJsonModel();modelEditDisplayed=true" [selectedIndex]="0">
+        <mat-tab label="Explore">
+          <td-json-formatter [data]="this.myModel" [levelsOpen]="1">
+          </td-json-formatter>
+        </mat-tab>
+        <mat-tab label="Edit">
+          <td-code-editor *ngIf="modelEditDisplayed" style="height: 600px" theme="vs" flex language="json"
+            automaticLayout
+            [(ngModel)]="jsonEditorModel">
+          </td-code-editor>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </td-expansion-panel>
+</mat-card>
+
+<mat-card>
+  <td-expansion-panel label="JSON Schema Form">
+    <div class="md-padding bootstrap4-scope">
       <app-document-form [schema]="mySchema" [model]="myModel"></app-document-form>
     </div>
-  </app-card-widget>
-</div>
+  </td-expansion-panel>
+</mat-card>
 
-<div class="mb-1">
-  <app-card-widget [title]="'Document Editor'" [expanded]="true">
-    <div class="card-body pl-2 pr-2 pb-2 pt-1">
-      <!-- <app-document-text-editor></app-document-text-editor> -->
+<mat-card>
+  <td-expansion-panel label="Document Editor">
+    <!-- <div class="md-padding"> -->
       <app-summernote></app-summernote>
-    </div>
-  </app-card-widget>
-</div>
+    <!-- </div> -->
+  </td-expansion-panel>
+</mat-card>
 
-<div class="mb-1">
-  <app-card-widget [title]="'Signature Pad'" [expanded]="false">
-    <div class="card-body">
+<mat-card>
+  <td-expansion-panel label="Signature Pad">
+    <div class="md-padding">
       <signature-pad
         [options]="signaturePadOptions"
         (onBeginEvent)="drawStart()"
         (onEndEvent)="drawComplete()">
       </signature-pad>
     </div>
-  </app-card-widget>
-</div>
+  </td-expansion-panel>
+</mat-card>

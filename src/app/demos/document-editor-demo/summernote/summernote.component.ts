@@ -12,6 +12,7 @@ declare const $: any
 export class SummernoteComponent implements OnInit {
 
   public loading: boolean = true
+  public loadedComponents: boolean = false
 
   @ViewChild('editor')
   public editor: ElementRef
@@ -93,23 +94,21 @@ export class SummernoteComponent implements OnInit {
     // await this.loadExternalFilesService.loadFile('http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js')
     // await this.loadExternalFilesService.loadFile('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css')
     // await this.loadExternalFilesService.loadFile('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js')
-
-    await this.loadExternalFilesService.loadFile('http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js')
-    await this.loadExternalFilesService.loadFile('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.css')
-    await this.loadExternalFilesService.loadFile('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.js')
-    await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-ext-print.js')
-    await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-ext-nugget.js')
-    await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-ext-template.js')
-    await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-list-styles.js')
-    await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-list-styles.css')
-    await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-pagebreak.js')
-    await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-paper-size.js')
-    await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-table-headers.js')
-    // await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-text-findnreplace.js')
-    // await this.loadExternalFilesService.loadFile('/assets/summernote/.js')
-    // await this.loadExternalFilesService.loadFile('/assets/summernote/.js')
-    // await this.loadExternalFilesService.loadFile('/assets/summernote/.js')
-    // await this.loadExternalFilesService.loadFile('/assets/summernote/.js')
+    if (!this.loadedComponents) {
+      await this.loadExternalFilesService.loadFile('http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js')
+      await this.loadExternalFilesService.loadFile('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.css')
+      await this.loadExternalFilesService.loadFile('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.js')
+      await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-ext-print.js')
+      await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-ext-nugget.js')
+      await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-ext-template.js')
+      await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-list-styles.js')
+      await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-list-styles.css')
+      await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-pagebreak.js')
+      await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-paper-size.js')
+      await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-table-headers.js')
+      // await this.loadExternalFilesService.loadFile('/assets/summernote/summernote-text-findnreplace.js')
+      this.loadedComponents = true
+    }
 
     this.loading = false
   }

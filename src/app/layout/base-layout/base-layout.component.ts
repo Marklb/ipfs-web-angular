@@ -1,8 +1,10 @@
-import { Component, ChangeDetectorRef, AfterViewInit, ViewChild, TemplateRef, HostBinding, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ChangeDetectorRef, AfterViewInit, ViewChild, TemplateRef,
+  HostBinding, ChangeDetectionStrategy, OnInit } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
 import { MatIconRegistry, MatDialog } from '@angular/material'
 import { TdMediaService, TdDigitsPipe, TdLayoutManageListComponent, TdRotateAnimation } from '@covalent/core'
 import { DatePipe } from '@angular/common'
+import { LayoutService } from 'app/services/layout.service'
 
 @Component({
   selector: 'app-base-layout',
@@ -13,7 +15,7 @@ import { DatePipe } from '@angular/common'
   // ]
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BaseLayoutComponent implements AfterViewInit {
+export class BaseLayoutComponent implements OnInit, AfterViewInit {
 
   routes: Object[] = [{
       icon: 'home',
@@ -95,7 +97,8 @@ export class BaseLayoutComponent implements AfterViewInit {
               public dialog: MatDialog,
               private _changeDetectorRef: ChangeDetectorRef,
               private _iconRegistry: MatIconRegistry,
-              private _domSanitizer: DomSanitizer) {
+              private _domSanitizer: DomSanitizer,
+              public layoutService: LayoutService) {
 
     this._iconRegistry.addSvgIconInNamespace('assets', 'covalent',
       this._domSanitizer.bypassSecurityTrustResourceUrl
@@ -111,6 +114,9 @@ export class BaseLayoutComponent implements AfterViewInit {
 
   }
 
+  ngOnInit(): void {
+    this.layoutService.setPageTitle('Page Title')
+  }
 
   ngAfterViewInit(): void {
 
@@ -125,6 +131,7 @@ export class BaseLayoutComponent implements AfterViewInit {
   }
 
   onDeactivate(event: any) {
+    console.log('onDeactivate: ', event)
     this.showOutlet = false
     if (event.pageTitle) {
       this.pageTitle = 'Page Title'

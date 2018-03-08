@@ -2,13 +2,17 @@ import { Component, OnInit, ElementRef, ViewChild, ViewEncapsulation,
   ComponentRef, ViewContainerRef, ComponentFactoryResolver, AfterViewInit,
   OnDestroy, NgZone } from '@angular/core'
 import { SignaturePad } from 'angular2-signaturepad/signature-pad'
+import { TdJsonFormatterComponent } from '@covalent/core'
+import { LayoutService } from 'app/services/layout.service'
 
 @Component({
   selector: 'app-document-editor-demo',
   templateUrl: './document-editor-demo.component.html',
   styleUrls: ['./document-editor-demo.component.scss'],
 })
-export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
+export class DocumentEditorDemoComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  public pageTitle: string = 'Document Editor Demo'
 
   mySchema = {
     'properties': {
@@ -37,6 +41,9 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
 
   @ViewChild(SignaturePad) signaturePad: SignaturePad
 
+  @ViewChild('schemaFormatter')
+  public schemaFormatter: TdJsonFormatterComponent
+
   private signaturePadOptions: Object = {
     // 'minWidth': 0.5,
     // 'maxWidth': 2.5,
@@ -44,17 +51,27 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
     'canvasHeight': 300
   }
 
-  constructor() { }
+  constructor(public layoutService: LayoutService) { }
 
   ngOnInit() {
+    this.layoutService.setPageTitle('Document Editor Demo')
+
     this.jsonEditorSchema = JSON.stringify(this.mySchema, null, 2)
     this.jsonEditorModel = JSON.stringify(this.myModel, null, 2)
+
+    document.querySelector('html').classList.remove('bootstrap4-scope')
   }
 
   ngAfterViewInit() {
-    // this.signaturePad is now available
-    // this.signaturePad.set('minWidth', 5) // set szimek/signature_pad options at runtime
-    this.signaturePad.clear() // invoke functions from szimek/signature_pad API
+    if (this.signaturePad) {
+      // this.signaturePad is now available
+      // this.signaturePad.set('minWidth', 5) // set szimek/signature_pad options at runtime
+      this.signaturePad.clear() // invoke functions from szimek/signature_pad API
+    }
+  }
+
+  ngOnDestroy() {
+    document.querySelector('html').classList.add('bootstrap4-scope')
   }
 
   public drawComplete() {
@@ -69,6 +86,15 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit {
 
   public updateSchema() {
     this.mySchema = JSON.parse(this.jsonEditorSchema)
+    this.myModel = JSON.parse(this.jsonEditorModel)
+  }
+
+  public updateJsonSchema() {
+    this.mySchema = JSON.parse(this.jsonEditorSchema)
+    this.schemaFormatter.refresh()
+  }
+
+  public updateJsonModel() {
     this.myModel = JSON.parse(this.jsonEditorModel)
   }
 
