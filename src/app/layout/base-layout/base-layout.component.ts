@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, AfterViewInit, ViewChild, TemplateRef,
-  HostBinding, ChangeDetectionStrategy, OnInit } from '@angular/core'
+  HostBinding, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
 import { MatIconRegistry, MatDialog } from '@angular/material'
 import { TdMediaService, TdDigitsPipe, TdLayoutManageListComponent, TdRotateAnimation } from '@covalent/core'
@@ -15,7 +15,7 @@ import { LayoutService } from 'app/services/layout.service'
   // ]
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BaseLayoutComponent implements OnInit, AfterViewInit {
+export class BaseLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   routes: Object[] = [{
       icon: 'home',
@@ -115,7 +115,12 @@ export class BaseLayoutComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.layoutService.setIsBootstrap(false)
     this.layoutService.setPageTitle('Page Title')
+  }
+
+  ngOnDestroy(): void {
+    this.layoutService.setIsBootstrap(true)
   }
 
   ngAfterViewInit(): void {

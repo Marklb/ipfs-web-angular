@@ -2,18 +2,22 @@
   <div class="card-body p-2">
 
     <div class="mb-1">
-      <app-card-widget [title]="'Schema'" [expanded]="true">
+      <app-card-widget [title]="'Schema'" [(expanded)]="schemaCardExpanded">
         <div class="card-body p-0">
-          <td-code-editor style="height: 600px" theme="vs" flex language="json"
+          <td-code-editor *ngIf="schemaCardExpanded"
+            style="height: 600px" theme="vs" flex language="json"
+            automaticLayout
             [(ngModel)]="jsonSchema"></td-code-editor>
         </div>
       </app-card-widget>
     </div>
 
     <div class="mb-1">
-      <app-card-widget [title]="'Model'" [expanded]="true">
+      <app-card-widget [title]="'Model'" [(expanded)]="modelCardExpanded">
         <div class="card-body p-0">
-          <td-code-editor style="height: 600px" theme="vs" flex language="json"
+          <td-code-editor *ngIf="modelCardExpanded"
+            style="height: 600px" theme="vs" flex language="json"
+            automaticLayout
             [(ngModel)]="jsonModel"></td-code-editor>
         </div>
       </app-card-widget>

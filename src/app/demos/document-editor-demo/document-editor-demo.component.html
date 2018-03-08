@@ -1,13 +1,13 @@
-<ng-container *ngIf="false">
+<ng-container *ngIf="isBootstrap">
   <h2 class="p-2 mb-0">Document Editor Demo</h2>
 
   <div class="mb-1">
-    <!-- <app-document-schema
+    <app-document-schema
       [(jsonSchema)]="jsonEditorSchema"
       [(jsonModel)]="jsonEditorModel">
       <button appDocumentSchemaFooterButtons class="btn btn-sm btn-secondary"
         (click)="updateSchema()">Update Schema</button>
-    </app-document-schema> -->
+    </app-document-schema>
   </div>
 
   <div class="mb-1">
@@ -43,69 +43,75 @@
 
 
 
+<ng-container *ngIf="!isBootstrap">
+  <mat-card>
+    <td-expansion-panel label="JSON Schema">
+      <div class="md-padding">
+        <mat-tab-group (selectedTabChange)="updateJsonSchema();schemaEditDisplayed=true" [selectedIndex]="0">
+          <mat-tab label="Explore">
+            <td-json-formatter #schemaFormatter [data]="this.mySchema" [levelsOpen]="1">
+            </td-json-formatter>
+          </mat-tab>
+          <mat-tab label="Edit">
+            <td-code-editor *ngIf="schemaEditDisplayed" style="height: 600px" theme="vs" flex language="json"
+              automaticLayout
+              [(ngModel)]="jsonEditorSchema">
+            </td-code-editor>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </td-expansion-panel>
+  </mat-card>
 
-<mat-card>
-  <td-expansion-panel label="JSON Schema">
-    <div class="md-padding">
-      <mat-tab-group (selectedTabChange)="updateJsonSchema();schemaEditDisplayed=true" [selectedIndex]="0">
-        <mat-tab label="Explore">
-          <td-json-formatter #schemaFormatter [data]="this.mySchema" [levelsOpen]="1">
-          </td-json-formatter>
-        </mat-tab>
-        <mat-tab label="Edit">
-          <td-code-editor *ngIf="schemaEditDisplayed" style="height: 600px" theme="vs" flex language="json"
-            automaticLayout
-            [(ngModel)]="jsonEditorSchema">
-          </td-code-editor>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
-  </td-expansion-panel>
-</mat-card>
+  <mat-card>
+    <td-expansion-panel label="JSON Model">
+      <div class="md-padding">
+        <mat-tab-group (selectedTabChange)="updateJsonModel();modelEditDisplayed=true" [selectedIndex]="0">
+          <mat-tab label="Explore">
+            <td-json-formatter [data]="this.myModel" [levelsOpen]="1">
+            </td-json-formatter>
+          </mat-tab>
+          <mat-tab label="Edit">
+            <td-code-editor *ngIf="modelEditDisplayed" style="height: 600px" theme="vs" flex language="json"
+              automaticLayout
+              [(ngModel)]="jsonEditorModel">
+            </td-code-editor>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </td-expansion-panel>
+  </mat-card>
 
-<mat-card>
-  <td-expansion-panel label="JSON Model">
-    <div class="md-padding">
-      <mat-tab-group (selectedTabChange)="updateJsonModel();modelEditDisplayed=true" [selectedIndex]="0">
-        <mat-tab label="Explore">
-          <td-json-formatter [data]="this.myModel" [levelsOpen]="1">
-          </td-json-formatter>
-        </mat-tab>
-        <mat-tab label="Edit">
-          <td-code-editor *ngIf="modelEditDisplayed" style="height: 600px" theme="vs" flex language="json"
-            automaticLayout
-            [(ngModel)]="jsonEditorModel">
-          </td-code-editor>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
-  </td-expansion-panel>
-</mat-card>
+  <mat-card>
+    <td-expansion-panel label="JSON Schema Form">
+      <div class="md-padding bootstrap4-scope">
+        <app-document-form [schema]="mySchema" [model]="myModel"></app-document-form>
+      </div>
+      <mat-divider></mat-divider>
+      <div layout="row" class="pad-sm">
+        <button mat-button class="text-upper" (click)="updateSchema()">Refresh from Schema</button>
+        <button mat-button color="accent" class="text-upper">Submit</button>
+      </div>
+    </td-expansion-panel>
+  </mat-card>
 
-<mat-card>
-  <td-expansion-panel label="JSON Schema Form">
-    <div class="md-padding bootstrap4-scope">
-      <app-document-form [schema]="mySchema" [model]="myModel"></app-document-form>
-    </div>
-  </td-expansion-panel>
-</mat-card>
+  <mat-card>
+    <td-expansion-panel label="Document Editor">
+      <!-- <div class="md-padding"> -->
+        <app-summernote></app-summernote>
+      <!-- </div> -->
+    </td-expansion-panel>
+  </mat-card>
 
-<mat-card>
-  <td-expansion-panel label="Document Editor">
-    <!-- <div class="md-padding"> -->
-      <app-summernote></app-summernote>
-    <!-- </div> -->
-  </td-expansion-panel>
-</mat-card>
-
-<mat-card>
-  <td-expansion-panel label="Signature Pad">
-    <div class="md-padding">
-      <signature-pad
-        [options]="signaturePadOptions"
-        (onBeginEvent)="drawStart()"
-        (onEndEvent)="drawComplete()">
-      </signature-pad>
-    </div>
-  </td-expansion-panel>
-</mat-card>
+  <mat-card>
+    <td-expansion-panel label="Signature Pad">
+      <div class="md-padding">
+        <signature-pad
+          [options]="signaturePadOptions"
+          (onBeginEvent)="drawStart()"
+          (onEndEvent)="drawComplete()">
+        </signature-pad>
+      </div>
+    </td-expansion-panel>
+  </mat-card>
+</ng-container>

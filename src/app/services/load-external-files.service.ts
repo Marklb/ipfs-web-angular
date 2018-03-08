@@ -35,7 +35,7 @@ export class LoadExternalFilesService {
       e.onload = () => {
         resolve()
       }
-      e.onerror = (err: any) => reject(new Error('Files not found.'))
+      e.onerror = (err: any) => reject(new Error(`Files not found. ${path}`))
     })
   }
 }

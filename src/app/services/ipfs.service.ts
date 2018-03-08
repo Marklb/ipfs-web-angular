@@ -52,6 +52,13 @@ export class IpfsService {
       gatewayUrl: 'https://jsuttontest1.theseam.com/ipfs',
       environment: IpfsEnvironment.Local
     },
+    // jsuttontest1: {
+    //   address: 'jsuttontest1.theseam.com',
+    //   port: '5001',
+    //   protocol: 'http',
+    //   gatewayUrl: 'http://jsuttontest1.theseam.com:8080/ipfs',
+    //   environment: IpfsEnvironment.Local
+    // },
     infura: {
       address: 'ipfs.infura.io',
       port: '5001',
@@ -61,7 +68,7 @@ export class IpfsService {
     }
   }
 
-  private _initialIpfsConnection: IpfsConnection = this.ipfsConnections.localhost
+  private _initialIpfsConnection: IpfsConnection = this.ipfsConnections.jsuttontest1
 
   private _ipfsConnectionSubject = new BehaviorSubject<IpfsConnection>(
     this._initialIpfsConnection)

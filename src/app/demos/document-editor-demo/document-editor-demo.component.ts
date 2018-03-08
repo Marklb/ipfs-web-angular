@@ -16,6 +16,14 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit, OnDes
 
   mySchema = {
     'properties': {
+      'firstName': {
+        'type': 'string',
+        'description': 'First name'
+      },
+      'lastName': {
+        'type': 'string',
+        'description': 'Last name'
+      },
       'email': {
         'type': 'string',
         'description': 'email',
@@ -31,7 +39,14 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit, OnDes
         'description': 'Remember me'
       }
     },
-    'required': ['email', 'password', 'rememberMe']
+    'required': ['email', 'password', 'rememberMe'],
+    'order': [
+      'firstName',
+      'lastName',
+      'email',
+      'password',
+      'rememberMe'
+    ]
   }
 
   myModel = { email: 'john.doe@example.com' }
@@ -51,15 +66,24 @@ export class DocumentEditorDemoComponent implements OnInit, AfterViewInit, OnDes
     'canvasHeight': 300
   }
 
+  public isBootstrap: boolean = false
+
   constructor(public layoutService: LayoutService) { }
 
   ngOnInit() {
+    this.layoutService.isBootstrap.subscribe((b: boolean) => {
+      this.isBootstrap = b
+      document.querySelector('html').classList.remove('bootstrap4-scope')
+    })
+
     this.layoutService.setPageTitle('Document Editor Demo')
 
     this.jsonEditorSchema = JSON.stringify(this.mySchema, null, 2)
     this.jsonEditorModel = JSON.stringify(this.myModel, null, 2)
 
-    document.querySelector('html').classList.remove('bootstrap4-scope')
+    if (this.isBootstrap) {
+      document.querySelector('html').classList.remove('bootstrap4-scope')
+    }
   }
 
   ngAfterViewInit() {

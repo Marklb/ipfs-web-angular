@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core'
 
 @Component({
   selector: 'app-card-widget',
@@ -7,8 +7,19 @@ import { Component, OnInit, Input } from '@angular/core'
 })
 export class CardWidgetComponent implements OnInit {
 
+  private _expanded: boolean = false
+
   @Input('expanded')
-  public expanded: boolean = false
+  public set expanded(val: boolean) {
+    this._expanded = val
+    this.expandedChange.emit(this._expanded)
+  }
+  public get expanded(): boolean {
+    return this._expanded
+  }
+
+  @Output('expandedChange')
+  public expandedChange: EventEmitter<boolean> = new EventEmitter<boolean>()
 
   @Input('title')
   public title: string

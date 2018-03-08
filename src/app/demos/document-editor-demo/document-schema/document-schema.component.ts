@@ -38,6 +38,9 @@ export class DocumentSchemaComponent implements OnInit {
 
   @ContentChildren(DocumentSchemaFooterButtonsDirective) footerBtnTemplates: QueryList<DocumentSchemaFooterButtonsDirective>
 
+  public schemaCardExpanded: boolean = false
+  public modelCardExpanded: boolean = false
+
   constructor() { }
 
   ngOnInit() { }
